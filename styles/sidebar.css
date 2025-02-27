@@ -1,0 +1,99 @@
+/*
+=================================================
+Here sidebar styling is sotred in order to be
+easily reused in most files
+=================================================
+*/
+
+
+/**separator between hamburger and the rest*/
+.sep{
+    border-style: solid;
+    border-width: 1px;
+}
+
+
+
+/**
+SIDEBAR CLASS
+This styles the sidebar on the left
+*/
+.sidebar{
+    /*alignment within the page is foxed*/
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    /*color and font*/
+    background-color:rgb(44, 41, 41);
+    color: white;
+    font-size: medium;
+    /*the box setting*/
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    row-gap: 10px;
+    padding: 10px;
+    border-radius: 30px;
+    overflow: hidden;
+    /*min values*/
+    min-height: 0;
+    min-width: 0;
+    /*transitions*/
+    transition: all 0.5s;
+}
+
+.sidebar-hidden{
+    width: 33px;
+    row-gap: 0;
+    bottom: auto;
+}
+
+/*
+SIDEBAR BUTTON CELL
+this is the cell where each button is contained
+*/
+.sidebar-cell{
+    background-color:rgb(44, 41, 41);
+    color: white;
+    border-width: 0;
+    border-radius: 20px;
+    padding: 10px;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    transition: all 0.5s;
+}
+
+.sidebar-cell:hover{
+    background-color: rgb(78, 72, 72);
+}
+
+.sidebar-cell:active{
+    background-color: rgb(139, 132, 132);
+}
+
+/**
+SIDEBAR TEXT LABELS
+*/
+.sidebar-label{
+    display: inline-block;
+    transition: all 0.3s;
+    padding-left: 20px;
+}
+
+.hidden {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    visibility: hidden;
+}
+
+/**the state of hamburger menu when minimized*/
+.hamburger-hidden{
+    padding: 10px;
+    text-align: center;
+    justify-items: center;
+}
