@@ -1,3 +1,15 @@
+/*
+=================================================
+This file is for body elements of the main page
+like user reviews and title of the page
+=================================================
+*/
+
+/*
+-------------------------------------------------
+HEADER IMAGE AND TEXT
+-------------------------------------------------
+*/
 .header{
     position: relative;
     margin: var(--mediumGap);
@@ -27,4 +39,44 @@
 
 .header-text h1{
     font-size: 70px;
+}
+
+/*
+-------------------------------------------------
+REVIEW SECTION OF THE PAGE
+this part styles the imaginary user reviews
+-------------------------------------------------
+*/
+.review-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: var(--mediumGap);
+    margin-top: var(--mediumGap);
+}
+
+.review{
+    /*box*/
+    border-radius: var(--mediumRadius);
+    padding: var(--mediumGap);
+    /*color*/
+    background-color: var(--surfaceDim);
+}
+
+.review-header{
+    /*box*/
+    margin-bottom: var(--smallGap);
+    /*font*/
+    font-weight: bold;
+    /*elements inside*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: var(--smallGap);
+}
+
+.review-header img{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
 }

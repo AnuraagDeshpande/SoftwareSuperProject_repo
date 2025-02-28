@@ -20,7 +20,7 @@ This styles the sidebar on the left
     /*alignment within the page is foxed*/
     z-index: 100;
     position: fixed;
-    top: 50px;
+    top: 60px;
     left: -160px ;
     bottom: var(--smallGap);
     /*color and font*/

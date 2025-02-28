@@ -51,3 +51,7 @@ body{
     background-color: var(--surface);
     color: var(--onSurface)
 }
+
+.content-box{
+    padding: var(--mediumGap);
+}
