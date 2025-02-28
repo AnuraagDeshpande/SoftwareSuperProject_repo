@@ -12,8 +12,6 @@ easily reused in most files
     border-width: 1px;
 }
 
-
-
 /**
 SIDEBAR CLASS
 This styles the sidebar on the left
@@ -22,32 +20,30 @@ This styles the sidebar on the left
     /*alignment within the page is foxed*/
     z-index: 100;
     position: fixed;
-    top: 10px;
-    left: 10px;
-    bottom: 10px;
+    top: 50px;
+    left: -160px ;
+    bottom: var(--smallGap);
     /*color and font*/
-    background-color:rgb(44, 41, 41);
-    color: white;
+    background-color:var(--surfaceDark);
+    color: var(--onSurfaceDark);
     font-size: medium;
     /*the box setting*/
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
-    row-gap: 10px;
-    padding: 10px;
+    row-gap: var(--smallGap);
+    padding: var(--mediumGap);
     border-radius: 30px;
     overflow: hidden;
     /*min values*/
     min-height: 0;
     min-width: 0;
     /*transitions*/
-    transition: all 0.5s;
+    transition: all 0.5s ease-in-out;
 }
 
 .sidebar-hidden{
-    width: 33px;
-    row-gap: 0;
-    bottom: auto;
+    left: var(--mediumGap);
 }
 
 /*
@@ -55,8 +51,8 @@ SIDEBAR BUTTON CELL
 this is the cell where each button is contained
 */
 .sidebar-cell{
-    background-color:rgb(44, 41, 41);
-    color: white;
+    background-color:var(--surfaceDark);
+    color: var(--onSurfaceDark);
     border-width: 0;
     border-radius: 20px;
     padding: 10px;
@@ -82,19 +78,4 @@ SIDEBAR TEXT LABELS
     display: inline-block;
     transition: all 0.3s;
     padding-left: 20px;
-}
-
-.hidden {
-    opacity: 0;
-    max-height: 0;
-    padding: 0;
-    margin: 0;
-    visibility: hidden;
-}
-
-/**the state of hamburger menu when minimized*/
-.hamburger-hidden{
-    padding: 10px;
-    text-align: center;
-    justify-items: center;
 }

@@ -1,0 +1,26 @@
+.navbar{
+    padding: var(--tinyGap);
+    background-color: var(--surface);
+    color: var(--onSurface);
+    position: sticky;
+    height: 40px;
+}
+
+#hamburger{
+    padding: var(--smallGap);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border-style: none;
+    background-color: var(--surface);
+    color: var(--onSurface);
+    transition: all 0.3s;
+}
+
+#hamburger:hover{
+    background-color: var(--surfaceDim);
+}
+
+#hamburger:active{
+    background-color: var(--surfaceBright);
+}
