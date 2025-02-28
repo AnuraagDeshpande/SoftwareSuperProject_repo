@@ -25,6 +25,8 @@ and padding sizes
     --tertiaryContainer: #c4eccf;
     --onTertiaryContainer: #2b4e39;
     --surfaceDark:#15130b;
+    --surfaceDarkDim:#15130b;
+    --surfaceDarkBright: #3c3930;
     --onSurfaceDark:#e8e2d4;
 
     /*margin-padding sizes*/

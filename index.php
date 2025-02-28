@@ -19,6 +19,9 @@
             ">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
+            <button class="dark-navbar-button">
+                Sign Up
+            </button>
         </div>
         <!--SIDEBAR CODE-->
         <div class="sidebar">

@@ -1,9 +1,16 @@
 .navbar{
-    padding: var(--tinyGap);
+    position: sticky;
+    /*box*/
+    padding: var(--tinyGap) var(--mediumGap);
+    height: 40px;
+    /*colors*/
     background-color: var(--surface);
     color: var(--onSurface);
-    position: sticky;
-    height: 40px;
+   /*content position*/
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+    
 }
 
 #hamburger{
@@ -14,7 +21,7 @@
     border-style: none;
     background-color: var(--surface);
     color: var(--onSurface);
-    transition: all 0.3s;
+    
 }
 
 #hamburger:hover{
@@ -23,4 +30,25 @@
 
 #hamburger:active{
     background-color: var(--surfaceBright);
+}
+
+.dark-navbar-button{
+    /*the box*/
+    padding: var(--smallGap);
+    height: 40px;
+    border-radius: var(--mediumRadius);
+    border-style: none;
+    /*color*/
+    background-color: var(--surfaceDark);
+    color: var(--onSurfaceDark);
+    /*transitions*/
+    transition: all 0.3s;
+}
+
+.dark-navbar-button:hover{
+    background-color: var(--surfaceDarkDim);
+}
+
+.dark-navbar-button:active{
+    background-color: var(--surfaceDarkBright);
 }
