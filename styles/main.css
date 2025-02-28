@@ -5,6 +5,39 @@ that would be relevant everywhere like the colors
 and padding sizes
 =================================================
 */
+:root{
+    /*current values are placeholders
+    and are meant to be easily changed when needed
+    without requiring any code changes elsewhere*/
+    /*the color used as a base:*/
+    --source: #f4ecd6;
+    /*the actual color palette*/
+    --surface: #fff9ed;
+    --onSurface: #1e1c13;
+    --surfaceDim: #e0d9cc;
+    --primaryContainer: #f7e388;
+    --onPrimaryContainer:#524600;
+    --primary: #6c5e0f;
+    --onPrimary: #ffffff;
+    --secondaryContainer: #ede2bc;
+    --onSecondaryContainer: #4d472b; 
+    --tertiaryContainer: #c4eccf;
+    --onTertiaryContainer: #2b4e39;
+    --surfaceDark:#15130b;
+    --onSurfaceDark:#e8e2d4;
+
+    /*margin-padding sizes*/
+    --tinyGap: 5px;
+    --smallGap: 10px;
+    --mediumGap: 20px;
+    --bigGap: 30px;
+    /*radius sizes*/
+    --bigRadius: 40px;
+    --mediumRadius: 20px;
+    --smallRadius: 10px;
+    /*font sizes*/
+}
+
 *{
     font-family: Helvetica;
 }
