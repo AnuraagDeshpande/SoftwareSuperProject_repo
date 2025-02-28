@@ -5,6 +5,10 @@ like user reviews and title of the page
 =================================================
 */
 
+.section-header{
+    margin: var(--mediumGap) 0;
+}
+
 /*
 -------------------------------------------------
 HEADER IMAGE AND TEXT
