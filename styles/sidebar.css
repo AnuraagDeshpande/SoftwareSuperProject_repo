@@ -20,6 +20,7 @@ This styles the sidebar on the left
 */
 .sidebar{
     /*alignment within the page is foxed*/
+    z-index: 100;
     position: fixed;
     top: 10px;
     left: 10px;

@@ -1,0 +1,29 @@
+.header{
+    position: relative;
+    margin: 10px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 30px;
+}
+
+.header img {
+    height: auto;
+    width: 100%;
+}
+
+.header-text{
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 40px
+}
+
+.header-text h1{
+    font-size: 50px;
+    margin: aut;
+}
+
+.header-text h3{
+ justify-self: flex-end;
+}

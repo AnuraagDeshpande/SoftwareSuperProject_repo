@@ -6,6 +6,7 @@
         <title>SE project</title>
         <link href="styles/main.css" rel="stylesheet"/>
         <link href="styles/sidebar.css" rel="stylesheet"/>
+        <link href="styles/index.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="scripts/sidebar.js"></script>
     </head>
@@ -39,5 +40,17 @@
                 </div>
             </button>
         </div>
+        <div class="content">
+            <div class="header">
+                <div class="header-text">
+                    <h3>Project Management Boook of Knowledge based</h3>
+                    <h1>Manage your project more efficiently!</h1>
+                </div>
+                <img src="media/index_header.jpg">
+               
+            </div>
+            
+        </div>
+        
     </body>
 </html>
