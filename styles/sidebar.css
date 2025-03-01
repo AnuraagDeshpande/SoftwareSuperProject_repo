@@ -13,8 +13,10 @@ easily reused in most files
 }
 
 /**
+-------------------------------------------------
 SIDEBAR CLASS
 This styles the sidebar on the left
+-------------------------------------------------
 */
 .sidebar{
     /*alignment within the page is foxed*/
@@ -47,8 +49,10 @@ This styles the sidebar on the left
 }
 
 /*
+-------------------------------------------------
 SIDEBAR BUTTON CELL
 this is the cell where each button is contained
+-------------------------------------------------
 */
 .sidebar-cell{
     background-color:var(--surfaceDark);
@@ -72,7 +76,9 @@ this is the cell where each button is contained
 }
 
 /**
+-------------------------------------------------
 SIDEBAR TEXT LABELS
+-------------------------------------------------
 */
 .sidebar-label{
     display: inline-block;

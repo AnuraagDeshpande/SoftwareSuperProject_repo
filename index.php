@@ -76,9 +76,140 @@
             <h1 class="section-header">
                 Fresh design and useful features
             </h1>
+            <!--TEAM MEMBER SECTION-->
             <h1 class="section-header">
                 Meet out team
             </h1>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder.png">
+                    <h2>Birb</h2>
+                    Quality expert and specialist
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder.png">
+                    <h2>Birb</h2>
+                    Quality expert and specialist
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder2.jpg">
+                    <h2>Birb 2</h2>
+                    Software engineer and amazing friend
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder2.jpg">
+                    <h2>Birb 2</h2>
+                    SCREAMS
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder.png">
+                    <h2>Birb</h2>
+                    Quality expert and specialist
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder.png">
+                    <h2>Birb</h2>
+                    Quality expert and specialist
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder2.jpg">
+                    <h2>Birb 2</h2>
+                    Software engineer and amazing friend
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="media/profile-picture-placeholder2.jpg">
+                    <h2>Birb 2</h2>
+                    SCREAMS
+                    <div class="team-member-links">
+                        <button class="primary-button">
+                            <i class="fa fa-github" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-asterisk" aria-hidden="true"></i>
+                        </button>
+                        <button class="primary-button">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
