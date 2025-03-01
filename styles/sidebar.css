@@ -48,33 +48,6 @@ This styles the sidebar on the left
     left: var(--mediumGap);
 }
 
-/*
--------------------------------------------------
-SIDEBAR BUTTON CELL
-this is the cell where each button is contained
--------------------------------------------------
-*/
-.sidebar-cell{
-    background-color:var(--surfaceDark);
-    color: var(--onSurfaceDark);
-    border-width: 0;
-    border-radius: 20px;
-    padding: 10px;
-    min-width: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    transition: all 0.5s;
-}
-
-.sidebar-cell:hover{
-    background-color: rgb(78, 72, 72);
-}
-
-.sidebar-cell:active{
-    background-color: rgb(139, 132, 132);
-}
-
 /**
 -------------------------------------------------
 SIDEBAR TEXT LABELS

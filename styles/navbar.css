@@ -43,31 +43,3 @@ HAMBURGER MENU
 #hamburger:active{
     background-color: var(--surfaceBright);
 }
-
-/*
--------------------------------------------------
-DARK COLORED BUTTON
--------------------------------------------------
-*/
-.dark-navbar-button{
-    /*the box*/
-    padding: var(--smallGap);
-    height: 40px;
-    border-radius: var(--mediumRadius);
-    border-style: none;
-    /*color*/
-    background-color: var(--surfaceDark);
-    color: var(--onSurfaceDark);
-    /*transitions*/
-    transition: all 0.3s;
-    /*font*/
-    font-weight: bold;
-}
-
-.dark-navbar-button:hover{
-    background-color: var(--surfaceDarkDim);
-}
-
-.dark-navbar-button:active{
-    background-color: var(--surfaceDarkBright);
-}

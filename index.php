@@ -22,7 +22,7 @@
                 </button>
                 NAME
             </div>
-            <button class="dark-navbar-button">
+            <button class="dark-button">
                 Sign Up
             </button>
         </div>
@@ -31,13 +31,13 @@
             <h1>PMBOK</h1>
             <div></div>
             <h2 class="sidebar-subheader">General</h2>
-            <button class="sidebar-cell">
+            <button class="dark-button">
                 <i class="fa fa-database" aria-hidden="true"></i>
                 <div class="sidebar-label">
                     Projects
                 </div>
             </button>
-            <button class="sidebar-cell">
+            <button class="dark-button">
                 <i class="fa fa-users" aria-hidden="true"></i>
                 <div class="sidebar-label">
                     Team

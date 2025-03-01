@@ -25,7 +25,7 @@ and padding sizes
     --tertiaryContainer: #c4eccf;
     --onTertiaryContainer: #2b4e39;
     --surfaceDark:#15130b;
-    --surfaceDarkDim:#15130b;
+    --surfaceDarkDim:#222017;
     --surfaceDarkBright: #3c3930;
     --onSurfaceDark:#e8e2d4;
 
@@ -56,6 +56,11 @@ body{
     padding: var(--mediumGap);
 }
 
+/*
+-------------------------------------------------
+PRIMARY COLORED BUTTON
+-------------------------------------------------
+*/
 .primary-button{
     background-color: var(--primary);
     color: var(--onPrimary);
@@ -72,4 +77,32 @@ body{
 
 .primary-button:active{
     opacity: 0.5;
+}
+
+/*
+-------------------------------------------------
+DARK COLORED BUTTON
+-------------------------------------------------
+*/
+.dark-button{
+    /*the box*/
+    padding: var(--smallGap);
+    height: 40px;
+    border-radius: var(--mediumRadius);
+    border-style: none;
+    /*color*/
+    background-color: var(--surfaceDark);
+    color: var(--onSurfaceDark);
+    /*transitions*/
+    transition: all 0.3s;
+    /*font*/
+    font-weight: bold;
+}
+
+.dark-button:hover{
+    background-color: var(--surfaceDarkDim);
+}
+
+.dark-button:active{
+    background-color: var(--surfaceDarkBright);
 }
