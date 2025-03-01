@@ -25,6 +25,8 @@ HEADER IMAGE AND TEXT
 .header img {
     height: auto;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .header-text{
@@ -55,7 +57,20 @@ this part styles the imaginary user reviews
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: var(--mediumGap);
+    row-gap: var(--mediumGap);
     margin-top: var(--mediumGap);
+}
+
+@media(max-width: 800px){
+    .review-grid{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 500px){
+    .review-grid{
+        grid-template-columns: 1fr;
+    }
 }
 
 .review{
