@@ -10,6 +10,7 @@
         <link href="styles/index.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="scripts/sidebar.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></script>
     </head>
     <body>
         <!--NAVIGATION BAR CODE-->
@@ -81,20 +82,20 @@
                     </p>
                 </div>
                 <div class="feature-grid">
-                    <div class="primary-card">
-                        🐸
+                    <div class="primary-card js-emoji-switch">
+                        &#128187
                     </div>
                     <div class="secondary-card">
-                        Efficient
+                        fast
                     </div>
                     <div class="tertiary-card">
-                        PMBOK
+                        pmbok
                     </div>
-                    <div class="tertiary-card">
-                        emoji
+                    <div class="tertiary-card js-emoji-switch">
+                        &#128190
                     </div>
-                    <div class="primary-card">
-                        emoji
+                    <div class="primary-card js-emoji-switch">
+                        &#128188
                     </div>
                     <div class="secondary-card">
                         online
