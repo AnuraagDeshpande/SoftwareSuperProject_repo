@@ -78,7 +78,13 @@
                 <div class="feature-desc">
                     <h1>Fresh design and useful features</h1>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim aeque doleamus animo, cum corpore dolemus, fieri tamen permagna accessio potest, si aliquod aeternum et infinitum impendere malum nobis opinemur. Quod.
+                        We empower proffesionals around campus to take on challanges and persue projects that lead them to success. Our website is up around the clock to support the most odd working hours and deadlines that were yesterday.
+                    </p>
+                    <p>
+                        The structure of the management system is based on the Project manegment book of knowledge and Software Engineering course.
+                    </p>
+                    <p>
+                        Enjoy clean design and intuitive UI that is used by the best.
                     </p>
                 </div>
                 <div class="feature-grid">

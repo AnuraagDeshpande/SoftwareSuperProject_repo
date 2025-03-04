@@ -118,6 +118,10 @@ ABOUT US SECTION OF THE PAGE
     }
 }
 
+.feature-desc p{
+    margin-bottom: var(--smallGap);
+}
+
 .feature-grid{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -136,10 +140,6 @@ ABOUT US SECTION OF THE PAGE
 @media(max-width: 1200px){
     .feature-grid{
         grid-template-columns: 1fr 1fr;
-    }
-    
-    .feature-grid .primary-card, .feature-grid .secondary-card, .feature-grid .tertiary-card{
-
     }
 }
 
