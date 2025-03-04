@@ -102,6 +102,52 @@ this part styles the imaginary user reviews
 
 /*
 -------------------------------------------------
+ABOUT US SECTION OF THE PAGE
+-------------------------------------------------
+*/
+.about-grid{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: var(--mediumGap);
+    row-gap: var(--mediumGap);
+}
+
+@media(max-width: 1000px){
+    .about-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+.feature-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: var(--mediumGap);
+    row-gap: var(--mediumGap);
+}
+
+.feature-grid .primary-card, .feature-grid .secondary-card, .feature-grid .tertiary-card{
+    border-radius: 50vh;
+    font-weight: bold;
+    font-size: 70px;
+    text-align: center;
+    align-content: center;
+}
+
+@media(max-width: 1200px){
+    .feature-grid{
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .feature-grid .primary-card, .feature-grid .secondary-card, .feature-grid .tertiary-card{
+
+    }
+}
+
+
+
+
+/*
+-------------------------------------------------
 MEET OUT TEAM SECTION OF THE PAGE
 it contains team member cards
 -------------------------------------------------

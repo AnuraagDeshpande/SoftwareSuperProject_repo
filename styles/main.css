@@ -58,6 +58,31 @@ body{
 
 /*
 -------------------------------------------------
+CARD CONTANERS FOR THINGS
+-------------------------------------------------
+*/
+.secondary-card, .primary-card, .tertiary-card{
+    border-radius: var(--mediumRadius);
+    padding: var(--mediumGap);
+}
+
+.tertiary-card{
+    background-color: var(--tertiaryContainer);
+    color: var(--onTertiaryContainer);
+}
+
+.secondary-card{
+    background-color: var(--secondaryContainer);
+    color: var(--onSecondaryContainer);
+}
+
+.primary-card{
+    background-color: var(--primaryContainer);
+    color: var(--onPrimaryContainer);
+}
+
+/*
+-------------------------------------------------
 PRIMARY COLORED BUTTON
 -------------------------------------------------
 */
