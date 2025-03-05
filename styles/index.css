@@ -106,6 +106,7 @@ ABOUT US SECTION OF THE PAGE
 -------------------------------------------------
 */
 .about-grid{
+    margin-top: var(--bigGap);
     display: grid;
     grid-template-columns: 1fr 2fr;
     column-gap: var(--mediumGap);

@@ -35,7 +35,8 @@ and padding sizes
     --mediumGap: 20px;
     --bigGap: 30px;
     /*radius sizes*/
-    --bigRadius: 40px;
+    --largeRadius: 40px;
+    --bigRadius: 30px;
     --mediumRadius: 20px;
     --smallRadius: 10px;
     /*font sizes*/
