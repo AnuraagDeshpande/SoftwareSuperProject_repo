@@ -47,6 +47,12 @@ HEADER IMAGE AND TEXT
     font-size: 70px;
 }
 
+@media(max-width: 500px){
+    .header-text h1{
+        font-size: 50px;
+    }
+}
+
 /*
 -------------------------------------------------
 REVIEW SECTION OF THE PAGE
@@ -141,6 +147,12 @@ ABOUT US SECTION OF THE PAGE
 @media(max-width: 1200px){
     .feature-grid{
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 500px){
+    .feature-grid .primary-card, .feature-grid .secondary-card, .feature-grid .tertiary-card{
+        font-size: 50px;
     }
 }
 
