@@ -258,3 +258,10 @@ FOOTER OF THE PAGE
 .footer-section a:active{
     opacity: 0.5;
 }
+
+@media(max-width: 500px){
+    .footer{
+        grid-template-columns: 1fr;
+        row-gap: var(--mediumGap);
+    }
+}
