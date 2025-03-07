@@ -244,5 +244,23 @@
                 </div>
             </div>
         </div>
+        <div class="footer">
+            <div class="footer-section">NAME</div>
+            <div class="footer-section">
+                <h3>resources:</h3>
+
+                <a href="https://github.com/AnuraagDeshpande/SoftwareSuperProject_repo" target="_blank">
+                    project github
+                </a>
+                <a>
+                    documentation
+                </a>
+            </div>
+            <div class="footer-section">
+                
+                    Completed as part of the Software Engineering course at Constructor University Bremen
+                
+            </div>
+        </div>
     </body>
 </html>
