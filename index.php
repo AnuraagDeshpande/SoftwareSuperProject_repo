@@ -82,7 +82,10 @@
                         The structure of the management system is based on the Project manegment book of knowledge and Software Engineering course.
                     </p>
                     <p>
-                        Enjoy clean design and intuitive UI that is used by the best.
+                        Enjoy clean design and intuitive UI that is used by the best. Designed by us for you, if you exist. Do you like circles? I love circles! Enjoy our circles!
+                    </p>
+                    <p>
+                        We use innovative technologies like JavaScript, HTML, PHP, SQL and CSS to make your experience the best it can be!
                     </p>
                 </div>
                 <div class="feature-grid">
