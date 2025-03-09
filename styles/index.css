@@ -238,7 +238,7 @@ FOOTER OF THE PAGE
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
     padding: var(--bigGap);
-    width: 100%;
+    width: auto;
     background-color: var(--surfaceDim);
 }
 

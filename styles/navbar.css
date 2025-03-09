@@ -33,6 +33,7 @@ HAMBURGER MENU
     border-style: none;
     background-color: var(--surface);
     color: var(--onSurface);
+    transition: all 0.3s;
     
 }
 
