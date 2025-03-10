@@ -112,7 +112,7 @@
             </div>
             <!--TEAM MEMBER SECTION-->
             <h1 class="section-header">
-                Meet out team
+                Meet our team
             </h1>
             <div class="team-grid">
                 <!--JAVASCRIPT-->
