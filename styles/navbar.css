@@ -20,6 +20,11 @@ This file stores navigation bar styling
    justify-content: space-between;
 }
 
+.navbar div a{
+    text-decoration: none;
+    color: var(--onSurface);
+}
+
 /*
 -------------------------------------------------
 HAMBURGER MENU

@@ -1,16 +1,32 @@
+//do we need to show the sidebar?
 let isSidebarHidden=false;
 
 function hideSidebar(){
     console.log("hiding side bar");
-    /*const labels = document.querySelectorAll(".js-sidebar-hide");
-    isSidebarHidden = false;
-    labels.forEach((item)=>{
-        item.classList.toggle("hidden");
-    });*/
-    //the sidebar has to shrink into a button
     const sidebar = document.querySelector(".sidebar");
-    sidebar.classList.toggle("sidebar-hidden");/*
-    //the menu button has to shrink as well
-    const hamburger = document.getElementById("hamburger");
-    hamburger.classList.toggle("hamburger-hidden");*/
+    sidebar.classList.toggle("sidebar-hidden");
 }
+
+function generateSidebar(){
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.innerHTML = `
+    <h1>PMBOK</h1>
+    <div></div>
+    <h2 class="sidebar-subheader">General</h2>
+    <button class="dark-button">
+        <i class="fa fa-database" aria-hidden="true"></i>
+        <div class="sidebar-label">
+            Projects
+        </div>
+    </button>
+    <button class="dark-button">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        <div class="sidebar-label">
+            Team
+        </div>
+    </button>
+    `;
+}
+
+//we need to create the sidebar
+generateSidebar();

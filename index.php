@@ -13,36 +13,14 @@
     <body>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
-            <div>
-                <button id="hamburger" onclick="
-                    hideSidebar();
-                ">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                </button>
-                NAME
-            </div>
-            <button class="dark-button">
-                Sign Up
-            </button>
+        <!--javaScript-->
         </div>
+
         <!--SIDEBAR CODE-->
         <div class="sidebar">
-            <h1>PMBOK</h1>
-            <div></div>
-            <h2 class="sidebar-subheader">General</h2>
-            <button class="dark-button">
-                <i class="fa fa-database" aria-hidden="true"></i>
-                <div class="sidebar-label">
-                    Projects
-                </div>
-            </button>
-            <button class="dark-button">
-                <i class="fa fa-users" aria-hidden="true"></i>
-                <div class="sidebar-label">
-                    Team
-                </div>
-            </button>
+        <!--javaScript-->
         </div>
+        
         <!--PAGE BODY AND COTNENT-->
         <div class="header">
             <div class="header-text">
@@ -137,6 +115,7 @@
             </div>
         </div>
         <script type="text/javascript" src="scripts/sidebar.js"></script>
+        <script type="text/javascript" src="scripts/navbar.js"></script>
         <script type="text/javascript" src="scripts/index.js"></script>
     </body>
 </html>
