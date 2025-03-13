@@ -11,9 +11,11 @@ function generateNavbar(){
         NAME
         </a>
         </div>
-        <button class="dark-button">
-            Sign Up
-        </button>
+        <a href="login.html">
+            <button class="dark-button">
+                    Sign Up
+            </button>
+        </a>
     `;
 }
 
