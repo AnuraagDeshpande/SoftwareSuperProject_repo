@@ -1,0 +1,188 @@
+body {
+  display: flex;
+  justify-content: center;
+  font-family: Helvetica, Arial;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+  background: rgb(231, 231, 231);
+  width: 100%;
+  overflow-x: hidden;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.552), rgba(0, 0, 0, 0.758)), url(/media/background-image-account.jpg);
+  background-size: cover;
+
+
+}
+
+.container {
+  display: flex;
+  height: 75vh;
+  max-width: 900px;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  width: 100%;
+
+
+}
+
+.container:hover {
+  transform: scale(1.01);
+
+}
+
+
+.img-side {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+
+  background: white;
+}
+
+.img-side img {
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+  overflow: hidden;
+}
+
+.form-side {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-self: center;
+  padding: 40px;
+  background: white;
+
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 35px;
+}
+
+input {
+  margin-bottom: 20px;
+
+  padding: 15px;
+  border-radius: 10px;
+  background: rgb(225, 225, 225);
+  border: none;
+  outline: none;
+  width: 75%;
+  transition: transform 0.9s ease;
+
+
+}
+
+.names {
+  display: flex;
+  column-gap: 10px;
+
+}
+
+input:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+input[type="submit"] {
+  font-size: 20px;
+  max-width: 200px;
+  background: rgba(27, 20, 20, 0.852);
+
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 30px;
+  margin-top: 20px;
+}
+
+input[type="submit"]:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+}
+
+p {
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  font-size: larger;
+}
+
+p a {
+  text-decoration: none;
+}
+
+/* Added for responsiveness*/
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    max-width: 90%;
+  }
+
+  .img-side {
+    flex: none;
+    height: 250px;
+    /* Adjust image section height */
+  }
+
+  .form-side {
+    padding: 20px;
+  }
+
+  input {
+    width: 75%;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 28px;
+  }
+
+  input {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-side {
+    padding: 15px;
+  }
+
+  input {
+    width: 75%;
+  }
+}
