@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign up</title>
+    <title>Login</title>
+    <script src="scripts/login-validation.js"></script>
+    <link rel="stylesheet" href="styles/login.css">
+
 </head>
-<link rel="stylesheet" href="styles/login.css">
+
 
 <body>
     <div class="container">
@@ -15,9 +18,9 @@
         </div>
         <div class="form-side">
             <h2>Welcome back</h2>
-            <form>
-                <input type="text" placeholder="Username">
-                <input type="password" placeholder="Password">
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
                 <input type="submit" value="Login">
             </form>
             <p>Don't have an account yet?
@@ -25,6 +28,7 @@
             </p>
         </div>
     </div>
+
 </body>
 
 </html>
