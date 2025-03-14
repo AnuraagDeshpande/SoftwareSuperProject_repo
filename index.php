@@ -115,6 +115,6 @@
             </div>
         </div>
         <script type="module" src="scripts/navigation.js"></script>
-        <script type="text/javascript" src="scripts/index.js"></script>
+        <script type="module" src="scripts/index.js"></script>
     </body>
 </html>
