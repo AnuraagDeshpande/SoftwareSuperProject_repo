@@ -1,13 +1,10 @@
-//do we need to show the sidebar?
-let isSidebarHidden=false;
-
-function hideSidebar(){
+export function hideSidebar(){
     console.log("hiding side bar");
     const sidebar = document.querySelector(".sidebar");
     sidebar.classList.toggle("sidebar-hidden");
 }
 
-function generateSidebar(){
+export function generateSidebar(){
     const sidebar = document.querySelector(".sidebar");
     sidebar.innerHTML = `
     <h1>PMBOK</h1>
@@ -29,4 +26,3 @@ function generateSidebar(){
 }
 
 //we need to create the sidebar
-generateSidebar();

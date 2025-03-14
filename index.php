@@ -115,7 +115,7 @@
             </div>
         </div>
         <script type="module" src="scripts/navigation.js"></script>
-        <script type="text/javascript" src="scripts/sidebar.js"></script>
+        <!--<script type="text/javascript" src="scripts/sidebar.js"></script>-->
         <script type="text/javascript" src="scripts/index.js"></script>
     </body>
 </html>
