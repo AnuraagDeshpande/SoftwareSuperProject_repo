@@ -1,4 +1,4 @@
-function generateNavbar(){
+export function generateNavbar(){
     const navbar=document.querySelector(".navbar");
     if(navbar){
         navbar.innerHTML= `
@@ -18,7 +18,7 @@ function generateNavbar(){
                 </button>
             </a>
         `;
+    } else {
+        console.log("no navbar found");
     }
 }
-
-generateNavbar();

@@ -1,3 +1,5 @@
+import { generateNavbar } from "../../../scripts/navbar";
+
 describe("navbar", ()=>{
     let testDiv= document.querySelector(".js-test-div")
 
