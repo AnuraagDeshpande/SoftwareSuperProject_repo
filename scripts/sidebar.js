@@ -1,6 +1,5 @@
 /** toggle the class list of a sidebar to include or not the sidebar-hidden */
 export function hideSidebar(){
-    console.log("hiding side bar");
     const sidebar = document.querySelector(".sidebar");
     sidebar.classList.toggle("sidebar-hidden");
 }
