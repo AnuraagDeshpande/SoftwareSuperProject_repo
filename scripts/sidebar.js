@@ -24,5 +24,3 @@ export function generateSidebar(){
     </button>
     `;
 }
-
-//we need to create the sidebar

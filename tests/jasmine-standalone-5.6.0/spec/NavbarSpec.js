@@ -1,6 +1,6 @@
-import { generateNavbar } from "../../../scripts/navbar";
+import { generateNavbar } from "../../../scripts/navbar.js";
 
-describe("navbar", ()=>{
+describe("Navbar", ()=>{
     let testDiv= document.querySelector(".js-test-div")
 
     beforeEach(()=> {
