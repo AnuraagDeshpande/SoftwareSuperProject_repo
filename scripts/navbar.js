@@ -1,3 +1,4 @@
+/** generate the html inside a div with navbar class */
 export function generateNavbar(){
     const navbar=document.querySelector(".navbar");
     if(navbar){

@@ -30,38 +30,4 @@ describe("Sidebar tests", ()=>{
         expect(initialListLen).toEqual(newListLen-1);
         expect(sidebar.classList.contains("sidebar-hidden")).toEqual(true);
     });
-
-
-    /*it("generate navbar basic test",()=>{
-        const navbar= document.querySelector(".navbar");
-        expect(navbar.innerHTML).toEqual("");
-        generateNavbar();
-        expect(navbar.innerHTML).not.toEqual("");
-    });
-
-    //is the div no longer empty?
-    /*it("generate navbar basic test",()=>{
-        const navbar= document.querySelector(".navbar");
-        expect(navbar.innerHTML).toEqual("");
-        generateNavbar();
-        expect(navbar.innerHTML).not.toEqual("");
-    });
-
-    //is the hamburger menu present?
-    it("hamburger menu present",()=>{
-        let ham= document.getElementById("hamburger");
-        expect(ham).toEqual(null);
-        generateNavbar();
-        ham= document.getElementById("hamburger");
-        expect(ham.innerHTML).not.toEqual(null);
-    });
-
-    //is the login link present?
-    it("login page link persent",()=>{
-        let button = document.querySelector('a[href="login.html"] button');
-        expect(button).toEqual(null);
-        generateNavbar();
-        button = document.querySelector('a[href="login.html"] button');
-        expect(button).not.toEqual(null);
-    }); */
 });
