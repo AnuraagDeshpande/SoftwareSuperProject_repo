@@ -86,14 +86,6 @@ PROJECT CARD
     border-radius: 50%;
 }
 
-.active{
-    background-color: var(--tertiary);
-}
-
-.error{
-    background-color: var(--error);
-}
-
 /*
 -------------------------------------------------
 PARTICIPANTS

@@ -23,7 +23,7 @@ This styles the sidebar on the left
     z-index: 100;
     position: fixed;
     top: 60px;
-    left: -160px ;
+    left: -190px ;
     bottom: var(--smallGap);
     /*color and font*/
     background-color:var(--surfaceDark);
@@ -32,16 +32,22 @@ This styles the sidebar on the left
     /*the box setting*/
     display: flex;
     flex-direction: column;
-    justify-items: flex-start;
-    row-gap: var(--smallGap);
-    padding: var(--mediumGap);
-    border-radius: 30px;
-    overflow: hidden;
+    padding: var(--smallGap);
+    border-radius: var(--mediumRadius);
     /*min values*/
     min-height: 0;
-    min-width: 0;
+    width: 150px;
     /*transitions*/
     transition: all 0.5s ease-in-out;
+}
+
+.sidebar-links{
+    padding: var(--smallGap) 0;
+    border-top: 3px solid var(--onSurfaceDark);
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    row-gap: var(--tinyGap);
 }
 
 .sidebar-hidden{
@@ -50,11 +56,37 @@ This styles the sidebar on the left
 
 /**
 -------------------------------------------------
-SIDEBAR TEXT LABELS
+SIDEBAR TEXT BUTTONS
 -------------------------------------------------
 */
-.sidebar-label{
-    display: inline-block;
-    transition: all 0.3s;
-    padding-left: 20px;
+.sidebar-button{
+    padding: var(--tinyGap);
+    display: block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: var(--smallRadius);
+    
+}
+
+.sidebar-button a{
+    color: var(--onSurfaceDark);
+    text-decoration: none;
+}
+
+.sidebar-status{
+    width: var(--mediumGap);
+    height: var(--mediumGap);
+    border-radius: 50%;
+    align-content: center;
+    justify-content: center;
+}
+
+
+.sidebar-infocard{
+    margin-top: auto;
+    justify-self: flex-end;
+    background-color: var(--surfaceDarkBright);
+    padding: var(--tinyGap);
+    border-radius: var(--smallRadius);
 }
