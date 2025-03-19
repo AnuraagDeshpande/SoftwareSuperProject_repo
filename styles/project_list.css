@@ -1,0 +1,96 @@
+/*
+=================================================
+Here the page that contains the list of all 
+projects is styled
+=================================================
+*/
+
+body{
+    background-color: var(--source);
+}
+/*
+-------------------------------------------------
+PROJECT CARD GRID
+-------------------------------------------------
+*/
+.projects-grid{
+    padding: var(--largeGap);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: var(--mediumGap);
+}
+
+@media(max-width: 1000px){
+    .projects-grid{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/*
+-------------------------------------------------
+PROJECT CARD
+-------------------------------------------------
+*/
+.project-card{
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--surfaceBright);
+    color: var(--onSurface);
+    border-radius: var(--largeRadius);
+    padding: var(--mediumGap);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);/*need a standard one*/
+}
+
+.project-card-header{
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--mediumGap);
+}
+
+.project-icon{
+    border-radius: var(--mediumRadius);
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    max-height: 80px;
+}
+
+.project-title h3{
+    font-weight: normal;
+}
+
+.status{
+    position: absolute;
+    right: var(--mediumGap);
+    top: var(--mediumGap);
+    padding: var(--smallGap);
+    border-radius: 50%;
+}
+
+.active{
+    background-color: var(--tertiary);
+}
+
+.error{
+    background-color: var(--error);
+}
+
+/*
+-------------------------------------------------
+PARTICIPANTS
+-------------------------------------------------
+*/
+
+.participants{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.participants img{
+    border-radius: var(--mediumRadius);
+    height: var(--largeRadius);
+    margin-left: -10px;
+}

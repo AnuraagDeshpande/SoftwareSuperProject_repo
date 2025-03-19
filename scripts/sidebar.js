@@ -12,12 +12,14 @@ export function generateSidebar(){
         <h1>PMBOK</h1>
         <div></div>
         <h2 class="sidebar-subheader">General</h2>
+        <a href="project_list.php">
         <button class="dark-button">
             <i class="fa fa-database" aria-hidden="true"></i>
             <div class="sidebar-label">
                 Projects
             </div>
         </button>
+        </a>
         <button class="dark-button">
             <i class="fa fa-users" aria-hidden="true"></i>
             <div class="sidebar-label">

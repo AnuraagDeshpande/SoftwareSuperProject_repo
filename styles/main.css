@@ -22,12 +22,15 @@ and padding sizes
     --onPrimary: #ffffff;
     --secondaryContainer: #ede2bc;
     --onSecondaryContainer: #4d472b; 
+    --tertiary: #43664f;
+    --onTertiary: #ffffff;
     --tertiaryContainer: #c4eccf;
     --onTertiaryContainer: #2b4e39;
     --surfaceDark:#15130b;
     --surfaceDarkDim:#222017;
     --surfaceDarkBright: #3c3930;
     --onSurfaceDark:#e8e2d4;
+    --error: #ba1a1a;
 
     /*margin-padding sizes*/
     --tinyGap: 5px;
