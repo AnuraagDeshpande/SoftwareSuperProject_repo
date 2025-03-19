@@ -51,7 +51,7 @@ This styles the sidebar on the left
 }
 
 .sidebar-hidden{
-    left: var(--mediumGap);
+    left: var(--smallGap);
 }
 
 /**
