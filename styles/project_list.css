@@ -9,9 +9,9 @@ body{
     background-color: var(--source);
 }
 /*
--------------------------------------------------
+=================================================
 PROJECT CARD GRID
--------------------------------------------------
+=================================================
 */
 .projects-grid{
     padding: var(--largeGap);
@@ -20,16 +20,28 @@ PROJECT CARD GRID
     gap: var(--mediumGap);
 }
 
+@media(max-width: 1400px){
+    .projects-grid{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 @media(max-width: 1000px){
     .projects-grid{
         grid-template-columns: 1fr 1fr;
     }
 }
 
+@media(max-width: 750px){
+    .projects-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
 /*
--------------------------------------------------
+=================================================
 PROJECT CARD
--------------------------------------------------
+=================================================
 */
 .project-card{
     position: relative;
@@ -42,6 +54,11 @@ PROJECT CARD
     border-radius: var(--largeRadius);
     padding: var(--mediumGap);
     box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);/*need a standard one*/
+    transition: all 0.3s;
+}
+
+.project-card:hover{
+    scale: 1.05;
 }
 
 .project-card-header{
