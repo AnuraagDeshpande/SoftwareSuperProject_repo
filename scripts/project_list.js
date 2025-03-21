@@ -1,4 +1,4 @@
-class ProjectList{
+export class ProjectList{
     projects;
 
     constructor(){
@@ -78,7 +78,7 @@ class ProjectList{
     }
 
     addProject(newProject){
-        projects.push(newProject);
+        this.projects.push(newProject);
     }
 }
 
