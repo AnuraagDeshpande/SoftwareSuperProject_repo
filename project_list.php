@@ -21,68 +21,10 @@
         <!--javaScript-->
         </div>
 
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-card-header">
-                    <img class="project-icon" src="media/profile-picture-placeholder.png">
-                    <div class="project-title">
-                        <h2>Project on projects</h2>
-                        <h3>Manager: User123</h3>
-                        <h4>Owner: User321</h4>
-                    </div>                   
-                </div>
-                <p>
-                    This project aims at projecting project projects at project...
-                </p>
-                <div class="status error"></div>
-                <div class="participants">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                </div>
-            </div>
-            <div class="project-card">
-                <div class="project-card-header">
-                    <img class="project-icon" src="media/profile-picture-placeholder.png">
-                    <div class="project-title">
-                        <h2>Project on projects</h2>
-                        <h3>Manager: User123</h3>
-                        <h4>Owner: User321</h4>
-                    </div>                   
-                </div>
-                <p>
-                    This project aims at projecting project projects at project...
-                </p>
-                <div class="status active"></div>
-                <div class="participants">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                </div>
-            </div>
-            <div class="project-card">
-                <div class="project-card-header">
-                    <img class="project-icon" src="media/profile-picture-placeholder.png">
-                    <div class="project-title">
-                        <h2>Project on projects</h2>
-                        <h3>Manager: User123</h3>
-                        <h4>Owner: User321</h4>
-                    </div>                   
-                </div>
-                <p>
-                    This project aims at projecting project projects at project...
-                </p>
-                <div class="status active"></div>
-                <div class="participants">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                    <img src="media/profile-picture-placeholder.png">
-                    <img src="media/profile-picture-placeholder2.jpg">
-                </div>
-            </div>
+        <div class="projects-grid js-project-list">
+        <!--javaScript in project_list.js-->
         </div>
         <script type="module" src="scripts/navigation.js"></script>
+        <script type="module" src="scripts/project_list.js"></script>
     </body>
 </hrml>
