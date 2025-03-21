@@ -79,6 +79,7 @@ export class ProjectList{
 
     addProject(newProject){
         this.projects.push(newProject);
+        this.displayProjects();
     }
 }
 
