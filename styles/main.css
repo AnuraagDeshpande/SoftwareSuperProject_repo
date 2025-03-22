@@ -22,12 +22,15 @@ and padding sizes
     --onPrimary: #ffffff;
     --secondaryContainer: #ede2bc;
     --onSecondaryContainer: #4d472b; 
+    --tertiary: #43664f;
+    --onTertiary: #ffffff;
     --tertiaryContainer: #c4eccf;
     --onTertiaryContainer: #2b4e39;
     --surfaceDark:#15130b;
     --surfaceDarkDim:#222017;
     --surfaceDarkBright: #3c3930;
     --onSurfaceDark:#e8e2d4;
+    --error: #ba1a1a;
 
     /*margin-padding sizes*/
     --tinyGap: 5px;
@@ -94,7 +97,7 @@ PRIMARY COLORED BUTTON
     font-weight: bold;
     padding: var(--smallGap);
     border-style: none;
-    border-radius: min(50vw, 50%);
+    border-radius: min(50vh, 50%);
     transition: all 0.3s;
 }
 
@@ -112,9 +115,9 @@ DARK COLORED BUTTON
 -------------------------------------------------
 */
 .dark-button{
+    display: flex;
     /*the box*/
     padding: var(--smallGap);
-    height: 40px;
     border-radius: var(--mediumRadius);
     border-style: none;
     /*color*/
@@ -124,6 +127,7 @@ DARK COLORED BUTTON
     transition: all 0.3s;
     /*font*/
     font-weight: bold;
+    align-items: center;
 }
 
 .dark-button:hover{
@@ -132,4 +136,14 @@ DARK COLORED BUTTON
 
 .dark-button:active{
     background-color: var(--surfaceDarkBright);
+}
+
+.active{
+    background-color: var(--tertiary);
+    color: var(--onTertiary);
+}
+
+.error{
+    background-color: var(--error);
+    color: var(--onError);
 }
