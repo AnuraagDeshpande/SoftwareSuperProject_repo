@@ -8,7 +8,7 @@ body {
 
 .header {
     position: relative;
-    background: url('img3.jpg') center/cover no-repeat;
+    background: url("../media/img3.jpg") center/cover no-repeat;
     color: white;
     padding: 50px;
     font-size: 24px;
