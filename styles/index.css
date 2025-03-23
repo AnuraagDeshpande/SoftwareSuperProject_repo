@@ -234,17 +234,22 @@ FOOTER OF THE PAGE
 */
 
 .footer{
-    margin-top: var(--largeGap);
+    position: static;
+    max-width:  100%;
+    overflow-x: hidden;
+    bottom: 0;
+    margin-top: var(--smallGap);
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
-    padding: var(--bigGap);
-    width: auto;
+    padding: var(--smallGap);
     background-color: var(--surfaceDim);
 }
 
 .footer-section{
     min-width: 0;
     display: flex;
+    color: var(--onSurface);
+    margin: auto;
     flex-direction: column;
     row-gap: var(--smallGap);
     word-wrap: break-word;

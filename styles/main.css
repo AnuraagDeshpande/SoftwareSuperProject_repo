@@ -133,3 +133,10 @@ DARK COLORED BUTTON
 .dark-button:active{
     background-color: var(--surfaceDarkBright);
 }
+
+footer-end{
+    display: flex;
+    padding: var(--smallGap);
+    width: auto;
+    margin: auto;
+}
