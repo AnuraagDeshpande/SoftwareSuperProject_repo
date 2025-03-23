@@ -1,0 +1,51 @@
+/*
+=================================================
+This file stores navigation bar styling
+=================================================
+*/
+
+.navbar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /*box*/
+    padding: var(--tinyGap) var(--mediumGap);
+    height: 40px;
+    /*colors*/
+    background-color: var(--surface);
+    color: var(--onSurface);
+   /*content position*/
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.navbar div a{
+    text-decoration: none;
+    color: var(--onSurface);
+}
+
+/*
+-------------------------------------------------
+HAMBURGER MENU
+-------------------------------------------------
+*/
+#hamburger{
+    padding: var(--smallGap);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border-style: none;
+    background-color: var(--surface);
+    color: var(--onSurface);
+    transition: all 0.3s;
+    
+}
+
+#hamburger:hover{
+    background-color: var(--surfaceDim);
+}
+
+#hamburger:active{
+    background-color: var(--surfaceBright);
+}

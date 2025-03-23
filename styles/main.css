@@ -1,0 +1,149 @@
+/*
+=================================================
+This file is for essential elements and styling
+that would be relevant everywhere like the colors
+and padding sizes
+=================================================
+*/
+:root{
+    /*current values are placeholders
+    and are meant to be easily changed when needed
+    without requiring any code changes elsewhere*/
+    /*the color used as a base:*/
+    --source: #f4ecd6;
+    /*the actual color palette*/
+    --surface: #fff9ed;
+    --onSurface: #1e1c13;
+    --surfaceDim: #e0d9cc;
+    --surfaceBright: #ffffff;/*initially #fff9ed*/
+    --primaryContainer: #f7e388;
+    --onPrimaryContainer:#524600;
+    --primary: #6c5e0f;
+    --onPrimary: #ffffff;
+    --secondaryContainer: #ede2bc;
+    --onSecondaryContainer: #4d472b; 
+    --tertiary: #43664f;
+    --onTertiary: #ffffff;
+    --tertiaryContainer: #c4eccf;
+    --onTertiaryContainer: #2b4e39;
+    --surfaceDark:#15130b;
+    --surfaceDarkDim:#222017;
+    --surfaceDarkBright: #3c3930;
+    --onSurfaceDark:#e8e2d4;
+    --error: #ba1a1a;
+
+    /*margin-padding sizes*/
+    --tinyGap: 5px;
+    --smallGap: 10px;
+    --mediumGap: 20px;
+    --bigGap: 30px;
+    --largeGap: 50px;
+    /*radius sizes*/
+    --largeRadius: 40px;
+    --bigRadius: 30px;
+    --mediumRadius: 20px;
+    --smallRadius: 10px;
+    /*font sizes*/
+}
+
+*{
+    font-family: Helvetica;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: var(--surface);
+    color: var(--onSurface)
+}
+
+.content-box{
+    padding: var(--mediumGap);
+}
+
+/*
+-------------------------------------------------
+CARD CONTANERS FOR THINGS
+-------------------------------------------------
+*/
+.secondary-card, .primary-card, .tertiary-card{
+    border-radius: var(--mediumRadius);
+    padding: var(--mediumGap);
+}
+
+.tertiary-card{
+    background-color: var(--tertiaryContainer);
+    color: var(--onTertiaryContainer);
+}
+
+.secondary-card{
+    background-color: var(--secondaryContainer);
+    color: var(--onSecondaryContainer);
+}
+
+.primary-card{
+    background-color: var(--primaryContainer);
+    color: var(--onPrimaryContainer);
+}
+
+/*
+-------------------------------------------------
+PRIMARY COLORED BUTTON
+-------------------------------------------------
+*/
+.primary-button{
+    background-color: var(--primary);
+    color: var(--onPrimary);
+    font-weight: bold;
+    padding: var(--smallGap);
+    border-style: none;
+    border-radius: min(50vh, 50%);
+    transition: all 0.3s;
+}
+
+.primary-button:hover{
+    opacity: 0.7;
+}
+
+.primary-button:active{
+    opacity: 0.5;
+}
+
+/*
+-------------------------------------------------
+DARK COLORED BUTTON
+-------------------------------------------------
+*/
+.dark-button{
+    display: flex;
+    /*the box*/
+    padding: var(--smallGap);
+    border-radius: var(--mediumRadius);
+    border-style: none;
+    /*color*/
+    background-color: var(--surfaceDark);
+    color: var(--onSurfaceDark);
+    /*transitions*/
+    transition: all 0.3s;
+    /*font*/
+    font-weight: bold;
+    align-items: center;
+}
+
+.dark-button:hover{
+    background-color: var(--surfaceDarkDim);
+}
+
+.dark-button:active{
+    background-color: var(--surfaceDarkBright);
+}
+
+.active{
+    background-color: var(--tertiary);
+    color: var(--onTertiary);
+}
+
+.error{
+    background-color: var(--error);
+    color: var(--onError);
+}
