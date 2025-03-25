@@ -138,13 +138,13 @@ DARK COLORED BUTTON
     background-color: var(--surfaceDarkBright);
 }
 
-<<<<<<< HEAD
 footer-end{
     display: flex;
     padding: var(--smallGap);
     width: auto;
     margin: auto;
-=======
+}
+
 .active{
     background-color: var(--tertiary);
     color: var(--onTertiary);
@@ -153,5 +153,4 @@ footer-end{
 .error{
     background-color: var(--error);
     color: var(--onError);
->>>>>>> 9fba399746a0d42ae37d0b6f01e322289f5e5ca1
 }
