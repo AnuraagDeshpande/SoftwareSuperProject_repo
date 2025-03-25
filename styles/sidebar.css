@@ -1,0 +1,92 @@
+/*
+=================================================
+Here sidebar styling is sotred in order to be
+easily reused in most files
+=================================================
+*/
+
+
+/**separator between hamburger and the rest*/
+.sep{
+    border-style: solid;
+    border-width: 1px;
+}
+
+/**
+-------------------------------------------------
+SIDEBAR CLASS
+This styles the sidebar on the left
+-------------------------------------------------
+*/
+.sidebar{
+    /*alignment within the page is foxed*/
+    z-index: 100;
+    position: fixed;
+    top: 60px;
+    left: -190px ;
+    bottom: var(--smallGap);
+    /*color and font*/
+    background-color:var(--surfaceDark);
+    color: var(--onSurfaceDark);
+    font-size: medium;
+    /*the box setting*/
+    display: flex;
+    flex-direction: column;
+    padding: var(--smallGap);
+    border-radius: var(--mediumRadius);
+    /*min values*/
+    min-height: 0;
+    width: 150px;
+    /*transitions*/
+    transition: all 0.5s ease-in-out;
+}
+
+.sidebar-links{
+    padding: var(--smallGap) 0;
+    border-top: 3px solid var(--onSurfaceDark);
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    row-gap: var(--tinyGap);
+}
+
+.sidebar-hidden{
+    left: var(--smallGap);
+}
+
+/**
+-------------------------------------------------
+SIDEBAR TEXT BUTTONS
+-------------------------------------------------
+*/
+.sidebar-button{
+    padding: var(--tinyGap);
+    display: block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: var(--smallRadius);
+    
+}
+
+.sidebar-button a{
+    color: var(--onSurfaceDark);
+    text-decoration: none;
+}
+
+.sidebar-status{
+    width: var(--mediumGap);
+    height: var(--mediumGap);
+    border-radius: 50%;
+    align-content: center;
+    justify-content: center;
+}
+
+
+.sidebar-infocard{
+    margin-top: auto;
+    justify-self: flex-end;
+    background-color: var(--surfaceDarkBright);
+    padding: var(--tinyGap);
+    border-radius: var(--smallRadius);
+}
