@@ -11,8 +11,8 @@ export class ProjectList{
         {
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
-            manager:"User321",
-            owner:"User123",
+            manager:[],
+            owner:["user123"],
             desc:"This project aims at projecting project projects at project. It is of high imprtance and is believed to be very cool. This text doens't fit",
             participants:[
                 "profile-picture-placeholder.png",
@@ -24,8 +24,8 @@ export class ProjectList{
         {
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
-            manager:"User321",
-            owner:"User123",
+            manager:["manager 1"],
+            owner:["some usr","some other user","another person"],
             desc:"This project aims at projecting project projects at project. This text fully fits",
             participants:[
                 "profile-picture-placeholder.png",
@@ -37,6 +37,13 @@ export class ProjectList{
             status: "active"
         }
         ];
+    }
+
+    #displayList(a){
+        if(a.length > 0 && Array.isArray(a)){
+            return a.slice(0,3).join(", ");
+        } 
+        return "none";
     }
 
     displayProjects(){
@@ -56,8 +63,8 @@ export class ProjectList{
                         <img class="project-icon" src="media/${element.projectIcon}">
                         <div class="project-title">
                             <h2>${element.projectName}</h2>
-                            <h3>Manager: ${element.manager}</h3>
-                            <h4>Owner: ${element.owner}</h4>
+                            <h3>Manager: ${this.#displayList(element.manager)}</h3>
+                            <h4>Owner: ${this.#displayList(element.owner)}</h4>
                         </div>                   
                     </div>
                     <p>
@@ -94,17 +101,87 @@ export class ProjectList{
 }
 
 const projects = new ProjectList();
+const user ="user123";
 
-/* ADD PROJECT POP UP*/
+/*
+=================================================
+ADD PROJECT POP UP
+=================================================
+*/
+
+//the popUp div
 const popUp = document.querySelector(".pop-up-screen");
+
+/** makes clear button active*/
+function makeClearButActive(){
+    const clearBut = document.querySelector("#add-project-clear");
+    if(clearBut){
+        clearBut.addEventListener("click",()=>{
+            clearPopUpFields();
+        });
+    }
+}
+
+/** clears all input fields in pop ups*/
+function clearPopUpFields(){
+    //we get all fields in pop up cards
+    const fields = document.querySelectorAll(".js-pop-up-field");
+    fields.forEach((field)=>{
+        //we set each field to empty
+        field.value="";
+        field.innerHTML="";
+    });
+}
+
+/** add an event in the listener to add a project entered when clicked */
+function addProject(){
+    const submitChanges = document.querySelector("#add-project-submit");
+    if(submitChanges){
+        submitChanges.addEventListener("click",()=>{
+            //expected values:
+            let regex = /^[A-Za-z0-9 ,.]+$/;
+            //the input values from the user
+            const name = document.querySelector("#project-name").value || "";
+            const desc = document.querySelector("#project-desc").value || "";
+            //we test the input values for being correct
+            if(!regex.test(name) || !regex.test(desc) || name.length > 50){
+                document.querySelector(".error-message").innerHTML="invalid input try again";
+                return;
+            }
+            //create a new project
+            const newProject = {
+                projectName: name,
+                projectIcon:"profile-picture-placeholder.png",
+                manager:[],
+                owner:["current user"],
+                desc:desc,
+                participants:[],
+                status: "active"
+            }
+            //add the project to projects
+            projects.addProject(newProject);
+            //close pop up and clear
+            popUp.classList.toggle("shown");
+            clearPopUpFields();
+        });
+    } else {
+        console.log("no submit add project button found")
+    }
+}
+
+addProject();
+makeClearButActive();
+
 if(popUp){
     const addProjectBut = document.querySelector("#btn-add-project");
     const hideAddProject = document.querySelector(".js-hide-add-project");
     if(addProjectBut && hideAddProject){
         addProjectBut.addEventListener("click",()=>{
             popUp.classList.toggle("shown");
+            clearPopUpFields();
         });
-        hideAddProject.addEventListener("click",()=>{
+        hideAddProject.addEventListener("click",()=>{ 
+            
             popUp.classList.toggle("shown");
         });
     }

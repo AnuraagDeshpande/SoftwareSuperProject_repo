@@ -109,6 +109,10 @@ PARTICIPANTS
 POP UP
 -------------------------------------------------
 */
+
+.error-message{
+    color: var(--error);
+}
 #btn-add-project{
     background-color: var(--secondaryContainer); color: var(--onSecondaryContainer);
 }

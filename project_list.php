@@ -26,11 +26,13 @@
 
             <div class="pop-up-screen">
                 <div class="pop-up-back"></div>
+                
                 <div class="pop-up-card add-project-card">
                     <i class="fa fa-times close-add-project js-hide-add-project" aria-hidden="true"></i>
                     <h1>Add a project:</h1>
-                    <input type="text" id="project-name" placeholder="Project name">
-                    <textarea type="text" id="project-desc" placeholder="Project description" cols="40" rows="5" ></textarea>
+                    <div class="error-message"></div>
+                    <input type="text" id="project-name" placeholder="Project name" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" >
+                    <textarea type="text" id="project-desc" placeholder="Project description" cols="40" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea>
                     <div>
                     <button id="add-project-submit" class="cool-button">Submit</button>
                     <button id="add-project-clear" class="cool-button">Clear</button>
