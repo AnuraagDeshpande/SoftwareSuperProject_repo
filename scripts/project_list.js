@@ -66,8 +66,8 @@ export class ProjectList{
                         <img class="project-icon" src="media/${element.projectIcon}">
                         <div class="project-title">
                             <h2>${element.projectName}</h2>
-                            <h3>Manager: ${this.#displayList(element.manager)}</h3>
-                            <h4>Owner: ${this.#displayList(element.owner)}</h4>
+                            <h3>Managers: ${this.#displayList(element.manager)}</h3>
+                            <h4>Owners: ${this.#displayList(element.owner)}</h4>
                         </div>                   
                     </div>
                     <p>
