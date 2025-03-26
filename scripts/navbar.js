@@ -13,11 +13,9 @@ export function generateNavbar(){
             NAME
             </a>
             </div>
-            <a href="login.html">
-                <button class="dark-button">
-                        Sign Up
-                </button>
-            </a>
+            <button class="dark-button" onclick="document.location='login.html'">
+                Sign Up
+            </button>
         `;
     } else {
         console.log("no navbar found");

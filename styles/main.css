@@ -128,6 +128,7 @@ DARK COLORED BUTTON
     /*font*/
     font-weight: bold;
     align-items: center;
+    cursor: pointer;
 }
 
 .dark-button:hover{

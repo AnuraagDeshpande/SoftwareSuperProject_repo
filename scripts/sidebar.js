@@ -11,34 +11,24 @@ export function generateSidebar(){
         sidebar.innerHTML = `
         <h1>NAME</h1>
         <div class="sidebar-links">
-            <button class="dark-button sidebar-button">
-                <a href="project_list.php">
+            <button class="dark-button sidebar-button" onclick="document.location='project_list.php'">
                 Projects
-                </a>
                 <div class="sidebar-status active">
-                    1
                 </div>
             </button>        
             <button class="dark-button sidebar-button">
-                <a>
-                    Team
-                </a>
+                Team
                 <div class="sidebar-status error">
-                5
+                </div>
+            </button>
+            <button class="dark-button sidebar-button"  onclick="document.location='Task-view.html'">
+                Tasks
+                <div class="sidebar-status active">
                 </div>
             </button>
             <button class="dark-button sidebar-button">
-                <a href="Task-view.html">
-                    Tasks
-                </a>
-                <div class="sidebar-status">
-                </div>
-            </button>
-            <button class="dark-button sidebar-button">
-                <a>
-                    Schedule
-                </a>
-                <div class="sidebar-status">
+                Schedule
+                <div class="sidebar-status error">
                 </div>
             </button>
         </div>
