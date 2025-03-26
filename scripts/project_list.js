@@ -94,3 +94,18 @@ export class ProjectList{
 }
 
 const projects = new ProjectList();
+
+/* ADD PROJECT POP UP*/
+const popUp = document.querySelector(".pop-up-screen");
+if(popUp){
+    const addProjectBut = document.querySelector("#btn-add-project");
+    const hideAddProject = document.querySelector(".js-hide-add-project");
+    if(addProjectBut && hideAddProject){
+        addProjectBut.addEventListener("click",()=>{
+            popUp.classList.toggle("shown");
+        });
+        hideAddProject.addEventListener("click",()=>{
+            popUp.classList.toggle("shown");
+        });
+    }
+}
