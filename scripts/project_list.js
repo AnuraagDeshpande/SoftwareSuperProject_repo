@@ -43,7 +43,7 @@ export class ProjectList{
         if(a.length > 0 && Array.isArray(a)){
             return a.slice(0,3).join(", ");
         } 
-        return "none";
+        return "-";
     }
 
     displayProjects(){
@@ -109,8 +109,7 @@ ADD PROJECT POP UP
 =================================================
 */
 
-//the popUp div
-const popUp = document.querySelector(".pop-up-screen");
+
 
 /** makes clear button active*/
 function makeClearButActive(){
@@ -131,6 +130,18 @@ function clearPopUpFields(){
         field.value="";
         field.innerHTML="";
     });
+}
+
+/**reset the pop up state and toggle between visible and not */
+function popUpToggle(){
+    const popUp = document.querySelector(".pop-up-screen");
+    if (popUp){
+        document.querySelector(".error-message").innerHTML="";
+        popUp.classList.toggle("shown");
+        clearPopUpFields();
+    } else {
+        console.log("no pop up div found");
+    }
 }
 
 /** add an event in the listener to add a project entered when clicked */
@@ -161,28 +172,31 @@ function addProject(){
             //add the project to projects
             projects.addProject(newProject);
             //close pop up and clear
-            popUp.classList.toggle("shown");
-            clearPopUpFields();
+            popUpToggle();
         });
     } else {
-        console.log("no submit add project button found")
+        console.log("no submit add project button found");
+    }
+}
+
+function addPopUpToggle(){
+    //the popUp div
+    const popUp = document.querySelector(".pop-up-screen");
+    //if it is peresent we add event listeners
+    if(popUp){
+        const addProjectBut = document.querySelector("#btn-add-project");
+        const hideAddProject = document.querySelector(".js-hide-add-project");
+        if(addProjectBut && hideAddProject){
+            addProjectBut.addEventListener("click",()=>{
+                popUpToggle();
+            });
+            hideAddProject.addEventListener("click",()=>{ 
+                popUpToggle();
+            });
+        }
     }
 }
 
 addProject();
 makeClearButActive();
-
-if(popUp){
-    const addProjectBut = document.querySelector("#btn-add-project");
-    const hideAddProject = document.querySelector(".js-hide-add-project");
-    if(addProjectBut && hideAddProject){
-        addProjectBut.addEventListener("click",()=>{
-            popUp.classList.toggle("shown");
-            clearPopUpFields();
-        });
-        hideAddProject.addEventListener("click",()=>{ 
-            
-            popUp.classList.toggle("shown");
-        });
-    }
-}
+addPopUpToggle();

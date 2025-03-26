@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SE project</title>
+        <title>projects</title>
         <link href="styles/main.css" rel="stylesheet"/>
         <link href="styles/sidebar.css" rel="stylesheet"/>
         <link href="styles/navbar.css" rel="stylesheet"/>
