@@ -7,7 +7,7 @@ export class ProjectList{
     }
 
     fetchData(){
-        this.projects=[
+        this.projects=JSON.parse(localStorage.getItem("project_list"))||[
         {
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
@@ -77,8 +77,18 @@ export class ProjectList{
         }
     }
 
+    refresh(){
+        this.fetchData();
+        this.displayProjects();
+    }
+
+    save(){
+        localStorage.setItem("project_list", JSON.stringify(this.projects));
+    }
+
     addProject(newProject){
         this.projects.push(newProject);
+        this.save();
         this.displayProjects();
     }
 }

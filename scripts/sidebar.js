@@ -28,7 +28,7 @@ export function generateSidebar(){
                 </div>
             </button>
             <button class="dark-button sidebar-button">
-                <a>
+                <a href="Task-view.html">
                     Tasks
                 </a>
                 <div class="sidebar-status">
