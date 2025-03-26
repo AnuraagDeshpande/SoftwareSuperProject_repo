@@ -6,6 +6,7 @@ export class ProjectList{
         this.displayProjects();
     }
 
+    /** get projects data*/
     fetchData(){
         this.projects=JSON.parse(localStorage.getItem("project_list"))||[
         {
@@ -39,6 +40,7 @@ export class ProjectList{
         ];
     }
 
+    /** turn a list of strings into a single string or - if empty */
     #displayList(a){
         if(a.length > 0 && Array.isArray(a)){
             return a.slice(0,3).join(", ");
@@ -46,6 +48,7 @@ export class ProjectList{
         return "-";
     }
 
+    /** display the projects on a page */
     displayProjects(){
         const div = document.querySelector(".js-project-list");
         if(div){
@@ -84,15 +87,18 @@ export class ProjectList{
         }
     }
 
+    /** refresh the data on a page */
     refresh(){
         this.fetchData();
         this.displayProjects();
     }
 
+    /** save the changes */
     save(){
         localStorage.setItem("project_list", JSON.stringify(this.projects));
     }
 
+    /** add project to list of projects*/
     addProject(newProject){
         this.projects.push(newProject);
         this.save();
@@ -108,8 +114,6 @@ const user ="user123";
 ADD PROJECT POP UP
 =================================================
 */
-
-
 
 /** makes clear button active*/
 function makeClearButActive(){
@@ -164,7 +168,7 @@ function addProject(){
                 projectName: name,
                 projectIcon:"profile-picture-placeholder.png",
                 manager:[],
-                owner:["current user"],
+                owner:[user],
                 desc:desc,
                 participants:[],
                 status: "active"
@@ -179,6 +183,7 @@ function addProject(){
     }
 }
 
+/** add an event listener to buttons that are supposed to summon the add project pop up */
 function addPopUpToggle(){
     //the popUp div
     const popUp = document.querySelector(".pop-up-screen");
@@ -197,6 +202,7 @@ function addPopUpToggle(){
     }
 }
 
+//we call functions to make the page active
 addProject();
 makeClearButActive();
 addPopUpToggle();
