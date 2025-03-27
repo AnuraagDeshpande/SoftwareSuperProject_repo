@@ -13,7 +13,7 @@ export function generateNavbar(){
             NAME
             </a>
             </div>
-            <button class="dark-button" onclick="document.location='login.html'">
+            <button class="dark-button" onclick="document.location='login.html'" id="btn-login">
                 Sign Up
             </button>
         `;

@@ -116,17 +116,19 @@ ADD PROJECT POP UP
 */
 
 /** makes clear button active*/
-function makeClearButActive(){
+export function makeClearButActive(){
     const clearBut = document.querySelector("#add-project-clear");
     if(clearBut){
         clearBut.addEventListener("click",()=>{
             clearPopUpFields();
         });
+    } else {
+        console.error("no clear button found")
     }
 }
 
 /** clears all input fields in pop ups*/
-function clearPopUpFields(){
+export function clearPopUpFields(){
     //we get all fields in pop up cards
     const fields = document.querySelectorAll(".js-pop-up-field");
     fields.forEach((field)=>{
@@ -137,19 +139,19 @@ function clearPopUpFields(){
 }
 
 /**reset the pop up state and toggle between visible and not */
-function popUpToggle(){
+export function popUpToggle(){
     const popUp = document.querySelector(".pop-up-screen");
     if (popUp){
         document.querySelector(".error-message").innerHTML="";
         popUp.classList.toggle("shown");
         clearPopUpFields();
     } else {
-        console.log("no pop up div found");
+        console.error("no pop up div found");
     }
 }
 
 /** add an event in the listener to add a project entered when clicked */
-function addProject(){
+export function addProject(){
     const submitChanges = document.querySelector("#add-project-submit");
     if(submitChanges){
         submitChanges.addEventListener("click",()=>{
@@ -159,7 +161,7 @@ function addProject(){
             const name = document.querySelector("#project-name").value || "";
             const desc = document.querySelector("#project-desc").value || "";
             //we test the input values for being correct
-            if(!regex.test(name) || !regex.test(desc) || name.length > 50){
+            if(!regex.test(name) || !regex.test(desc) || name.length > 50 || name.length===0 || desc.length===0){
                 document.querySelector(".error-message").innerHTML="invalid input try again";
                 return;
             }
@@ -179,12 +181,12 @@ function addProject(){
             popUpToggle();
         });
     } else {
-        console.log("no submit add project button found");
+        console.error("no submit add project button found");
     }
 }
 
 /** add an event listener to buttons that are supposed to summon the add project pop up */
-function addPopUpToggle(){
+export function addPopUpToggle(){
     //the popUp div
     const popUp = document.querySelector(".pop-up-screen");
     //if it is peresent we add event listeners
