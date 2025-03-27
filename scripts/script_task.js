@@ -502,25 +502,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Sort Function
     // ================================
     function sortTasks() {
-        console.log("click");
-        document.querySelectorAll('.kanban-class').forEach((column) => {
-            const tasksInColumn = Array.from(column.querySelectorAll('.task')); // Get tasks within the current column
-            
-            // Sort the tasks in this column
-            tasksInColumn.sort((a, b) => {
-                const priorityOrder = ["None", "Low", "Medium", "High", "Urgent"];
-                const priorityA = priorityOrder.indexOf(a.dataset.priority); // Assuming tasks have 'data-priority' attribute
-                const priorityB = priorityOrder.indexOf(b.dataset.priority);
-                return priorityA - priorityB;
-            });
-    
-            // Re-render the sorted tasks back into the column
-            tasksInColumn.forEach(task => {
-                column.appendChild(task);  // Re-append task in sorted order
-                console.log("click_Fsad");
-            });
-        });
-        renderTasks();
+       
        
 
     }
