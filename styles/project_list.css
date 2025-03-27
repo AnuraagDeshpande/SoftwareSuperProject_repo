@@ -48,7 +48,8 @@ PROJECT CARD
     min-height: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: var(--mediumGap);
     background-color: var(--surfaceBright);
     color: var(--onSurface);
     border-radius: var(--largeRadius);
@@ -93,6 +94,8 @@ PARTICIPANTS
 */
 
 .participants{
+    justify-self: flex-end;
+    margin-top: auto;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
