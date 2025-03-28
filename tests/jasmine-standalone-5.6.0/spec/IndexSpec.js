@@ -1,6 +1,6 @@
 import { getEmojis, setTeamCards, switchEmojis, shuffle } from "../../../scripts/index.js";
 
-describe("The index page tests",()=>{
+describe("INDEX PAGE TESTS",()=>{
     let testDiv= document.querySelector(".js-test-div");
 
     //we test the getEmojis function

@@ -1,6 +1,6 @@
 import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle } from "../../../scripts/project_list.js";
 
-describe("Project list page", ()=>{
+describe("PROJECT LIST PAGE:", ()=>{
     let projectList;
     let testDiv= document.querySelector(".js-test-div");
 
@@ -56,29 +56,34 @@ describe("Project list page", ()=>{
         testDiv.innerHTML="";
     });
 
-    //test cases:
-    it("calls mock version of the fetch data", function(){
+     //test cases:
+    describe("#test the ProjectList class for functionality:",()=>{
+        it("calls mock version of the fetch data", function(){
             expect(ProjectList.prototype.fetchData).toHaveBeenCalled();
             expect(projectList.projects.length).toBe(2);
             expect(projectList.projects[0].projectName).toBe("Mock Project 1");
         }
-    );
+        );
 
-    it("calls addProject and adds a project to list", ()=> {
-        const newProject = {
-            projectName: "Test Project",
-            projectIcon: "test-icon.png",
-            manager: "Test Manager",
-            owner: "Test Owner",
-            desc: "This is a test project description",
-            participants: ["test1.png", "test2.png"],
-            status: "pending"
-        };
-
-        projectList.addProject(newProject);
-        expect(projectList.projects.length).toBe(3);
-        expect(projectList.projects[2]).toEqual(newProject);
+        it("calls addProject and adds a project to list", ()=> {
+            const newProject = {
+                projectName: "Test Project",
+                projectIcon: "test-icon.png",
+                manager: "Test Manager",
+                owner: "Test Owner",
+                desc: "This is a test project description",
+                participants: ["test1.png", "test2.png"],
+                status: "pending"
+            };
+    
+            projectList.addProject(newProject);
+            expect(projectList.projects.length).toBe(3);
+            expect(projectList.projects[2]).toEqual(newProject);
+        });
     });
+    
+
+   
 
     it("fills the div with the projects list",()=>{
         expect(testDiv.innerHTML).not.toEqual("");
