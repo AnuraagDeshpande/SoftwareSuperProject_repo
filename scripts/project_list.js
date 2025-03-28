@@ -1,6 +1,7 @@
 export class ProjectList{
     projects;
 
+
     constructor(){
         this.fetchData();
         this.displayProjects();
@@ -36,6 +37,21 @@ export class ProjectList{
                 "profile-picture-placeholder.png",
             ],
             status: "active"
+        },
+        {
+            projectName:"Project on projects",
+            projectIcon:"profile-picture-placeholder.png",
+            manager:["manager 1","user123"],
+            owner:["some usr","some other user","another person"],
+            desc:"This project aims at projecting project projects at project. This text fully fits",
+            participants:[
+                "profile-picture-placeholder.png",
+                "profile-picture-placeholder2.jpg",
+                "profile-picture-placeholder.png",
+                "profile-picture-placeholder.png",
+                "profile-picture-placeholder.png",
+            ],
+            status: "active"
         }
         ];
     }
@@ -48,12 +64,39 @@ export class ProjectList{
         return "-";
     }
 
-    /** display the projects on a page */
-    displayProjects(){
-        const div = document.querySelector(".js-project-list");
+    /** get the list containing the list of relations of a user to the project */
+    #getRelation(project){
+        let relations =[];
+        if (project.owner.includes("user123")||project.manager.includes("user123")){
+            if(project.manager.includes("user123")){
+                relations.push("m");
+            }
+            if(project.owner.includes("user123")){
+                relations.push("o");
+            }           
+        } else {
+            relations.push("p");
+        }
+        console.log(relations);
+        return relations;
+    }
+
+    /** return an object containing projects sorted into types */
+    #sortByRelation(){
+        const owner = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("o")});
+        const mangr = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("m")});
+        const part = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("p")});
+        return {
+            owner: owner,
+            mangr: mangr,
+            part: part
+        };
+    }
+
+    #displayProjectListIn(list, div){
         if(div){
             let generatedHTML="";
-            this.projects.forEach(element => {
+            list.forEach(element => {
                 //we cut description if needed
                 let desc = element.desc;
                 if(desc.length>120){
@@ -81,10 +124,26 @@ export class ProjectList{
                 `;
                 generatedHTML+=card;
             });
-            div.innerHTML=generatedHTML;
+            if(generatedHTML==""){
+                div.innerHTML="no projects here yet";
+            } else {
+                div.innerHTML=generatedHTML;
+            }
         } else {
             console.log("no js-project-list class found")
         }
+    }
+
+    /** display the projects on a page */
+    displayProjects(){
+        const sorted = this.#sortByRelation();
+        console.log(`sorted:${sorted.owner.length}`);
+        const own = document.querySelector(".js-owner-prjct");
+        this.#displayProjectListIn(sorted.owner, own);
+        const mangr = document.querySelector(".js-mangr-prjct");
+        this.#displayProjectListIn(sorted.mangr, mangr);
+        const part = document.querySelector(".js-part-prjct");
+        this.#displayProjectListIn(sorted.part, part);
     }
 
     /** refresh the data on a page */
@@ -178,7 +237,6 @@ export function addProject(){
             //add the project to projects
             projects.addProject(newProject);
             
-            //console.log("addProject() is being called with:", newProject);
             //close pop up and clear
             popUpToggle();
         });

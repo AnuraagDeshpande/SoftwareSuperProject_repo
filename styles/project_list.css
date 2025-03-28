@@ -13,8 +13,13 @@ body{
 PROJECT CARD GRID
 =================================================
 */
-.projects-grid{
+
+.projects-list-body{
+    display: grid;
     padding: var(--largeGap);
+    row-gap: var(--mediumGap);
+}
+.projects-grid{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: var(--mediumGap);

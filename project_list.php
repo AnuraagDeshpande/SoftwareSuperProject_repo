@@ -67,10 +67,20 @@
                         <button id="btn-print">Print</button>
                 </div>
             </div>
-
-            <!--PROJECTS GRID-->
-            <div class="projects-grid js-project-list">
-            <!--javaScript in project_list.js-->
+            <div class="projects-list-body">
+                <!--PROJECTS GRID-->
+                <h1>owned projects:</h1>
+                <div class="projects-grid js-project-list js-owner-prjct">
+                <!--javaScript in project_list.js-->
+                </div>
+                <h1>managed projects:</h1>
+                <div class="projects-grid js-project-list js-mangr-prjct">
+                <!--javaScript in project_list.js-->
+                </div>
+                <h1>participant in:</h1>
+                <div class="projects-grid js-project-list js-part-prjct">
+                <!--javaScript in project_list.js-->
+                </div>
             </div>
         </div>
         <script type="module" src="scripts/navigation.js"></script>
