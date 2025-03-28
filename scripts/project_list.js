@@ -177,6 +177,8 @@ export function addProject(){
             }
             //add the project to projects
             projects.addProject(newProject);
+            
+            //console.log("addProject() is being called with:", newProject);
             //close pop up and clear
             popUpToggle();
         });

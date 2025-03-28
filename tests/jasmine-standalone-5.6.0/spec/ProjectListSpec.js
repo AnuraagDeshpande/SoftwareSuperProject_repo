@@ -45,6 +45,12 @@ describe("PROJECT LIST PAGE:", ()=>{
         spyOn(console, 'error');
 
         projectList = new ProjectList();
+
+        window.projects = {
+            addProject: jasmine.createSpy("addProject"),
+        };
+        window.user = "current user";
+
         //we set up the elements to be active
         makeClearButActive();
         addProject();
@@ -204,6 +210,40 @@ describe("PROJECT LIST PAGE:", ()=>{
             document.querySelector(".pop-up-screen").remove();
             addPopUpToggle();
             expect(console.error).toHaveBeenCalledWith("no pop up div found");
+        });
+
+        it("should add a valid project", function() {
+            console.log("failing test");
+            document.querySelector("#project-name").value = "Project 1";
+            document.querySelector("#project-desc").value = "A sample project.";
+    
+            document.querySelector("#add-project-submit").click(); // Trigger event
+    
+            setTimeout(() => {
+                console.log("Checking if addProject was called...");
+                expect(projects.addProject).toHaveBeenCalledWith(jasmine.objectContaining({
+                    projectName: "Project 1",
+                    desc: "A sample project.",
+                    status: "active"
+                }));
+                console.log("Test passed!");
+                done(); // Finish test
+            }, 100);
+            console.log("failing test");
+        });
+    
+        it("should toggle pop-up when add/hide buttons are clicked", function() {
+            const popUp = document.querySelector(".pop-up-screen");
+            const addProjectButton = document.querySelector("#btn-add-project");
+            const hideProjectButton = document.querySelector(".js-hide-add-project");
+    
+            expect(popUp.classList.contains("shown")).toBe(false);
+    
+            addProjectButton.click();//open
+            expect(popUp.classList.contains("shown")).toBe(true);
+    
+            hideProjectButton.click();//close
+            expect(popUp.classList.contains("shown")).toBe(false);
         });
     });
 });
