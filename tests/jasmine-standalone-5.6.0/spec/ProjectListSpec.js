@@ -16,6 +16,9 @@ describe("PROJECT LIST PAGE:", ()=>{
         <p class="error-message"></p>
         <button id="btn-add-project"></button>
         <button class="js-hide-add-project"></button>
+        <div class="js-owner-prjct"></div>
+        <div class="js-mangr-prjct"></div>
+        <div class="js-part-prjct"></div>
         `;
 
         //we get fake values for the fetch Data
@@ -24,8 +27,8 @@ describe("PROJECT LIST PAGE:", ()=>{
                 {
                     projectName: "Mock Project 1",
                     projectIcon: "profile-picture-placeholder.png",
-                    manager: "manager123",
-                    owner: "owner123",
+                    manager: ["manager123"],
+                    owner: ["owner123"],
                     desc: "This is a very long description sdjklfhasdkjfhlsdkfhsdjakfhlaskdjfaskdlfhadsfklhdsfkladslfasdlfhdsfklhl",
                     participants: ["profile-picture-placeholder.png", "profile-picture-placeholder.png"],
                     status: "active"
@@ -33,8 +36,8 @@ describe("PROJECT LIST PAGE:", ()=>{
                 {
                     projectName: "Mock Project 2",
                     projectIcon: "profile-picture-placeholder.png",
-                    manager: "manger 234",
-                    owner: "owner 234",
+                    manager: ["manger 234"],
+                    owner: ["owner 234", "user123"],
                     desc: "dslakfjeiowhfjsdncna;ksdfhsfjdsljfklasjdfhjkasdfhaskdjfhu",
                     participants: ["mock3.png", "mock4.png"],
                     status: "error"
@@ -87,13 +90,11 @@ describe("PROJECT LIST PAGE:", ()=>{
             expect(projectList.projects[2]).toEqual(newProject);
         });
     });
-    
-
-   
 
     it("fills the div with the projects list",()=>{
         expect(testDiv.innerHTML).not.toEqual("");
         const cards=document.querySelectorAll('.project-card');
+        console.log(cards);
         expect(cards.length).toEqual(2);
     });
 

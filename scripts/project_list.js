@@ -77,7 +77,6 @@ export class ProjectList{
         } else {
             relations.push("p");
         }
-        console.log(relations);
         return relations;
     }
 
@@ -137,7 +136,6 @@ export class ProjectList{
     /** display the projects on a page */
     displayProjects(){
         const sorted = this.#sortByRelation();
-        console.log(`sorted:${sorted.owner.length}`);
         const own = document.querySelector(".js-owner-prjct");
         this.#displayProjectListIn(sorted.owner, own);
         const mangr = document.querySelector(".js-mangr-prjct");
