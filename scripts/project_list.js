@@ -200,7 +200,11 @@ export function addPopUpToggle(){
             hideAddProject.addEventListener("click",()=>{ 
                 popUpToggle();
             });
+        } else {
+            console.error("no div for open/close add project pop up found");
         }
+    } else {
+        console.error("no pop up div found");
     }
 }
 

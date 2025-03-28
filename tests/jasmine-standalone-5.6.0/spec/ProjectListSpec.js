@@ -183,5 +183,27 @@ describe("PROJECT LIST PAGE:", ()=>{
             makeClearButActive();
             expect(console.error).toHaveBeenCalledWith("no clear button found");
         });
+
+        it("should add an event listener to the pop up close/open button",()=>{
+            //basic test
+            const addProjectBut = document.querySelector("#btn-add-project");
+            const hideAddProject = document.querySelector(".js-hide-add-project");
+            spyOn(addProjectBut, "addEventListener");
+            spyOn(hideAddProject, "addEventListener")
+
+            addPopUpToggle();
+            expect(addProjectBut.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+            expect(hideAddProject.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            //test for branch coverage
+            addProjectBut.remove();
+            addPopUpToggle();
+            expect(console.error).toHaveBeenCalledWith("no div for open/close add project pop up found");
+
+            //more branch coverage
+            document.querySelector(".pop-up-screen").remove();
+            addPopUpToggle();
+            expect(console.error).toHaveBeenCalledWith("no pop up div found");
+        });
     });
 });
