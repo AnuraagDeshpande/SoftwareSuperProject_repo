@@ -1,6 +1,6 @@
 <?php
 /*                                  A T T E N T I O N
-This code has some requirements that you need to alter and modify it regarding your software,
+This code has some stuff that you need to alter and modify it regarding your software,
 Please read the comments for assistance. */
 
 // Ensure PHPMailer(PHP Library) is installed before using this script.
@@ -17,10 +17,10 @@ require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareProject/PHPMailer/src/PHP
 require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareProject/PHPMailer/src/SMTP.php';
 
 // These are my system credentials, everybody can change it regarding their system.
-$servername = "localhost";
-$username = "root";
+$servername = "";
+$username = "";
 $password = "";
-$dbname = "SoftwareProject";
+$dbname = "";
 
 // Connection created.
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -32,21 +32,21 @@ if($conn->connect_error){
 // Post request method will help us to check the new user provided all the credentials, if value missing,
 // it assigns them as null to prevent errors.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $Name = isset($_POST['Name']) ? $_POST['Name'] : null;
-    $Surname = isset($_POST['Surname']) ? $_POST['Surname'] : null;
-    $Email = isset($_POST['Email']) ? $_POST['Email'] : null;
+    $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : null;
+    $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : null;
+    $Email = isset($_POST['email']) ? $_POST['email'] : null;
     $LoginPasscode = isset($_POST['LoginPasscode']) ? password_hash($_POST['LoginPasscode'], PASSWORD_DEFAULT) : null;
 
-    if ($Name && $Surname && $Gender && $Email && $LoginPasscode) {
+    if ($first_name && $last_name && $Email && $LoginPasscode) {
 // Using prepared statements to prevent SQL injection.
-        $sql = "INSERT INTO User (ID, Name, Surname, Email, LoginPasscode) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (ID, first_name, last_name, email, LoginPasscode) VALUES (?, ?, ?, ?, ?)";
 
         if ($stmt = $conn->prepare($sql)) {
 // Here I'm binding the values, i = integer, s = string.
-            $stmt->bind_param("issss", $nextId, $Name, $Surname, $Email, $LoginPasscode);
+            $stmt->bind_param("issss", $nextId, $first_name, $last_name, $email, $LoginPasscode);
 // At the end, once the values bound, possible SQL injection would be impossible.
             if ($stmt->execute()) {
-                sendWelcomeEmail($Email, $Name);
+                sendWelcomeEmail($email, $first_name);
                 echo "New record created successfully!";
                 header("Location: signup.html");
                 exit();
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 $conn->close();
 
-function sendWelcomeEmail($to, $name) {
+function sendWelcomeEmail($to, $first_name) {
     $mail = new PHPMailer(true);
 
     try {
@@ -83,12 +83,12 @@ function sendWelcomeEmail($to, $name) {
         $mail->Encoding = 'base64';
 
         $mail->setFrom('xxxx@gmail.com', 'Project Management System');
-        $mail->addAddress($to, $name);
+        $mail->addAddress($to, $first_name);
 
         // Email content, if wanted, can be changed.
         $mail->isHTML(true);
         $mail->Subject = 'Welcome!';
-        $mail->Body    = "Hello $name,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
+        $mail->Body    = "Hello $first_name,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
 
         $mail->send();
         echo 'Message has been sent';
