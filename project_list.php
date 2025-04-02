@@ -63,7 +63,7 @@
                 </div>
                 <div class="task-management-panel">
                         <button id="btn-add-project">New project</button>
-                        <button id="btn-sort">Sort</button>
+                        <button id="btn-sort" class="js-clear-filter">Clear filter</button>
                         <button id="btn-print">Print</button>
                 </div>
             </div>

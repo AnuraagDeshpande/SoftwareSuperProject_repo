@@ -97,6 +97,7 @@ export class ProjectList{
     }
 
     #getVisibleProjects(){
+        this.fetchData();
         return this.projects.filter((pr)=>{
             return pr.projectName.includes(this.nameFilter);
         }).filter((pr)=>{
@@ -177,7 +178,7 @@ export class ProjectList{
     }
 
     /**set filter parameters */
-    setFilter(name="", desc="", status="active"){
+    setFilter(name="", desc="", status="none"){
         this.nameFilter=name;
         this.descFilter=desc;
         this.statusFilter=status;
@@ -297,17 +298,38 @@ addPopUpToggle();
 =================================================
 FILTERING
 =================================================
- */
+*/
 
-function search(){
+export function applyFilter(){
+    const name = document.querySelector("#filter-project-name").value || "";
+    const desc = document.querySelector("#filter-description").value || "";
+    const status = document.querySelector("#filter-status").value || "";
+    projects.setFilter(name,desc,status);
+    projects.displayProjects();
+}
+
+export function clearFilter(){
+    projects.setFilter();
+    projects.displayProjects();
+}
+
+export function addClearFilterListener(){
+    const clear = document.querySelector(".js-clear-filter");
+    if(clear){
+        clear.addEventListener("click",()=>{
+            clearFilter();
+        });
+    } else {
+        console.error("no clear filter button found");
+    }
+
+}
+
+export function search(){
     const searchBtn = document.querySelector("#btn-search");
     if(searchBtn){
         searchBtn.addEventListener("click",()=>{
-            const name = document.querySelector("#filter-project-name").value || "";
-            const desc = document.querySelector("#filter-description").value || "";
-            const status = document.querySelector("#filter-status").value || "";
-            projects.setFilter(name,desc,status);
-            projects.displayProjects();
+            applyFilter();
         });
     } else {
         console.error("no search button found");
@@ -315,3 +337,4 @@ function search(){
 }
 
 search();
+addClearFilterListener();

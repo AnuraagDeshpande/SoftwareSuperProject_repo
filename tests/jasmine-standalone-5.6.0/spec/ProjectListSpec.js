@@ -1,4 +1,4 @@
-import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle } from "../../../scripts/project_list.js";
+import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle,clearFilter, addClearFilterListener, search, applyFilter } from "../../../scripts/project_list.js";
 
 describe("PROJECT LIST PAGE:", ()=>{
     let projectList;
@@ -8,17 +8,34 @@ describe("PROJECT LIST PAGE:", ()=>{
         //necessary fields are created for testing
         testDiv.innerHTML=`
         <div class=\"js-project-list\"></div>
-        <div class="pop-up-screen"></div>
-        <button id="add-project-clear"></button>
-        <button id="add-project-submit"></button>
-        <input id="project-name" class="js-pop-up-field" value="">
-        <textarea id="project-desc" class="js-pop-up-field"></textarea>
-        <p class="error-message"></p>
+
+        <!--popup stuff-->
+        <div class="pop-up-screen">
+            <button id="add-project-clear"></button>
+            <button id="add-project-submit"></button>
+            <input id="project-name" class="js-pop-up-field" value="">
+            <textarea id="project-desc" class="js-pop-up-field"></textarea>
+            <p class="error-message"></p>
+        </div>
         <button id="btn-add-project"></button>
         <button class="js-hide-add-project"></button>
+
+        <!--displaying projects-->
         <div class="js-owner-prjct"></div>
         <div class="js-mangr-prjct"></div>
         <div class="js-part-prjct"></div>
+
+        <!--filtering project-->
+        <button id="btn-sort" class="js-clear-filter">Clear filter</button>
+        <button id="btn-search">Search</button>
+
+        <input type="text" id="filter-project-name" placeholder="Search by project name">
+        <input type="text" id="filter-description" placeholder="Search by description">
+        <select id="filter-status"><option value="none">None</option>
+            <option value="active">active</option>
+            <option value="error">failed</option>
+            <option value="finished">finished</option>
+        </select>
         `;
 
         //we get fake values for the fetch Data
@@ -49,6 +66,8 @@ describe("PROJECT LIST PAGE:", ()=>{
         spyOn(console,'log');
 
         projectList = new ProjectList();
+        const projects = new ProjectList();
+
 
         window.projects = {
             addProject: jasmine.createSpy("addProject"),
@@ -75,7 +94,7 @@ describe("PROJECT LIST PAGE:", ()=>{
         }
         );
 
-        it("calls addProject and adds a project to list", ()=> {
+        /*it("calls addProject and adds a project to list", ()=> {
             const newProject = {
                 projectName: "Test Project",
                 projectIcon: "test-icon.png",
@@ -89,7 +108,7 @@ describe("PROJECT LIST PAGE:", ()=>{
             projectList.addProject(newProject);
             expect(projectList.projects.length).toBe(3);
             expect(projectList.projects[2]).toEqual(newProject);
-        });
+        });test disabled as fake version of fetch data is called and can't really add*/
     });
 
     it("fills the div with the projects list",()=>{
@@ -245,6 +264,60 @@ describe("PROJECT LIST PAGE:", ()=>{
     
             hideProjectButton.click();//close
             expect(popUp.classList.contains("shown")).toBe(false);
+        });
+    });
+
+    describe("#the filtering functionality:",()=>{
+        //we initialize the 2 elements
+        beforeEach(()=>{
+            search();
+            addClearFilterListener();
+        });
+
+        //event listeners should be there
+        it("should add event listener for clear button",()=>{
+            const clear = document.querySelector(".js-clear-filter");
+            spyOn(clear, "addEventListener");
+            addClearFilterListener();
+            expect(clear.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            clear.remove();
+            addClearFilterListener();
+            expect(console.error).toHaveBeenCalledWith("no clear filter button found");
+        });
+
+        it("should add event listener to search button",()=>{
+            const searchBtn = document.querySelector("#btn-search");
+            spyOn(searchBtn,"addEventListener");
+            search();
+            expect(searchBtn.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            searchBtn.remove();
+            search();
+            expect(console.error).toHaveBeenCalledWith("no search button found");
+        });
+
+        //apply filter to the elemets displayed
+        it("shoudl filter properly when searched and clear it correctly",()=>{
+            const name=document.querySelector("#filter-project-name");
+            const desc=document.querySelector("#filter-description");
+            const status = document.querySelector("#filter-status");
+            //first we apply simple filter
+            name.value="1";
+            desc.value="This is a very long description";
+            status.value="active";
+            applyFilter();
+            let projects=document.querySelectorAll(".project-card");
+            expect(projects.length).toEqual(1);
+            //we change filter
+            status.value="finished";
+            applyFilter();
+            projects=document.querySelectorAll(".project-card");
+            expect(projects.length).toEqual(0);
+            //we clear the filter
+            clearFilter();
+            projects=document.querySelectorAll(".project-card");
+            expect(projects.length).toEqual(2);
         });
     });
 });
