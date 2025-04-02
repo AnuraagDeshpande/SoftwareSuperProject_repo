@@ -1,5 +1,8 @@
 export class ProjectList{
     projects;
+    nameFilter="";
+    statusFilter="";
+    descFilter="";
 
 
     constructor(){
@@ -82,14 +85,25 @@ export class ProjectList{
 
     /** return an object containing projects sorted into types */
     #sortByRelation(){
-        const owner = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("o")});
-        const mangr = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("m")});
-        const part = this.projects.filter((pr)=>{return this.#getRelation(pr).includes("p")});
+        const visibleProjects = this.#getVisibleProjects();
+        const owner = visibleProjects.filter((pr)=>{return this.#getRelation(pr).includes("o")});
+        const mangr = visibleProjects.filter((pr)=>{return this.#getRelation(pr).includes("m")});
+        const part = visibleProjects.filter((pr)=>{return this.#getRelation(pr).includes("p")});
         return {
             owner: owner,
             mangr: mangr,
             part: part
         };
+    }
+
+    #getVisibleProjects(){
+        return this.projects.filter((pr)=>{
+            return pr.projectName.includes(this.nameFilter);
+        }).filter((pr)=>{
+            return pr.desc.includes(this.descFilter);
+        }).filter((pr)=>{
+            return pr.status.includes(this.statusFilter) || this.statusFilter==="none";
+        });
     }
 
     #displayProjectListIn(list, div){
@@ -160,6 +174,14 @@ export class ProjectList{
         this.projects.push(newProject);
         this.save();
         this.displayProjects();
+    }
+
+    /**set filter parameters */
+    setFilter(name="", desc="", status="active"){
+        this.nameFilter=name;
+        this.descFilter=desc;
+        this.statusFilter=status;
+        console.log(`name: ${this.nameFilter}, desc: ${this.descFilter}, status: ${this.statusFilter} `);
     }
 }
 
@@ -270,3 +292,26 @@ export function addPopUpToggle(){
 addProject();
 makeClearButActive();
 addPopUpToggle();
+
+/**
+=================================================
+FILTERING
+=================================================
+ */
+
+function search(){
+    const searchBtn = document.querySelector("#btn-search");
+    if(searchBtn){
+        searchBtn.addEventListener("click",()=>{
+            const name = document.querySelector("#filter-project-name").value || "";
+            const desc = document.querySelector("#filter-description").value || "";
+            const status = document.querySelector("#filter-status").value || "";
+            projects.setFilter(name,desc,status);
+            projects.displayProjects();
+        });
+    } else {
+        console.error("no search button found");
+    }
+}
+
+search();

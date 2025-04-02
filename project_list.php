@@ -52,11 +52,11 @@
                         <input type="text" id="filter-description" placeholder="Search by description">
                     </div>
                     <div class="input-container">
-                        <label for="filter-access">Access level</label>
-                        <select id="filter-access"><option value="none">None</option>
-                            <option value="owner">Owner</option>
-                            <option value="participant">participant</option>
-                            <option value="manager">Manager</option>
+                        <label for="filter-status">Status</label>
+                        <select id="filter-status"><option value="none">None</option>
+                            <option value="active">active</option>
+                            <option value="error">failed</option>
+                            <option value="finished">finished</option>
                         </select>
                     </div>
                     <button id="btn-search">Search</button>
