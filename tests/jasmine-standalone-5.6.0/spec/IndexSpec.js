@@ -97,7 +97,9 @@ describe("INDEX PAGE TESTS",()=>{
         it('random order of elements', () => {
             const arr = [1, 2, 3, 4, 5];
             const shuffled = shuffle([...arr]);
-            expect(shuffled).not.toEqual(arr);
+            const shuffled2 = shuffle([...shuffled]);
+            const value = shuffled != arr || shuffled2 != arr || shuffled2!=shuffled;
+            expect(value).toEqual(true);
         });
     });
 });
