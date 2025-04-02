@@ -300,6 +300,7 @@ FILTERING
 =================================================
 */
 
+/** apply the data in input to filter the projects*/
 export function applyFilter(){
     const name = document.querySelector("#filter-project-name").value || "";
     const desc = document.querySelector("#filter-description").value || "";
@@ -308,11 +309,13 @@ export function applyFilter(){
     projects.displayProjects();
 }
 
+/** clear the filter and set it to default */
 export function clearFilter(){
     projects.setFilter();
     projects.displayProjects();
 }
 
+/** add event listener for clear filter button*/
 export function addClearFilterListener(){
     const clear = document.querySelector(".js-clear-filter");
     if(clear){
@@ -322,9 +325,9 @@ export function addClearFilterListener(){
     } else {
         console.error("no clear filter button found");
     }
-
 }
 
+/** add even listener for search button */
 export function search(){
     const searchBtn = document.querySelector("#btn-search");
     if(searchBtn){
