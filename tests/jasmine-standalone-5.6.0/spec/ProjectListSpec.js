@@ -221,7 +221,6 @@ describe("PROJECT LIST PAGE:", ()=>{
     
             document.querySelector("#add-project-submit").click(); // Trigger event
 
-
             setTimeout(() => {
                 console.log("Checking if addProject was called...");
                 expect(projects.addProject).toHaveBeenCalledWith(jasmine.objectContaining({
