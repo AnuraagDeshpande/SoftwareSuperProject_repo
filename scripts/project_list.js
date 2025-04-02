@@ -311,6 +311,9 @@ export function applyFilter(){
 
 /** clear the filter and set it to default */
 export function clearFilter(){
+    document.querySelector("#filter-project-name").value = "";
+    document.querySelector("#filter-description").value = "";
+   document.querySelector("#filter-status").value = "none";
     projects.setFilter();
     projects.displayProjects();
 }
