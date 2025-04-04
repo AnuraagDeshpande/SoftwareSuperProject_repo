@@ -84,11 +84,15 @@ PROJECT CARD
     font-weight: normal;
 }
 
+.project-title-name{
+    display: grid;
+    grid-template-columns: 1fr var(--mediumGap);
+}
+
 .status{
-    position: absolute;
-    right: var(--mediumGap);
-    top: var(--mediumGap);
-    padding: var(--smallGap);
+    height: var(--smallGap);
+    width: var(--smallGap);
+    padding: var(--tinyGap);
     border-radius: 50%;
 }
 

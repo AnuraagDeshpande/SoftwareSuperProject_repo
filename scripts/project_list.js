@@ -122,7 +122,10 @@ export class ProjectList{
                     <div class="project-card-header">
                         <img class="project-icon" src="media/${element.projectIcon}">
                         <div class="project-title">
-                            <h2>${element.projectName}</h2>
+                            <div class="project-title-name">
+                                <h2>${element.projectName}</h2>
+                                <div class="status ${element.status}"></div>
+                            </div>
                             <h3>Managers: ${this.#displayList(element.manager)}</h3>
                             <h4>Owners: ${this.#displayList(element.owner)}</h4>
                         </div>                   
@@ -130,7 +133,6 @@ export class ProjectList{
                     <p>
                         ${desc}
                     </p>
-                    <div class="status ${element.status}"></div>
                     <div class="participants">
                         ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
                     </div>
