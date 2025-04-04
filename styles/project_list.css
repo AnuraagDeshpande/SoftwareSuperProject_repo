@@ -96,6 +96,14 @@ PROJECT CARD
     border-radius: 50%;
 }
 
+.card-bottom-row{
+    justify-self: flex-end;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 /*
 -------------------------------------------------
 PARTICIPANTS
@@ -103,8 +111,8 @@ PARTICIPANTS
 */
 
 .participants{
-    justify-self: flex-end;
-    margin-top: auto;
+    /*justify-self: flex-end;
+    margin-top: auto;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

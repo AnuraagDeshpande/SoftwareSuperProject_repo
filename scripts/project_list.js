@@ -14,6 +14,7 @@ export class ProjectList{
     fetchData(){
         this.projects=JSON.parse(localStorage.getItem("project_list"))||[
         {
+            id:1,
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:[],
@@ -27,6 +28,7 @@ export class ProjectList{
             status:"error"
         },
         {
+            id:2,
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1"],
@@ -42,6 +44,7 @@ export class ProjectList{
             status: "active"
         },
         {
+            id:3,
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1","user123"],
@@ -133,8 +136,11 @@ export class ProjectList{
                     <p>
                         ${desc}
                     </p>
-                    <div class="participants">
-                        ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
+                    <div class="card-bottom-row">
+                        <button class="cool-button" id="delete-button" data-id="${element.id}">delete</button>
+                        <div class="participants">
+                            ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
+                        </div>
                     </div>
                 </div>
                 `;
@@ -159,6 +165,7 @@ export class ProjectList{
         this.#displayProjectListIn(sorted.mangr, mangr);
         const part = document.querySelector(".js-part-prjct");
         this.#displayProjectListIn(sorted.part, part);
+        addDeleteListener();
     }
 
     /** refresh the data on a page */
@@ -175,6 +182,13 @@ export class ProjectList{
     /** add project to list of projects*/
     addProject(newProject){
         this.projects.push(newProject);
+        this.save();
+        this.displayProjects();
+    }
+
+    /** remove project by ID */
+    removeByID(id){
+        this.projects=this.projects.filter((el)=>{return el.id!=id;});
         this.save();
         this.displayProjects();
     }
@@ -249,6 +263,7 @@ export function addProject(){
             }
             //create a new project
             const newProject = {
+                id: projects.projects.length+1,
                 projectName: name,
                 projectIcon:"profile-picture-placeholder.png",
                 manager:[],
@@ -346,3 +361,43 @@ export function search(){
 
 search();
 addClearFilterListener();
+
+/**
+=================================================
+DELETING
+=================================================
+*/
+
+function addDeleteListener(){
+    //we fetch all projects owned by the user
+    const myOwn = document.querySelectorAll(".projects-grid.js-project-list.js-owner-prjct div.project-card");
+    console.log(myOwn);
+    //we add event listener to the projects
+    myOwn.forEach((card)=>{
+        const button = card.querySelector("button");
+        button.addEventListener("click",()=>{
+            console.log("the delet is called");
+            console.log(card);
+            const id = button.dataset.id;
+            console.log(projects.projects.length)
+            projects.removeByID(id);
+            console.log(projects.projects.length)
+        });
+    });
+    //we hide the button for managed projects
+    const managed = document.querySelectorAll(".projects-grid.js-project-list.js-mangr-prjct div.project-card");
+    managed.forEach((card)=>{
+        const button = card.querySelector("button");
+        button.style.visibility="hidden";
+    });
+
+    //we hide the button for projects where we are just the participant
+    const part = document.querySelectorAll(".projects-grid.js-project-list.js-part-prjct div.project-card");
+    part.forEach((card)=>{
+        const button = card.querySelector("button");
+        button.style.visibility="hidden";
+    });
+
+}
+
+addDeleteListener();
