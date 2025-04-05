@@ -255,7 +255,7 @@ export function popUpToggle(){
 }
 
 /** show the add project pop up menu */
-function popUpToggelAdd(){
+export function popUpToggleAdd(){
     popUpToggle();
     const popUp = document.querySelector(".add-project-card");
     if (popUp){
@@ -263,17 +263,17 @@ function popUpToggelAdd(){
         popUp.classList.toggle("shown");
         clearPopUpFields();
     } else {
-        console.error("no pop up div found");
+        console.error("no add pop up div found");
     }
 }
 
-function popUpToggleDelete(){
+export function popUpToggleDelete(){
     popUpToggle();
     const popUp = document.querySelector(".delete-project-card");
     if (popUp){
         popUp.classList.toggle("shown");
     } else {
-        console.error("no pop up div found");
+        console.error("no delete pop up div found");
     }
 }
 
@@ -308,7 +308,7 @@ export function addProject(){
             
             //close pop up and clear
             //popUpToggle();
-            popUpToggelAdd();
+            popUpToggleAdd();
         });
     } else {
         console.error("no submit add project button found");
@@ -325,12 +325,10 @@ export function addPopUpToggle(){
         const hideAddProject = document.querySelector(".js-hide-add-project");
         if(addProjectBut && hideAddProject){
             addProjectBut.addEventListener("click",()=>{
-                //popUpToggle();
-                popUpToggelAdd();
+                popUpToggleAdd();
             });
             hideAddProject.addEventListener("click",()=>{ 
-                //popUpToggle();
-                popUpToggelAdd();
+                popUpToggleAdd();
             });
         } else {
             console.error("no div for open/close add project pop up found");
@@ -364,7 +362,7 @@ export function applyFilter(){
 export function clearFilter(){
     document.querySelector("#filter-project-name").value = "";
     document.querySelector("#filter-description").value = "";
-   document.querySelector("#filter-status").value = "none";
+    document.querySelector("#filter-status").value = "none";
     projects.setFilter();
     projects.displayProjects();
 }

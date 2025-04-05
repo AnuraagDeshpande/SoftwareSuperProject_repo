@@ -1,4 +1,4 @@
-import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle,clearFilter, addClearFilterListener, search, applyFilter, addDeleteMenuRevokeListener, addDeleteMenuConfirmListener, addDeleteListener } from "../../../scripts/project_list.js";
+import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle,clearFilter, addClearFilterListener, search, applyFilter, addDeleteMenuRevokeListener, addDeleteMenuConfirmListener, addDeleteListener, popUpToggleAdd, popUpToggleDelete } from "../../../scripts/project_list.js";
 
 describe("PROJECT LIST PAGE:", ()=>{
     let projectList;
@@ -11,6 +11,7 @@ describe("PROJECT LIST PAGE:", ()=>{
 
         <!--popup stuff-->
         <div class="pop-up-screen">
+            <div class=" add-project-card"></div>
             <button id="add-project-clear"></button>
             <button id="add-project-submit"></button>
             <input id="project-name" class="js-pop-up-field" value="">
@@ -127,7 +128,7 @@ describe("PROJECT LIST PAGE:", ()=>{
     });
 
     describe("#add project pop up menu",()=>{
-        it("should toggle pop-up visibility", function() {
+        it("should toggle pop-up screen visibility", function() {
             const popUp = document.querySelector(".pop-up-screen");
             //it is not visible
             expect(popUp.classList.contains("shown")).toBe(false);
@@ -273,6 +274,19 @@ describe("PROJECT LIST PAGE:", ()=>{
             hideProjectButton.click();//close
             expect(popUp.classList.contains("shown")).toBe(false);
         });
+
+        it("should toggle add project pop up",()=>{
+            //we test that the pop up for add project is changing
+            const popUp = document.querySelector(".add-project-card");
+            expect(popUp.classList.contains("shown")).toBe(false);
+            popUpToggleAdd();
+            expect(popUp.classList.contains("shown")).toBe(true);
+
+            //branch coverage
+            popUp.remove();
+            popUpToggleAdd();
+            expect(console.error).toHaveBeenCalledWith("no add pop up div found");
+        });
     });
 
     describe("#the filtering functionality:",()=>{
@@ -368,6 +382,19 @@ describe("PROJECT LIST PAGE:", ()=>{
             button = part.querySelector("button");
             addDeleteListener();
             expect(button.style.visibility).toEqual("hidden");
+        });
+
+        it("should toggle delete pop up",()=>{
+            //we test that the pop up for delete is changing
+            const popUp = document.querySelector(".delete-project-card");
+            expect(popUp.classList.contains("shown")).toBe(false);
+            popUpToggleDelete();
+            expect(popUp.classList.contains("shown")).toBe(true);
+
+            //branch coverage
+            popUp.remove();
+            popUpToggleDelete();
+            expect(console.error).toHaveBeenCalledWith("no delete pop up div found");
         });
     });
 });
