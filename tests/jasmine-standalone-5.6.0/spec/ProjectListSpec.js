@@ -1,4 +1,4 @@
-import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle,clearFilter, addClearFilterListener, search, applyFilter } from "../../../scripts/project_list.js";
+import { ProjectList, popUpToggle, clearPopUpFields, makeClearButActive, addProject, addPopUpToggle,clearFilter, addClearFilterListener, search, applyFilter, addDeleteMenuRevokeListener, addDeleteMenuConfirmListener, addDeleteListener } from "../../../scripts/project_list.js";
 
 describe("PROJECT LIST PAGE:", ()=>{
     let projectList;
@@ -20,10 +20,18 @@ describe("PROJECT LIST PAGE:", ()=>{
         <button id="btn-add-project"></button>
         <button class="js-hide-add-project"></button>
 
+        <!--the delete menu-->
+        <div class="pop-up-card delete-project-card">
+            <div>
+                <button id="confirm-delete" class="cool-button">delete</button>
+                <button id="revoke-delete" class="cool-button">return</button>
+            </div>
+        </div>
+
         <!--displaying projects-->
-        <div class="js-owner-prjct"></div>
-        <div class="js-mangr-prjct"></div>
-        <div class="js-part-prjct"></div>
+        <div class="projects-grid js-project-list js-owner-prjct"></div>
+        <div class=" projects-grid js-project-list js-mangr-prjct"></div>
+        <div class="projects-grid js-project-list js-part-prjct"></div>
 
         <!--filtering project-->
         <button id="btn-sort" class="js-clear-filter">Clear filter</button>
@@ -318,6 +326,48 @@ describe("PROJECT LIST PAGE:", ()=>{
             clearFilter();
             projects=document.querySelectorAll(".project-card");
             expect(projects.length).toEqual(2);
+        });
+    });
+
+    describe("#the deletion functions",()=>{
+        it("should add listener to revoke delete",()=>{
+            const revoke = document.querySelector("#revoke-delete");
+
+            spyOn(revoke, "addEventListener");
+            addDeleteMenuRevokeListener();
+            expect(revoke.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            revoke.remove();
+            addDeleteMenuRevokeListener();
+            expect(console.error).toHaveBeenCalledWith("no revoke delte button found");
+        });
+
+        it("should add listener to confirm delete",()=>{
+            const confirm = document.querySelector("#confirm-delete");
+
+            spyOn(confirm, "addEventListener");
+            addDeleteMenuConfirmListener();
+            expect(confirm.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            confirm.remove();
+            addDeleteMenuConfirmListener();
+            expect(console.error).toHaveBeenCalledWith("no confirm delte button found");
+        });
+
+        it("should add listener for the delete button on project card",()=>{
+            //we get our own projects
+            const myOwn = document.querySelector(".projects-grid.js-project-list.js-owner-prjct div.project-card");
+            let button = myOwn.querySelector("button");
+            spyOn(button, "addEventListener");
+            //function is called
+            addDeleteListener();
+            expect(button.addEventListener).toHaveBeenCalledWith("click", jasmine.any(Function));
+
+            //we get projects that are not ours
+            const part = document.querySelector(".projects-grid.js-project-list.js-part-prjct div.project-card");
+            button = part.querySelector("button");
+            addDeleteListener();
+            expect(button.style.visibility).toEqual("hidden");
         });
     });
 });

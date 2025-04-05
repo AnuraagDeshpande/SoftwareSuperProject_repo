@@ -207,7 +207,6 @@ export class ProjectList{
         this.nameFilter=name;
         this.descFilter=desc;
         this.statusFilter=status;
-        console.log(`name: ${this.nameFilter}, desc: ${this.descFilter}, status: ${this.statusFilter} `);
     }
 }
 
@@ -272,7 +271,6 @@ function popUpToggleDelete(){
     popUpToggle();
     const popUp = document.querySelector(".delete-project-card");
     if (popUp){
-        console.log("delte toggle called");
         popUp.classList.toggle("shown");
     } else {
         console.error("no pop up div found");
@@ -404,23 +402,17 @@ DELETING
 =================================================
 */
 
-function addDeleteListener(){
-    console.log("add delete listener is called");
-
+/**add listener for delete button to all our projects and remove button for others */
+export function addDeleteListener(){
     //we fetch all projects owned by the user
     const myOwn = document.querySelectorAll(".projects-grid.js-project-list.js-owner-prjct div.project-card");
-    //console.log(myOwn);
     //we add event listener to the projects
     myOwn.forEach((card)=>{
         const button = card.querySelector("button");
         button.addEventListener("click",()=>{
-            console.log("click on the button registered");
             const id = button.dataset.id;
             projects.setViewId(id);
             popUpToggleDelete();
-            console.log("got to the end");
-            /*const id = button.dataset.id;
-            projects.removeByID(id);*/
         });
     });
     //we hide the button for managed projects
@@ -437,11 +429,12 @@ function addDeleteListener(){
         button.style.visibility="hidden";
     });
 }
-function addDeleteMenuRevokeListener(){
+
+/** add event listener to the revoke delete button in pop up*/
+export function addDeleteMenuRevokeListener(){
     const revoke = document.querySelector("#revoke-delete");
     if(revoke){
         revoke.addEventListener("click",()=>{
-            console.log("revoking delte request");
             popUpToggleDelete();
         });
     } else {
@@ -449,7 +442,8 @@ function addDeleteMenuRevokeListener(){
     }
 }
 
-function addDeleteMenuConfirmListener(){
+/** add event listener to the confirm delete button in pop up*/
+export function addDeleteMenuConfirmListener(){
     const confirm = document.querySelector("#confirm-delete");
     if(confirm){
         confirm.addEventListener("click",()=>{
@@ -457,7 +451,7 @@ function addDeleteMenuConfirmListener(){
             projects.removeViewed();
         });
     } else {
-        console.error("no revoke delte button found");
+        console.error("no confirm delte button found");
     }
 }
 
