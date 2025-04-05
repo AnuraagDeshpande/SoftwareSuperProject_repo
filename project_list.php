@@ -26,7 +26,13 @@
 
             <div class="pop-up-screen">
                 <div class="pop-up-back"></div>
-                
+                <div class="pop-up-card delete-project-card">
+                    <h1>Are you sure you want to delete project?</h1>
+                    <div>
+                        <button id="confirm-delete" class="cool-button">delete</button>
+                        <button id="revoke-delete" class="cool-button">return</button>
+                    </div>
+                </div>
                 <div class="pop-up-card add-project-card">
                     <i class="fa fa-times close-add-project js-hide-add-project" aria-hidden="true"></i>
                     <h1>Add a project:</h1>

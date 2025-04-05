@@ -3,6 +3,7 @@ export class ProjectList{
     nameFilter="";
     statusFilter="";
     descFilter="";
+    viewedId=0;
 
 
     constructor(){
@@ -193,6 +194,14 @@ export class ProjectList{
         this.displayProjects();
     }
 
+    setViewId(id){
+        this.viewedId=id;
+    }
+
+    removeViewed(){
+        this.removeByID(this.viewedId);
+    }
+
     /**set filter parameters */
     setFilter(name="", desc="", status="none"){
         this.nameFilter=name;
@@ -238,9 +247,33 @@ export function clearPopUpFields(){
 export function popUpToggle(){
     const popUp = document.querySelector(".pop-up-screen");
     if (popUp){
+        //document.querySelector(".error-message").innerHTML="";
+        popUp.classList.toggle("shown");
+        //clearPopUpFields();
+    } else {
+        console.error("no pop up div found");
+    }
+}
+
+/** show the add project pop up menu */
+function popUpToggelAdd(){
+    popUpToggle();
+    const popUp = document.querySelector(".add-project-card");
+    if (popUp){
         document.querySelector(".error-message").innerHTML="";
         popUp.classList.toggle("shown");
         clearPopUpFields();
+    } else {
+        console.error("no pop up div found");
+    }
+}
+
+function popUpToggleDelete(){
+    popUpToggle();
+    const popUp = document.querySelector(".delete-project-card");
+    if (popUp){
+        console.log("delte toggle called");
+        popUp.classList.toggle("shown");
     } else {
         console.error("no pop up div found");
     }
@@ -263,7 +296,7 @@ export function addProject(){
             }
             //create a new project
             const newProject = {
-                id: projects.projects.length+1,
+                id:Math.floor(Math.random()*1000),
                 projectName: name,
                 projectIcon:"profile-picture-placeholder.png",
                 manager:[],
@@ -276,7 +309,8 @@ export function addProject(){
             projects.addProject(newProject);
             
             //close pop up and clear
-            popUpToggle();
+            //popUpToggle();
+            popUpToggelAdd();
         });
     } else {
         console.error("no submit add project button found");
@@ -293,10 +327,12 @@ export function addPopUpToggle(){
         const hideAddProject = document.querySelector(".js-hide-add-project");
         if(addProjectBut && hideAddProject){
             addProjectBut.addEventListener("click",()=>{
-                popUpToggle();
+                //popUpToggle();
+                popUpToggelAdd();
             });
             hideAddProject.addEventListener("click",()=>{ 
-                popUpToggle();
+                //popUpToggle();
+                popUpToggelAdd();
             });
         } else {
             console.error("no div for open/close add project pop up found");
@@ -369,19 +405,22 @@ DELETING
 */
 
 function addDeleteListener(){
+    console.log("add delete listener is called");
+
     //we fetch all projects owned by the user
     const myOwn = document.querySelectorAll(".projects-grid.js-project-list.js-owner-prjct div.project-card");
-    console.log(myOwn);
+    //console.log(myOwn);
     //we add event listener to the projects
     myOwn.forEach((card)=>{
         const button = card.querySelector("button");
         button.addEventListener("click",()=>{
-            console.log("the delet is called");
-            console.log(card);
+            console.log("click on the button registered");
             const id = button.dataset.id;
-            console.log(projects.projects.length)
-            projects.removeByID(id);
-            console.log(projects.projects.length)
+            projects.setViewId(id);
+            popUpToggleDelete();
+            console.log("got to the end");
+            /*const id = button.dataset.id;
+            projects.removeByID(id);*/
         });
     });
     //we hide the button for managed projects
@@ -397,7 +436,30 @@ function addDeleteListener(){
         const button = card.querySelector("button");
         button.style.visibility="hidden";
     });
-
+}
+function addDeleteMenuRevokeListener(){
+    const revoke = document.querySelector("#revoke-delete");
+    if(revoke){
+        revoke.addEventListener("click",()=>{
+            console.log("revoking delte request");
+            popUpToggleDelete();
+        });
+    } else {
+        console.error("no revoke delte button found");
+    }
 }
 
-addDeleteListener();
+function addDeleteMenuConfirmListener(){
+    const confirm = document.querySelector("#confirm-delete");
+    if(confirm){
+        confirm.addEventListener("click",()=>{
+            popUpToggleDelete();
+            projects.removeViewed();
+        });
+    } else {
+        console.error("no revoke delte button found");
+    }
+}
+
+addDeleteMenuConfirmListener();
+addDeleteMenuRevokeListener();

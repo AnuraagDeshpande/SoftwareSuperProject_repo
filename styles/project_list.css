@@ -146,10 +146,6 @@ POP UP
     align-items: center;
 }
 
-.shown{
-    visibility: visible;
-}
-
 .pop-up-back{
     position: fixed;
     inset: 0;
@@ -166,6 +162,7 @@ input, textarea{
 }
 
 .pop-up-card{
+    visibility: collapse;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -178,6 +175,9 @@ input, textarea{
     min-width: 50%;
 }
 
+/*.add-project-card, .delete-project-card{
+    visibility: collapse;
+}*/
 .pop-up-card input{
     display: block;
 }
@@ -204,3 +204,6 @@ i.close-add-project{
     font-size: 3rem;
 }
 
+.shown{
+    visibility: visible;
+}
