@@ -30,7 +30,7 @@ export class ProjectList{
         },
         {
             id:2,
-            projectName:"Project on projects",
+            projectName:"Project on projects 2",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1"],
             owner:["some usr","some other user","another person"],
@@ -46,7 +46,7 @@ export class ProjectList{
         },
         {
             id:3,
-            projectName:"Project on projects",
+            projectName:"Project on projects 3",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1","user123"],
             owner:["some usr","some other user","another person"],

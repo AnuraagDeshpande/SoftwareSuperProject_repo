@@ -11,7 +11,7 @@ export function generateSidebar(){
         sidebar.innerHTML = `
         <h1>NAME</h1>
         <div class="sidebar-links">
-            <button class="dark-button sidebar-button" onclick="document.location='project_list.php'">
+            <button class="dark-button sidebar-button" onclick="document.location='project_list.php'" id="btn-project-list">
                 Projects
                 <div class="sidebar-status active">
                 </div>
