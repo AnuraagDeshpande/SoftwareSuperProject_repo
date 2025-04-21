@@ -1,6 +1,6 @@
 import { generateSidebar, hideSidebar } from "../../../scripts/sidebar.js";
 
-describe("Sidebar tests", ()=>{
+describe("SIDEBAR", ()=>{
     let testDiv= document.querySelector(".js-test-div")
 
     beforeEach(()=> {

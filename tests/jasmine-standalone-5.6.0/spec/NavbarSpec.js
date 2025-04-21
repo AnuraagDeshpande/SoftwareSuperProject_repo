@@ -1,6 +1,6 @@
 import { generateNavbar } from "../../../scripts/navbar.js";
 
-describe("Navbar", ()=>{
+describe("NAVBAR", ()=>{
     let testDiv= document.querySelector(".js-test-div")
 
     beforeEach(()=> {
@@ -30,10 +30,10 @@ describe("Navbar", ()=>{
 
     //is the login link present?
     it("login page link persent",()=>{
-        let button = document.querySelector('a[href="login.html"] button');
+        let button = document.querySelector('#btn-login');
         expect(button).toEqual(null);
         generateNavbar();
-        button = document.querySelector('a[href="login.html"] button');
+        button = document.querySelector('#btn-login');
         expect(button).not.toEqual(null);
     }); 
 });
