@@ -162,8 +162,9 @@ input, textarea{
 }
 
 .pop-up-card{
-    visibility: collapse;
-    display: flex;
+    /*visibility: collapse;*/
+    display: none;
+    /*display: flex;*/
     position: relative;
     flex-direction: column;
     z-index: 5;
@@ -206,4 +207,5 @@ i.close-add-project{
 
 .shown{
     visibility: visible;
+    display: flex;
 }
