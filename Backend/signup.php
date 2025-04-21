@@ -1,6 +1,6 @@
 <?php
 /*                                  A T T E N T I O N
-This code has some stuff that you need to alter and modify it regarding your software,
+This code has some requirements that you need to alter and modify it regarding your software,
 Please read the comments for assistance. */
 
 // Ensure PHPMailer(PHP Library) is installed before using this script.
@@ -34,17 +34,16 @@ if($conn->connect_error){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Name = isset($_POST['Name']) ? $_POST['Name'] : null;
     $Surname = isset($_POST['Surname']) ? $_POST['Surname'] : null;
-    $Gender = isset($_POST['Gender']) ? $_POST['Gender'] : null;
     $Email = isset($_POST['Email']) ? $_POST['Email'] : null;
     $LoginPasscode = isset($_POST['LoginPasscode']) ? password_hash($_POST['LoginPasscode'], PASSWORD_DEFAULT) : null;
 
     if ($Name && $Surname && $Gender && $Email && $LoginPasscode) {
 // Using prepared statements to prevent SQL injection.
-        $sql = "INSERT INTO User (ID, Name, Surname, Gender, Email, LoginPasscode) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO User (ID, Name, Surname, Email, LoginPasscode) VALUES (?, ?, ?, ?, ?)";
 
         if ($stmt = $conn->prepare($sql)) {
 // Here I'm binding the values, i = integer, s = string.
-            $stmt->bind_param("isssss", $nextId, $Name, $Surname, $Gender, $Email, $LoginPasscode);
+            $stmt->bind_param("issss", $nextId, $Name, $Surname, $Email, $LoginPasscode);
 // At the end, once the values bound, possible SQL injection would be impossible.
             if ($stmt->execute()) {
                 sendWelcomeEmail($Email, $Name);

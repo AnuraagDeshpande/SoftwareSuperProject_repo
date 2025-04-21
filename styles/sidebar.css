@@ -61,17 +61,12 @@ SIDEBAR TEXT BUTTONS
 */
 .sidebar-button{
     padding: var(--tinyGap);
+    padding-left: var(--smallGap);
     display: block;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-radius: var(--smallRadius);
-    
-}
-
-.sidebar-button a{
-    color: var(--onSurfaceDark);
-    text-decoration: none;
+    border-radius: 50vh;    
 }
 
 .sidebar-status{
