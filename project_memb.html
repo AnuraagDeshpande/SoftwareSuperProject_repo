@@ -23,5 +23,24 @@
     </div>
 
     <script src="scripts/project_memb.js"></script>
+   <!--add member modal -->
+<div id="memberModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtn">&times;</span>
+      <h2>Select a User</h2>
+      <div id="userList">
+        <!-- Users from DB will be inserted here -->
+      </div>
+      <div id="assignDetails" style="display:none;">
+        <h3>Assign Role and Task</h3>
+        <form id="assignForm">
+          <input type="text" id="assignRole" placeholder="Role" required />
+          <input type="text" id="assignTask" placeholder="Task" required />
+          <button type="submit">Add to Page</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
