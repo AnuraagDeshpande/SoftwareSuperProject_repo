@@ -1,0 +1,83 @@
+/*
+=================================================
+This file stores navigation bar styling
+=================================================
+*/
+
+.top-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* or space-evenly / space-around based on layout */
+    width: 100%;
+    background-color: #f8f9fa; /* adjust as needed */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /*box*/
+    padding: var(--tinyGap) var(--mediumGap);
+    height: 40px;
+    /*colors*/
+    background-color: var(--surface);
+    color: var(--onSurface);
+   /*content position*/
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.navbar div a{
+    text-decoration: none;
+    color: var(--onSurface);
+}
+
+/*
+-------------------------------------------------
+HAMBURGER MENU
+-------------------------------------------------
+*/
+#hamburger{
+    padding: var(--smallGap);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border-style: none;
+    background-color: var(--surface);
+    color: var(--onSurface);
+    transition: all 0.3s;
+    
+}
+
+#hamburger:hover{
+    background-color: var(--surfaceDim);
+}
+
+#hamburger:active{
+    background-color: var(--surfaceBright);
+}
+
+.navbar .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the space between the name and the logout button */
+}
+
+.navbar .user-info span {
+    font-weight: bold;
+}
+
+.navbar .user-info button {
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar .user-info button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
