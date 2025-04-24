@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/sidebar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Style-task.css') }}">
+    <link href="{{ url_for('static', filename='styles/project_list.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body data-user-logged-in="{{ user_logged_in | tojson }}" data-username="{{ username | tojson }}">
+
+    <!--NAVIGATION BAR CODE-->
+    <div class="navbar">
+        <!-- Navigation content here -->
+    </div>
+
+    <div class="page-body">
+        <!--SIDEBAR CODE-->
+        <div class="sidebar">
+            <!-- Sidebar content here -->
+        </div>
+
+        <!--LOCAL MENU-->
+        <div class="task-overview">
+            <div class="task-search-panel">
+                <div class="input-container">
+                    <label for="filter-project-name">Project Name</label>
+                    <input type="text" id="filter-project-name" placeholder="Search by project name" value="{{ request.args.get('search', '') }}">
+                    <ul id="project-suggestions" class="suggestions-list"></ul>
+                </div>
+                <button id="btn-search">Search</button>
+                <button id="btn-sort" class="js-clear-filter">Clear filter</button>
+            </div>
+            <div class="task-management-panel">
+                <a href="{{ url_for('add_project') }}" class="cool-button" id="btn-add-project">New project</a>
+            </div>
+        </div>
+
+        <div class="projects-list-body">
+            <div class="projects-grid" id="projects-list">
+                {% for project in projects %}
+                    <div class="project-card">
+                        <div class="project-card-header">
+                            <div class="project-icon">
+                                <!-- Optional project icon here -->
+                            </div>
+                            <div class="project-title">
+                                <h3>{{ project['title'] }}</h3>
+                            </div>
+                        </div>
+                        <p>{{ project['description'] }}</p>
+                        <div class="card-bottom-row">
+                            {% if project['role'] == 'Owner' %}
+                            <!-- Delete form -->
+                            <form method="POST" id="delete-form-{{ project.id }}" action="{{ url_for('delete_project', project_id=project.id) }}" style="position: absolute; bottom: 10px; left: 10px;">
+                                <button type="button" class="detele-button" onclick="openModal({{ project.id }})">
+                                    Delete
+                                </button>
+                            </form>
+                            {% endif %}
+                            <div class="participants">
+                                {% for user in project.participants %}
+                                    <img src="{{ user.profile_pic }}" alt="{{ user.name }}">
+                                {% endfor %}
+                            </div>
+                            <div class="role">
+                                <span class="role-label">Your Role: </span>
+                                <span class="role-name">{{ project['role'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal for confirmation -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this project?</p>
+            <div class="modal-buttons">
+                <button class="confirm" onclick="confirmDelete()">Yes, Delete</button>
+                <button class="cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='scripts/navigation.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/project_list.js') }}"></script>
+
+    <script>
+        let formToDelete = null;
+
+        function openModal(projectId) {
+            formToDelete = document.getElementById(`delete-form-${projectId}`);
+            document.getElementById("deleteModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("deleteModal").style.display = "none";
+            formToDelete = null;
+        }
+
+        function confirmDelete() {
+            if (formToDelete) {
+                formToDelete.submit();
+            }
+        }
+
+        // Close modal if user clicks outside
+        window.onclick = function(event) {
+            const modal = document.getElementById("deleteModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+
+        document.getElementById('filter-project-name').addEventListener('input', function() {
+            const query = this.value.trim();
+            if (query) {
+                fetch(`/projects/search?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestionsList = document.getElementById('project-suggestions');
+                        suggestionsList.innerHTML = '';
+                        data.projects.forEach(project => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = project.title;
+
+                            // Make the suggestion clickable
+                            listItem.addEventListener('click', function() {
+                                // Fill the input field with the clicked suggestion
+                                document.getElementById('filter-project-name').value = project.title;
+                                // Optionally, trigger the search after clicking a suggestion
+                                document.getElementById('btn-search').click();
+                            });
+
+                            suggestionsList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                document.getElementById('project-suggestions').innerHTML = '';
+            }
+        });
+
+        document.getElementById('btn-search').addEventListener('click', function() {
+            let searchQuery = document.getElementById('filter-project-name').value.trim();
+            if (searchQuery) {
+                window.location.href = `/project_list?search=${searchQuery}`;
+            }
+        });
+    </script>
+</body>
+</html>

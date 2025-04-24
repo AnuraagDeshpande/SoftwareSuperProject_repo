@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Stylesheets -->
+    <link href="{{ url_for('static', filename='styles/login.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/sidebar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+
+    <!-- JavaScript -->
+    <script type="module" src="{{ url_for('static', filename='scripts/login-validation.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/navigation.js') }}" defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <!-- Login box center -->
+    <div class="page-content">
+        <div class="container">
+            <div class="img-side">
+                <img src="{{ url_for('static', filename='media/form-image.jpg') }}" alt="Form image">
+            </div>
+            <div class="form-side">
+                <h2>Welcome back</h2>
+                <form id="login-form" method="POST" action="{{ url_for('login') }}">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="submit" value="Login">
+                </form>
+                <p>Don't have an account yet? <a href="{{ url_for('signup') }}">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

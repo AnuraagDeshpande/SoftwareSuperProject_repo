@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>projects</title>
+        <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('static', filename='styles/sidebar.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/Style-task.css') }}">
+        <link href="{{ url_for('static', filename='styles/project_list.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('static', filename='styles/add_project.css') }}" rel="stylesheet"/>
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body data-user-logged-in="{{ user_logged_in | tojson }}" data-username="{{ username | tojson }}">
+        <!--NAVIGATION BAR CODE-->
+        <div class="navbar">
+        <!--javaScript-->
+        </div>
+
+        <div class="page-body">
+            <!--SIDEBAR CODE-->
+            <div class="sidebar">
+            <!--javaScript-->
+
+            </div>
+
+            <h1>Add New Project</h1>
+
+            {% for project in projects %}
+                <div class="project">
+                    <h3>{{ project['title'] }}</h3>
+                    <p><strong>Status:</strong> {{ project['status'] }}</p>
+                    <p><strong>Deadline:</strong> {{ project['deadline'] or 'None' }}</p>
+                    <p>{{ project['description'] }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        
+                <div class="form-container">
+                    <form method="POST" action="/add_project">
+                        <p>Enter the project title:</p>
+                        <input type="text" name="title" placeholder="Project Title" required>
+                        <p>Enter the project description:</p>
+                        <textarea name="description" placeholder="Project Description"></textarea>
+                        <p>Enter the project deadline:</p>
+                        <input type="date" name="deadline">
+                
+                        <div class="member-selection">
+                            <h3>Add Project Members</h3>
+                
+                            <div id="member-inputs">
+                                <div class="member-entry">
+                                    <input type="text" name="username_0" placeholder="Enter Username" required>
+                                    <select name="role_0">
+                                        <option value="Participant" selected>Participant</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Owner">Owner</option>
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <button type="button" onclick="addMemberField()">Add Another Member</button>
+                        </div>
+                
+                        <button type="submit">Add Project</button>
+                    </form>                
+                </div>
+                
+                <script>
+                    let memberIndex = 1;
+                
+                    function addMemberField() {
+                        const memberInputs = document.getElementById('member-inputs');
+                        const newMemberEntry = document.createElement('div');
+                        newMemberEntry.classList.add('member-entry');
+                        newMemberEntry.innerHTML = `
+                            <input type="text" name="username_${memberIndex}" placeholder="Enter Username" required>
+                            <select name="role_${memberIndex}">
+                                <option value="Participant" selected>Participant</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Owner">Owner</option>
+                            </select>
+                        `;
+                        memberInputs.appendChild(newMemberEntry);
+                        memberIndex++;
+                    }
+                </script>
+            
+            
+        </div>
+        <script type="module" src="{{ url_for('static', filename='scripts/navigation.js') }}"></script>
+        <script type="module" src="{{ url_for('static', filename='scripts/project_list.js') }}"></script>
+    </body>
+</html>

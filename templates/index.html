@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE project</title>
+    <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/sidebar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/index.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body data-user-logged-in="{{ user_logged_in | tojson }}" data-username="{{ username | tojson }}">
+    <div class="navbar">
+        <!-- JavaScript will fill this -->
+    </div>
+
+    <div class="sidebar">
+        <!-- JavaScript will fill this -->
+    </div>
+
+    <div class="header">
+        <div class="header-text">
+            <h1>Manage your project more efficiently!</h1>
+            <h3>Project Management Book of Knowledge based</h3>
+        </div>
+        <img src="{{ url_for('static', filename='media/index_header.jpg') }}">
+    </div>
+
+    <div class="content-box">
+        <h1>Beloved by imaginary users!</h1> 
+        <div class="review-grid">
+            <div class="review">
+                <div class="review-header">
+                    <img src="{{ url_for('static', filename='media/profile-picture-placeholder.png') }}">
+                    by Pikachu
+                </div>
+                Lorem ipsum dolor sit amet...
+            </div>
+            <div class="review">
+                <div class="review-header">
+                    <img src="{{ url_for('static', filename='media/profile-picture-placeholder.png') }}">
+                    by Beloved Client
+                </div>
+                Lorem ipsum dolor sit amet...
+            </div>
+        </div>
+
+        <div class="about-grid section-header">
+            <div class="feature-desc">
+                <h1>Fresh design and useful features</h1>
+                <p>We empower professionals...</p>
+            </div>
+            <div class="feature-grid">
+                <div class="primary-card js-emoji-switch">&#128187</div>
+                <div class="secondary-card">fast</div>
+                <div class="tertiary-card">pmbok</div>
+                <div class="tertiary-card js-emoji-switch">&#128190</div>
+                <div class="primary-card js-emoji-switch">&#128188</div>
+                <div class="secondary-card">online</div>
+            </div>
+        </div>
+
+        <h1 class="section-header">Meet our team</h1>
+        <div class="team-grid">
+            <!-- JavaScript -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-section">
+            <a href="https://github.com/AnuraagDeshpande/SoftwareSuperProject_repo" target="_blank">
+                project github
+            </a>
+        </div>
+        <div class="footer-section">
+            <a>documentation</a>
+        </div>
+        <div class="footer-section">
+            Completed as part of the Software Engineering course at Constructor University Bremen
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='scripts/navigation.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/index.js') }}"></script>
+</body>
+</html>

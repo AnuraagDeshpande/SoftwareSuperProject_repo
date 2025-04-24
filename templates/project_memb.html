@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Project Members</title>
+    <link rel="stylesheet" href="styles/project_memb.css">
+    <link rel="stylesheet" href="styles/main.css">
+
+</head>
+<body>
+    <div class="top-bar">
+        <button id="addMemberBtn">+ Add Member</button>
+    </div>
+
+    <header class="header">
+        <h1>Project Members</h1>
+        <input type="text" id="searchBox" placeholder="Search for members...">
+    </header>
+
+    <div id="membersContainer" class="members-container">
+        <!-- member cards will be dynamically inserted here -->
+    </div>
+
+    <script src="scripts/project_memb.js"></script>
+   <!--add member modal -->
+<div id="memberModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtn">&times;</span>
+      <h2>Select a User</h2>
+      <div id="userList">
+        <!-- Users from DB will be inserted here -->
+      </div>
+      <div id="assignDetails" style="display:none;">
+        <h3>Assign Role and Task</h3>
+        <form id="assignForm">
+          <input type="text" id="assignRole" placeholder="Role" required />
+          <input type="text" id="assignTask" placeholder="Task" required />
+          <button type="submit">Add to Page</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

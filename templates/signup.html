@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+
+    <!-- CSS -->
+    <link href="{{ url_for('static', filename='styles/signup.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/sidebar.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles/navbar.css') }}" rel="stylesheet"/>
+
+    <!-- JS -->
+    <script type="module" src="{{ url_for('static', filename='scripts/signup-validation.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/navigation.js') }}" defer></script>
+
+    <!-- Font Awesome (optional if used) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <!-- Signup Form -->
+    <div class="page-content">
+        <div class="container">
+            <div class="img-side">
+                <img src="{{ url_for('static', filename='media/form-image.jpg') }}" alt="Form image">
+            </div>
+            <div class="form-side">
+                <h2>Create account</h2>
+                <form id="signup-form" method="POST">
+                    <input type="text" name="full_name" placeholder="Full name" required>
+                    <input type="text" name="username" placeholder="Username" required>
+
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="submit" value="Sign up">
+                </form>
+                <p>Already have an account?
+                    <a href="{{ url_for('login') }}">Login</a>
+                </p>
+            
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
