@@ -1,9 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask_mail import Mail, Message
 import mysql.connector
 from mysql.connector import pooling, Error
 
 app = Flask(__name__)
 app.secret_key = 'new_password'  # Replace with your actual secret key
+
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'noreply.software.superproject@gmail.com'     
+app.config['MAIL_PASSWORD'] = 'buvm jzlm vgzz etpv'           
+app.config['MAIL_DEFAULT_SENDER'] = 'noreply.software.superproject@gmail.com' 
+
+mail = Mail(app)
 
 # MySQL database config
 db_config = {
@@ -13,7 +24,7 @@ db_config = {
     "database": "project_management"
 }
 
-# Set up MySQL connection pool
+# MySQL pool setup
 try:
     mysql_pool = pooling.MySQLConnectionPool(
         pool_name="mypool",
@@ -25,14 +36,27 @@ except Error as e:
     print("Failed to create MySQL pool:", e)
     mysql_pool = None
 
+# Function to send welcome email
+def send_welcome_email(to_email, full_name):
+    try:
+        msg = Message("Welcome to Our Project Management App!",
+                      recipients=[to_email])
+        msg.body = f"""Hi {full_name},
+
+Thank you so much for signing up! We're so thrilled to have you on board.
+
+Best Regards,  
+The Project Management Team (Software Superproject)
+"""
+        mail.send(msg)
+    except Exception as e:
+        print("Error sending email:", e)
 
 @app.route('/')
 def home():
-    # Check if user is logged in and fetch user data
     return render_template('index.html',
                            user_logged_in='user' in session,
                            username=session.get('user'))
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -57,10 +81,12 @@ def signup():
             conn.commit()
             flash("Signup successful! Please login.")
 
+            # Send welcome email
+            send_welcome_email(email, full_name)
+
         except Error as e:
             flash(f"Database error: {e}")
             return redirect(url_for('signup'))
-
         finally:
             if cursor:
                 cursor.close()
@@ -68,6 +94,7 @@ def signup():
                 conn.close()
 
     return render_template('signup.html')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -310,6 +337,7 @@ def delete_project(project_id):
             conn.close()
 
     return redirect(url_for('project_list'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
