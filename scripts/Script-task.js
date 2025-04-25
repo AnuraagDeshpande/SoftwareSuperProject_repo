@@ -17,15 +17,25 @@ document.addEventListener('DOMContentLoaded', function () {
         navLeft.appendChild(link);
     });
 
-
     const navRight = document.createElement("div");
     navRight.classList.add("nav-right");
+    
     const icons = ["fa-gear", "fa-magnifying-glass", "fa-circle-user"];
+    
     icons.forEach(icon_symbol => {
         const icon = document.createElement("i");
         icon.classList.add("fa-solid", icon_symbol);
+    
+        // Check which icon and assign the appropriate redirect
+        if (icon_symbol === "fa-circle-user") {
+            icon.addEventListener("click", () => {
+                window.location.href = "editInfo.html"; // or your desired HTML file
+            });
+        }
+    
         navRight.appendChild(icon);
     });
+    
 
     navbar.appendChild(navLeft);
     navbar.appendChild(navRight);

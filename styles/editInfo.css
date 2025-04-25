@@ -1,0 +1,144 @@
+/* basic layout stuff */
+body {
+    background-color: var(--surface);
+    padding: 20px;
+  }
+  
+  .center-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  /* profile section at top */
+.profile-container {
+  
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+  
+ border-bottom: solid 2px rgb(170, 170, 170);
+    margin-bottom: 50px;
+  
+  }
+  
+  .image-container img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+   
+  }
+  
+  .name-container h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+   
+  }
+  
+  .name-container h2 {
+    margin: 3px 0 0 0;
+    font-size: 15px;
+    color: #666;
+    
+  }
+
+  
+  /* card backgrounds */
+  .card-info {
+    background-color: var(--tertiaryContainer);
+  }
+  
+  .card-avatar {
+    background-color: var(--secondaryContainer);
+  }
+  
+  .card-password {
+    background-color: var(--primaryContainer);
+  }
+  
+  /* shared card styles */
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin: 15px 0;
+    padding: 15px 20px;
+  }
+  
+  /* title at the top of each card */
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .summary-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  /* avatar grid */
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+    justify-items: center;
+  }
+  
+  .avatar-grid label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .avatar-grid img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    transition: 0.2s;
+  }
+  
+  /* hide the actual radio input */
+  .avatar-grid input[type="radio"] {
+    display: none;
+  }
+  
+  /* highlight selected avatar */
+  .avatar-grid input[type="radio"]:checked + img {
+    border-color: #28a745;
+  }
+  
+  /* buttons */
+  .user-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .user-button:hover {
+    background-color: #218838;
+  }
+
