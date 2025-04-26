@@ -10,7 +10,7 @@ class ProjectCharter{
         this.title=title;
         this.desc=desc;
     }
-    
+
     /** save the edited version*/
     save(){
         console.log("saving");
@@ -18,13 +18,18 @@ class ProjectCharter{
 
     /** add a deliverable to the list */
     addDeliverable(del){
-        this.deliverables.push(del);
-        displayCharter();
+        if(!this.deliverables.includes(del)){
+            this.deliverables.push(del);
+            updateDelList();
+            addDelListeners();
+        }
     }
 
     /** remove a deliverable from the list */
     deleteDeliverable(del){
-        this.deliverables = this.deliverables.filter(item => item!=del);
+        this.deliverables = this.deliverables.filter(item => item!==del);
+        updateDelList();
+        addDelListeners();
     }
 
 }
@@ -34,13 +39,13 @@ function loadProjectCharter(){
 }
 
 const charter=loadProjectCharter();
+//display loaded data
 displayCharter();
 
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
         if(key!="deliverables"){
-            console.log(key, charter[key]);
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -60,11 +65,11 @@ function displayCharter(){
             //each property is added to the string
             charter[key].forEach(del =>{
                 innerHTML+=`
-                <button class="blob cool-button list-elem">
+                <button class="blob cool-button list-del" data-del="${del}">
                     ${del}
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                `
+                `;
             });
             field.innerHTML=innerHTML;
         }
@@ -89,5 +94,38 @@ function addListeners(){
             console.error("deliverables field not found or empty");
         }
     });
+    addDelListeners();
+    
+}
+
+function addDelListeners(){
+    //set event listeners to deliverables
+    const deliverables = document.querySelectorAll(".list-del");
+    deliverables.forEach((del)=>{
+        const name = del.dataset.del;
+        del.addEventListener("click",(event)=>{
+            event.preventDefault();
+            charter.deleteDeliverable(name);
+        });
+    });
+}
+
+function updateDelList(){
+    let field=document.querySelector(`#project-deliverables`);
+    let innerHTML="";
+    if(!field) {
+        console.error(`no field deliverables found`);
+        return;
+    }
+    //each property is added to the string
+    charter["deliverables"].forEach(del =>{
+        innerHTML+=`
+        <button class="blob cool-button list-del" data-del="${del}">
+            ${del}
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        `;
+    });
+    field.innerHTML=innerHTML;
 }
 
