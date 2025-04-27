@@ -61,7 +61,8 @@ button::backdrop{
 #project-deliverables{
     display: flex;
     flex-direction: row;
-    gap: var(--mediumGap)
+    gap: var(--mediumGap);
+    flex-wrap: wrap;
 }
 
 .add-deliverable{
