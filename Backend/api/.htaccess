@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /SE_REPO/SoftwareSuperProject_repo/Backend/api/
+
+# Checks if the file or folder are real and if yes, serves them.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise, sends everything to index.php (API router file)
+# This index.php is NOT the websites homepage.
+RewriteRule ^(.*)$ index.php [QSA,L]

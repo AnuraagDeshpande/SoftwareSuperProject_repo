@@ -11,61 +11,72 @@ Please read the comments for assistance. */
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// These are my directories, you need to add your path.
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareProject/PHPMailer/src/Exception.php';
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareProject/PHPMailer/src/PHPMailer.php';
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareProject/PHPMailer/src/SMTP.php';
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// These are my system credentials, everybody can change it regarding their system.
+// These are my directories, you need to add your path.
+require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/Exception.php';
+require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/PHPMailer.php';
+require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/SMTP.php';
+
+// Database connection details (Modify these for your system)
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = ""; //your details
 $dbname = "SoftwareProject";
 
-// Connection created.
+// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-if($conn->connect_error){
-    error_log("Connection failed: " . $conn->connect_error);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Post request method will help us to check the new user provided all the credentials, if value missing,
-// it assigns them as null to prevent errors.
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $Name = isset($_POST['Name']) ? $_POST['Name'] : null;
-    $Surname = isset($_POST['Surname']) ? $_POST['Surname'] : null;
-    $Gender = isset($_POST['Gender']) ? $_POST['Gender'] : null;
-    $Email = isset($_POST['Email']) ? $_POST['Email'] : null;
+    // Get and sanitize input
+    $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : null;
+    $last_name = isset($_POST['last_name']) ? trim($_POST['last_name']) : null;
+    $username = isset($_POST['username']) ? trim($_POST['username']) : null;
+    $email = isset($_POST['email']) ? trim($_POST['email']) : null;
     $LoginPasscode = isset($_POST['LoginPasscode']) ? password_hash($_POST['LoginPasscode'], PASSWORD_DEFAULT) : null;
 
-    if ($Name && $Surname && $Gender && $Email && $LoginPasscode) {
-// Using prepared statements to prevent SQL injection.
-        $sql = "INSERT INTO User (ID, Name, Surname, Gender, Email, LoginPasscode) VALUES (?, ?, ?, ?, ?, ?)";
-
-        if ($stmt = $conn->prepare($sql)) {
-// Here I'm binding the values, i = integer, s = string.
-            $stmt->bind_param("isssss", $nextId, $Name, $Surname, $Gender, $Email, $LoginPasscode);
-// At the end, once the values bound, possible SQL injection would be impossible.
-            if ($stmt->execute()) {
-                sendWelcomeEmail($Email, $Name);
-                echo "New record created successfully!";
-                header("Location: signup.html");
-                exit();
-            } else {
-                echo "Error: " . $stmt->error;
-            }
-
-            $stmt->close();
-        } else {
-            echo "Prepare failed: " . $conn->error;
-        }
-    } else {
-        echo "Error: Missing required fields.";
+    // Validate required fields
+    if (!$first_name || !$last_name || !$username || !$email || !$LoginPasscode) {
+        die("Error: All fields are required.");
     }
+
+    // Check if username or email already exists
+    $checkUser = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+    $checkUser->bind_param("ss", $username, $email);
+    $checkUser->execute();
+    $checkUser->store_result();
+
+    if ($checkUser->num_rows > 0) {
+        die("Error: Username or email already exists.");
+    }
+    $checkUser->close();
+
+    // Insert new user into database
+    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, username, email, LoginPasscode) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $first_name, $last_name, $username, $email, $LoginPasscode);
+
+    if ($stmt->execute()) {
+        sendWelcomeEmail($email, $first_name);
+        header("Location: login.html"); // Redirect to login page
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
+
 $conn->close();
 
-function sendWelcomeEmail($to, $name) {
+function sendWelcomeEmail($to, $first_name) {
     $mail = new PHPMailer(true);
 
     try {
@@ -73,26 +84,28 @@ function sendWelcomeEmail($to, $name) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'xxxx@gmail.com'; // Replace with your Gmail address.
-        $mail->Password = 'xxx'; // Replace with your Gmail app password.
+        $mail->Username = 'noreply.project.management.cu@gmail.com'; // Replace with your Gmail address.
+        $mail->Password = 'djky wqhj fhvo ymcc'; // Replace with your Gmail password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-// Port 587 is used for sending email over SMTP (Simple Mail Transfer Protocol) with STARTTLS encryption. And it's
-// recommended for SMTP services of Google.
         $mail->Port = 587;
 
         $mail->CharSet = 'UTF-8';
         $mail->Encoding = 'base64';
 
-        $mail->setFrom('xxxx@gmail.com', 'Project Management System');
-        $mail->addAddress($to, $name);
+        $mail->setFrom('noreply.project.management.cu@gmail.com', 'Noreply Project Management System');
+        $mail->addAddress($to, $first_name);
 
-        // Email content, if wanted, can be changed.
+        // Email content
         $mail->isHTML(true);
         $mail->Subject = 'Welcome!';
-        $mail->Body    = "Hello $name,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
+        $mail->Body    = "Hello $first_name,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
 
-        $mail->send();
-        echo 'Message has been sent';
+        // Send email
+        if ($mail->send()) {
+            echo 'Message has been sent';
+        } else {
+            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        }
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
