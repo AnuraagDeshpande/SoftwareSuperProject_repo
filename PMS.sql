@@ -8,7 +8,7 @@ CREATE TABLE users (
     last_name VARCHAR(100) NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- Hashed password
+    LoginPasscode VARCHAR(255) NOT NULL, -- Hashed password
     profile_picture VARCHAR(255), -- Optional path to profile picture
     system_role ENUM('Admin', 'User') NOT NULL DEFAULT 'User', -- System-wide role
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
