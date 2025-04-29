@@ -11,20 +11,13 @@
 .nav-left,
 .nav-right {
     display: flex;
+    justify-content: right;
     gap: var(--smallGap);
-}
-
-.nav-left a {
-    text-decoration: none;
-    font-weight: bold;
     padding: var(--tinyGap) var(--smallGap);
-    border-radius: var(--smallRadius);
-    transition: background-color 0.3s, color 0.3s;
 }
 
-.nav-left a:hover {
-    background-color: var(--primary);
-    color: var(--onPrimary);
+.nav-left h2 {
+    margin-left: var(--bigGap);
 }
 
 .nav-right i {
@@ -39,7 +32,6 @@
 .task-overview {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     border-bottom: 2px solid var(--surfaceDim);
     padding: var(--tinyGap) var(--mediumGap);
 }
@@ -109,7 +101,7 @@
 /* -------------------------------------------------
    Task-styles
 ------------------------------------------------- */
-.critical { color: rgba(231, 19, 40, 60%); }
+.urgent { color: rgba(231, 19, 40, 60%); }
 .high { color: rgb(255, 87, 34, 60%); }
 .medium { color: rgb(255, 193, 7, 60%); }
 .low { color: rgb(40, 167, 69, 60%); }
@@ -181,11 +173,12 @@
 /* -------------------------------------------------
    Dialog(Modal)
 ------------------------------------------------- */
-.task-dialog {
+.task-dialog,
+.show_task_modal {
     border: none;
     border-radius: var(--mediumRadius);
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     visibility: hidden;
     opacity: 0;
@@ -193,9 +186,11 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 400px;
 }
 
-.task-dialog[open] {
+.task-dialog[open], 
+.show_task_modal[open] {
     visibility: visible;
     opacity: 1;
 }
@@ -205,19 +200,30 @@ dialog::backdrop {
     background-color: var(--surfaceDim);
 }
 
-.taskmodal-container {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: white;
-    padding: 20px;
-    border-radius: var(--mediumRadius);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.taskmodal-title {
+    width: 100%;
+    padding: var(--smallGap);
 }
 
-.modal-content-container {
+.taskmodal-container,
+.show_task_modal {
     display: flex;
-    gap: var(--mediumGap);
-    padding: var(--tinyGap);
+    flex-direction: column;
+    padding: var(--mediumGap);
+    gap: var(--smallGap);
+}
+
+.taskmodal-btn{
+    display: flex;
+    flex-direction: row;
+    gap: var(--smallGap);
+}
+    
+
+.input-modal {
+    display: flex;
+    gap: var(--smallGap);
+    padding: var(--smallGap);
 }
 
 
@@ -262,16 +268,62 @@ dialog::backdrop {
 ------------------------------------------------- */
 .input-container input,
 .input-container select,
-.modal-content-container input,
-.modal-content-container select,
-.modal-content-container textarea {
+.taskmodal-container input,
+.taskmodal-container select,
+.taskmodal-container textarea {
     padding: var(--smallGap);
     border: 1px solid var(--surfaceDim);
     border-radius: var(--smallRadius);
     background: white;
 }
 
+.taskmodal-container input,
+.taskmodal-container select,
+.taskmodal-container textarea{
+    width: 250px;
+}
+
 .task-search-panel select,
-.modal-content-container select {
+.taskmodal-container select {
     cursor: pointer;
+}
+
+
+
+/*
+-------------------------------------------------
+TASK DETAILS MODAL
+-------------------------------------------------
+*/
+
+
+
+
+@media (max-width: 768px) {
+    .task-overview {
+        margin-top: 0 ;
+        flex-direction: column;
+        gap: var(--smallGap);
+    }
+
+     .task-search-panel{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--smallGap);
+    } 
+
+    .kanban-board {
+        flex-direction: column;
+        gap: var(--smallGap);
+    }
+
+    .kanban-class {
+        margin-bottom: var(--smallGap);
+    }
+
+    .task {
+        width: 100%; 
+        margin-bottom: var(--smallGap);
+    }
+
 }
