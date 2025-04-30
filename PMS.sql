@@ -1,11 +1,10 @@
-CREATE DATABASE IF NOT EXISTS project_management;
-USE project_management;
+CREATE DATABASE IF NOT EXISTS SoftwareProject;
+USE SoftwareProject;
 
 -- Users table: Stores all users
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     LoginPasscode VARCHAR(255) NOT NULL, -- Hashed password
