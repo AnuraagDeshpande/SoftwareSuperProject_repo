@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS SoftwareProject;
-USE SoftwareProject;
+CREATE DATABASE IF NOT EXISTS softwareproject;
+USE softwareproject;
 
 -- Users table: Stores all users
 CREATE TABLE users (
