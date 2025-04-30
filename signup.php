@@ -16,15 +16,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // These are my directories, you need to add your path.
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/Exception.php';
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/PHPMailer.php';
-require '/Applications/XAMPP/xamppfiles/htdocs/SoftwareEngineering/PHPMailer/src/SMTP.php';
+require __DIR__ . '/PHPMailer/src/Exception.php';
+require __DIR__ . '/PHPMailer/src/PHPMailer.php';
+require __DIR__ . '/PHPMailer/src/SMTP.php';
 
 // Database connection details (Modify these for your system)
 $servername = "localhost";
 $username = "root";
 $password = ""; //your details
-$dbname = "SoftwareProject";
+$dbname = "softwareproject";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -37,14 +37,13 @@ if ($conn->connect_error) {
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get and sanitize input
-    $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : null;
-    $last_name = isset($_POST['last_name']) ? trim($_POST['last_name']) : null;
+    $fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : null;
     $username = isset($_POST['username']) ? trim($_POST['username']) : null;
     $email = isset($_POST['email']) ? trim($_POST['email']) : null;
     $LoginPasscode = isset($_POST['LoginPasscode']) ? password_hash($_POST['LoginPasscode'], PASSWORD_DEFAULT) : null;
 
     // Validate required fields
-    if (!$first_name || !$last_name || !$username || !$email || !$LoginPasscode) {
+    if (!$fullname || !$username || !$email || !$LoginPasscode) {
         die("Error: All fields are required.");
     }
 
@@ -60,11 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkUser->close();
 
     // Insert new user into database
-    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, username, email, LoginPasscode) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $first_name, $last_name, $username, $email, $LoginPasscode);
+    $stmt = $conn->prepare("INSERT INTO users (fullname, username, email, LoginPasscode) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $fullname, $username, $email, $LoginPasscode);
 
     if ($stmt->execute()) {
-        sendWelcomeEmail($email, $first_name);
+        sendWelcomeEmail($email, $fullname);
         header("Location: login.html"); // Redirect to login page
         exit();
     } else {
@@ -76,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 
-function sendWelcomeEmail($to, $first_name) {
+function sendWelcomeEmail($to, $fullname) {
     $mail = new PHPMailer(true);
 
     try {
@@ -93,12 +92,12 @@ function sendWelcomeEmail($to, $first_name) {
         $mail->Encoding = 'base64';
 
         $mail->setFrom('noreply.project.management.cu@gmail.com', 'Noreply Project Management System');
-        $mail->addAddress($to, $first_name);
+        $mail->addAddress($to, $fullname);
 
         // Email content
         $mail->isHTML(true);
         $mail->Subject = 'Welcome!';
-        $mail->Body    = "Hello $first_name,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
+        $mail->Body    = "Hello $fullname,<br><br>We are happy to see you between us.<br><br>Regards,<br>Project Management System";
 
         // Send email
         if ($mail->send()) {
