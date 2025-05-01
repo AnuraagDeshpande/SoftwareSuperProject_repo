@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task_priority_label.innerText = "Priority:";
         const task_priority = document.createElement("select");
         task_priority.id = "taskPriority";
-        const priorities = ["urgent", "high", "medium", "low"];
+        const priorities = ["Urgent", "High", "Medium", "Low"];
         priorities.forEach(priority => {
             const option = document.createElement("option");
             option.value = priority;
