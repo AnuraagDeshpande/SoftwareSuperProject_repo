@@ -4,7 +4,8 @@ class ProjectCharter{
     desc="";
     purpose="";
     objective="";
-    deliverables=[];
+    acceptance="";
+    deliverables={};
     //basic constructor
     constructor(title, desc){
         this.title=title;
@@ -18,8 +19,8 @@ class ProjectCharter{
 
     /** add a deliverable to the list */
     addDeliverable(del){
-        if(!this.deliverables.includes(del)){
-            this.deliverables.push(del);
+        if(!(del in this.deliverables)){
+            this.deliverables[del]="";
             updateDelList();
             addDelListeners();
         }
@@ -27,7 +28,9 @@ class ProjectCharter{
 
     /** remove a deliverable from the list */
     deleteDeliverable(del){
-        this.deliverables = this.deliverables.filter(item => item!==del);
+        if(del in this.deliverables){
+            delete this.deliverables[del];
+        }
         updateDelList();
         addDelListeners();
     }
@@ -42,6 +45,7 @@ const charter=loadProjectCharter();
 //display loaded data
 displayCharter();
 
+/** display the initial project charter information */
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
@@ -63,7 +67,7 @@ function displayCharter(){
                 return;
             }
             //each property is added to the string
-            charter[key].forEach(del =>{
+            Object.keys(charter[key]).forEach(del =>{
                 innerHTML+=`
                 <div class="blob cool-button list-del" data-del="${del}">
                     ${del}
@@ -73,12 +77,17 @@ function displayCharter(){
                 `;
             });
             field.innerHTML=innerHTML;
+            //we set the values of the fields
+            Object.keys(charter[key]).forEach(del =>{
+                document.querySelector(`#list-del-${del}`).value = charter[key][del];
+            });
         }
     });
 }
 
 addListeners();
 
+/** add listeners to each button */
 function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
@@ -99,18 +108,27 @@ function addListeners(){
     
 }
 
+/** add event listeners for the blobs for each deliverable */
 function addDelListeners(){
     //set event listeners to deliverables
     const deliverables = document.querySelectorAll(".list-del");
     deliverables.forEach((del)=>{
+        //the deliverable name
         const name = del.dataset.del;
+        //we want delete button to work
         del.querySelector(".delete").addEventListener("click",(event)=>{
             event.preventDefault();
             charter.deleteDeliverable(name);
         });
+        //we want the value to be updated in the variable upon input
+        del.querySelector("input").addEventListener("input",(event)=>{
+            const value = event.target.value;
+            charter.deliverables[name]=value;
+        });
     });
 }
 
+/** update the list of deliverables visuals */
 function updateDelList(){
     let field=document.querySelector(`#project-deliverables`);
     let innerHTML="";
@@ -119,7 +137,7 @@ function updateDelList(){
         return;
     }
     //each property is added to the string
-    charter["deliverables"].forEach(del =>{
+    Object.keys(charter["deliverables"]).forEach(del =>{
         innerHTML+=`
         <div class="blob cool-button list-del" data-del="${del}">
             ${del}
@@ -129,5 +147,9 @@ function updateDelList(){
         `;
     });
     field.innerHTML=innerHTML;
+    //we set the values of the fields
+    Object.keys(charter.deliverables).forEach(del =>{
+        document.querySelector(`#list-del-${del}`).value = charter.deliverables[del];
+    });
 }
 
