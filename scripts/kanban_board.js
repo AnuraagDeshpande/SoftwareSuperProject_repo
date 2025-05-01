@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tasks = [
-        // { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
-        // { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
-        // { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
+        { id: 1, name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
+        { id: 2, name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
+        { id: 3, name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
     ];
 
     const body = document.body;
@@ -228,17 +228,18 @@ document.addEventListener('DOMContentLoaded', function () {
         kanban_board.classList.add("kanban-board");
 
         const columns = [
-            { id: "openTasks", title: "Open" },
-            { id: "devTasks", title: "Development" },
-            { id: "testTasks", title: "In Test" },
-            { id: "closedTasks", title: "Closed" },
-            { id: "abortedTasks", title: "Unresolved" }
+            { id: "openTasks", title: "Open", status: "Open" },
+            { id: "devTasks", title: "Development", status: "Development" },
+            { id: "testTasks", title: "In Test", status: "In Test" },
+            { id: "closedTasks", title: "Closed", status: "Closed" },
+            { id: "abortedTasks", title: "Unresolved", status: "Unresolved" }
         ];
 
         columns.forEach(column => {
             const kanban_class = document.createElement("div");
             kanban_class.classList.add("kanban-class");
             kanban_class.id = column.id;
+            kanban_class.dataset.status = column.status;
 
             const title_element = document.createElement("div");
             title_element.classList.add("kanban-class-title");
@@ -255,14 +256,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function render_tasks() {
+        console.log("Rendering tasks:", tasks);
         const kanban_classes = document.querySelectorAll(".kanban-class");
         kanban_classes.forEach(column => {
             column.querySelectorAll('.task').forEach(task => task.remove());
         });
 
+        const kanban_status = {
+            "Open": "openTasks",
+            "Development": "devTasks",
+            "In Test": "testTasks",
+            "Closed": "closedTasks",
+            "Unresolved": "abortedTasks"
+        };
+
         tasks.forEach(task => {
             const task_div = create_task_element(task);
-            const column = document.querySelector(`.kanban-class[data-status="${task.status}"]`);
+            const column_belong = kanban_status[task.status];
+            const column = document.getElementById(column_belong);
             if (column) {
                 column.appendChild(task_div);
             }
@@ -276,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const task_div = document.createElement("div");
         task_div.classList.add("task");
         task_div.setAttribute("draggable", "true");
+        task_div.dataset.taskId = task.id;
 
         const task_header = create_task_header(task);
         task_div.appendChild(task_header);
@@ -383,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const today = new Date();
 
-
         const task_card = {
             name: title,
             description: description,
@@ -476,7 +487,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     dragged_task.classList.remove("is-dragging");
                     const new_status = zone.dataset.status;
-                    update_task_status(dragged_task.dataset.taskId, new_status);
+                    console.log(dragged_task.dataset.taskId);
+                    update_task_status(dragged_task.dataset.TaskId, new_status);
                 }
             });
         });
@@ -484,26 +496,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function insert_above_task(zone, mouseY) {
         const draggable_elements = [...zone.querySelectorAll(".task:not(.is-dragging)")];
-        return draggable_elements.reduce((closest, task) => {
+        let closest_task = null;
+        let closest_offset = Number.NEGATIVE_INFINITY;
+
+        draggable_elements.forEach(task => {
             const box = task.getBoundingClientRect();
-            const offset = mouseY - box.top - box.height / 2;
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: task };
-            } else {
-                console.log(zone, mouseY);
-                return closest;
+            const offset = mouseY - (box.top + box.height / 2);
+
+            if (offset < 0 && offset > closest_offset) {
+                closest_offset = offset;
+                closest_task = task;
             }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
+        });
+        return closest_task;
 
     }
 
 
-    function update_task_status(dragged_task, new_status) {
+    function update_task_status(taskId, new_status) {
         const task = tasks.find(t => t.id === taskId);
         if (!task) return;
 
+        const updated_task = {
+            id: task.id,
+            name: task.name,
+            priority: task.priority,
+            description: task.description,
+            project: task.project,
+            pm: task.pm,
+            dueDate: task.dueDate,
+            status: new_status
+        }
+
         fetch(`/api/tasks/${taskId}`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 status: new_status,
@@ -651,7 +677,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function search_tasks() {
         const searchValue = document.getElementById("filter-project-name").value.toLowerCase();
         const filter_task = [];
-        const filter_tasks = tasks.filter(task=>{
+        const filter_tasks = tasks.filter(task => {
             const project_name_compare = task.project.toLowerCase().includes(searchValue);
 
         });

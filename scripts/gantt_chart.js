@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch("/api/tasks")
                 .then(res => res.json())
                 .then(taskData => {
-                    const gantt_chart = generate_gantt_chart(taskData,projectData); 
+                    const gantt_chart = generate_gantt_chart(taskData, projectData); 
                     body.appendChild(gantt_chart);
                 })
                 .catch(error => console.error('Error fetching tasks:', error));
