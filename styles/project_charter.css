@@ -8,6 +8,11 @@ form{
     gap: var(--mediumGap);
 }
 
+.input-container{
+    display: grid;
+    gap: var(--smallGap);
+}
+
 form input[type="submit"]{
     margin-top: var(--mediumGap);
     padding: var(--smallGap);
@@ -24,6 +29,10 @@ form input[type="submit"]{
 
 input{
     width: 200px;
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
 }
 textarea{
     padding: var(--smallGap);
@@ -31,6 +40,7 @@ textarea{
     border-radius: var(--smallRadius);
     background: white;
     max-width: 700px;
+    display: block;
 }
 
 .input-container{
