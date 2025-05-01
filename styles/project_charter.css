@@ -11,6 +11,8 @@ form{
 .input-container{
     display: grid;
     gap: var(--smallGap);
+    justify-content: center;
+    text-align: center;
 }
 
 form input[type="submit"]{
@@ -25,6 +27,7 @@ form input[type="submit"]{
     justify-content: center;
     background-color: var(--tertiaryContainer);
     color: var(--onTertiraryContainer);
+    justify-self: center;
 }
 
 input{

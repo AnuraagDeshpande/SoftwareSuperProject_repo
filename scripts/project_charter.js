@@ -48,6 +48,14 @@ class ProjectCharter{
             }
         }
     }
+
+    removeFromList(value,key){
+        if(Object.keys(this).includes(key)){
+            this[key]=this[key].filter(el=>{return el!=value});
+            updateLists();
+            addListListeners();
+        }
+    }
 }
 
 function loadProjectCharter(){
@@ -209,11 +217,12 @@ function addListListeners(){
         const elements = document.querySelectorAll(`.list-${key}`);
         elements.forEach((el)=>{
             //the the name of the element
-            const name = el.dataset.key;
+            const name = el.dataset[key];
             //we want delete button to work
             el.querySelector(".delete").addEventListener("click",(event)=>{
                 event.preventDefault();
-                console.log("deleting");
+                console.log(`want to delete ${name} from ${key}`)
+                charter.removeFromList(name, key);
             });
         });
     });
