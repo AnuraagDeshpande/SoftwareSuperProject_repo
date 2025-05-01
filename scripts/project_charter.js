@@ -8,6 +8,7 @@ class ProjectCharter{
     deliverables={};
     assumptions=[];
     constraints=[];
+    //risks=[];
 
     //basic constructor
     constructor(title, desc){
@@ -71,7 +72,7 @@ function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
         const lists = ["deliverables","assumptions","constraints"];
-        if(!(lists.includes(key))){
+        if(!lists.includes(key)){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -79,6 +80,12 @@ function displayCharter(){
                 return;
             }
             field.value=charter[key];
+
+            //user input should be stored in the variable as they type
+            field.addEventListener("input",(event)=>{
+                const value = event.target.value;
+                charter[key]=value;
+            });
         }
         //deliverables are set differently via inner HTML
         if(key==="deliverables"){
@@ -250,4 +257,19 @@ function updateLists(){
         });
         field.innerHTML=innerHTML;
     });
+}
+
+submitCharter();
+/** submit the data displayed on the page */
+function submitCharter(){
+    const submitBut = document.querySelector('form input[type="submit"]');
+    if(submitBut){
+        submitBut.addEventListener("click", (event)=>{
+            console.log("submitting");
+            event.preventDefault();
+            console.log(charter);
+        });
+    } else {
+        console.error("no submit button found");
+    }
 }
