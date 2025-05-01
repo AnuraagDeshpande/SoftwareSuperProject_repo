@@ -1,15 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tasks = [
-        { name: "Design Website Layout", description: "Create initial design layout for the homepage and contact page.", project: "Website Redesign", dueDate: "May 5, 2025", pm: "Jane Smith", priority: "urgent", status: "Open" },
-        { name: "Develop Login Functionality", description: "Implement login and registration functionality with validation.", project: "Website Redesign", dueDate: "May 10, 2025", pm: "John Doe", priority: "high", status: "Development" },
-        { name: "Test User Authentication", description: "Test the login and registration flow to ensure proper functionality.", project: "Website Redesign", dueDate: "May 15, 2025", pm: "Sarah Lee", priority: "medium", status: "In Test" },
-        { name: "Finalize Branding Guide", description: "Complete branding guide including logo, color palette, and typography.", project: "Branding", dueDate: "May 20, 2025", pm: "Chris Green", priority: "low", status: "Open" },
-        { name: "Fix Mobile Navigation Bug", description: "Resolve issue with mobile navigation not displaying correctly on small screens.", project: "Website Redesign", dueDate: "May 8, 2025", pm: "Alice Brown", priority: "urgent", status: "Development" },
-        { name: "Prepare Client Presentation", description: "Prepare PowerPoint slides and talking points for the client presentation on Monday.", project: "Client Meeting", dueDate: "May 1, 2025", pm: "Robert Black", priority: "high", status: "Open" },
-        { name: "Update Website Terms and Conditions", description: "Update the terms and conditions page with new legal requirements.", project: "Website Redesign", dueDate: "May 12, 2025", pm: "Eve White", priority: "medium", status: "Closed" },
-        { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
-        { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
-        { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
+        // { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
+        // { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
+        // { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
     ];
 
 
@@ -221,6 +214,16 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("task_dialog").close();
     }
 
+    function fetch_tasks() {
+        fetch('/api/tasks')
+            .then(response => response.json())
+            .then(data => {
+                tasks.length = 0;
+                tasks.push(...data);
+                render_tasks();
+            })
+            .catch(error => console.error('Error fetching tasks:', error));
+    }
 
     function create_kanban_board() {
         const kanban_board = document.createElement("div");
@@ -275,6 +278,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         drag_drop();
     }
+
+    
     function create_task_element(task) {
         const task_div = document.createElement("div");
         task_div.classList.add("task");
@@ -396,8 +401,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         };
 
-        tasks.push(task_card);
-        render_tasks();
+        fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task_card),
+        })
+        .then(response => response.json())
+        .then(newTask => {
+            tasks.push(newTask);
+            render_tasks();
+        })
+        .catch(error => console.error('Error adding task:', error));
+
+
 
         document.getElementById("taskTitle").value = "";
         document.getElementById("taskpriority").value = "";
@@ -410,8 +426,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function remove_task(index) {
-        tasks.splice(index, 1);
-        render_tasks();
+        const task = tasks[index];
+
+        fetch(`/api/tasks/${task.id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                tasks.splice(index, 1);
+                render_tasks();
+            } else {
+                console.error('Error deleting task');
+            }
+        })
+        .catch(error => console.error('Error deleting task:', error));
     }
 
     function drag_drop() {
@@ -497,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task_details.classList.add("task-details");
 
         const task_detail_title = document.createElement("h2");
-        task_detail_title.innerText = "Edit Task Detail";
+        task_detail_title.innerText = `Details for: ${task.name}`;
 
         task_details.appendChild(task_detail_title);
 

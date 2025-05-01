@@ -244,9 +244,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return gantt_container;
     }
 
-    const gantt_chart = generate_gantt_chart(tasks);
-    body.appendChild(gantt_chart);
-
     const gantt_legend = document.createElement("div");
     gantt_legend.classList.add("gantt_legend");
     gantt_legend.innerHTML = `
