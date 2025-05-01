@@ -30,6 +30,7 @@ textarea{
     border: 1px solid var(--surfaceDim);
     border-radius: var(--smallRadius);
     background: white;
+    max-width: 700px;
 }
 
 .input-container{
