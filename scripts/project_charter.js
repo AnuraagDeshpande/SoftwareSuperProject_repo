@@ -8,7 +8,7 @@ class ProjectCharter{
     deliverables={};
     assumptions=[];
     constraints=[];
-    //risks=[];
+    risks=[];
 
     //basic constructor
     constructor(title, desc){
@@ -50,6 +50,7 @@ class ProjectCharter{
         }
     }
 
+    /** remove a value from a list indicated by the key */
     removeFromList(value,key){
         if(Object.keys(this).includes(key)){
             this[key]=this[key].filter(el=>{return el!=value});
@@ -71,7 +72,7 @@ displayCharter();
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
-        const lists = ["deliverables","assumptions","constraints"];
+        const lists = ["deliverables","assumptions","constraints","risks"];
         if(!lists.includes(key)){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
@@ -151,7 +152,7 @@ function addListeners(){
         }
     });
     //get the add list fields and add the listeners for them
-    const lists = ["assumptions","constraints"];
+    const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
         let addButton=document.querySelector(`#add-${key}`);
         if(!addButton) {
@@ -219,7 +220,7 @@ function updateDelList(){
 }
 
 function addListListeners(){
-    const lists = ["assumptions","constraints"];
+    const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
         const elements = document.querySelectorAll(`.list-${key}`);
         elements.forEach((el)=>{
@@ -237,7 +238,7 @@ function addListListeners(){
 
 function updateLists(){
     //get the add deliverable field
-    const lists = ["assumptions","constraints"];
+    const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
         //we need to add the list elements
         let field=document.querySelector(`#project-${key}`);
