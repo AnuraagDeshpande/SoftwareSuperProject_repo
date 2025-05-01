@@ -174,7 +174,7 @@
    Dialog(Modal)
 ------------------------------------------------- */
 .task-dialog,
-.show_task_modal {
+.task-detail-modal{
     border: none;
     border-radius: var(--mediumRadius);
     display: flex;
@@ -186,11 +186,11 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
+    width: 500px;
 }
 
 .task-dialog[open], 
-.show_task_modal[open] {
+.task-detail-modal[open] {
     visibility: visible;
     opacity: 1;
 }
@@ -206,14 +206,15 @@ dialog::backdrop {
 }
 
 .taskmodal-container,
-.show_task_modal {
+.task-details {
     display: flex;
     flex-direction: column;
     padding: var(--mediumGap);
     gap: var(--smallGap);
 }
 
-.taskmodal-btn{
+.taskmodal-btn,
+.task-details button{
     display: flex;
     flex-direction: row;
     gap: var(--smallGap);
@@ -296,6 +297,11 @@ TASK DETAILS MODAL
 -------------------------------------------------
 */
 
+task-details{
+    display: flex;
+    flex-direction: column;
+    border: none;
+}
 
 
 

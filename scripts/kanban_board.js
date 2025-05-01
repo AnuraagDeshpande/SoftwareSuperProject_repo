@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const tasks = [
-        { name: "Design Website Layout", description: "Create initial design layout for the homepage and contact page.", project: "Website Redesign", dueDate: "May 5, 2025", assignedBy: "Jane Smith", priority: "urgent", backlog: "Open" },
-        { name: "Develop Login Functionality", description: "Implement login and registration functionality with validation.", project: "Website Redesign", dueDate: "May 10, 2025", assignedBy: "John Doe", priority: "high", backlog: "Development" },
-        { name: "Test User Authentication", description: "Test the login and registration flow to ensure proper functionality.", project: "Website Redesign", dueDate: "May 15, 2025", assignedBy: "Sarah Lee", priority: "medium", backlog: "In Test" },
-        { name: "Finalize Branding Guide", description: "Complete branding guide including logo, color palette, and typography.", project: "Branding", dueDate: "May 20, 2025", assignedBy: "Chris Green", priority: "low", backlog: "Open" },
-        { name: "Fix Mobile Navigation Bug", description: "Resolve issue with mobile navigation not displaying correctly on small screens.", project: "Website Redesign", dueDate: "May 8, 2025", assignedBy: "Alice Brown", priority: "urgent", backlog: "Development" },
-        { name: "Prepare Client Presentation", description: "Prepare PowerPoint slides and talking points for the client presentation on Monday.", project: "Client Meeting", dueDate: "May 1, 2025", assignedBy: "Robert Black", priority: "high", backlog: "Open" },
-        { name: "Update Website Terms and Conditions", description: "Update the terms and conditions page with new legal requirements.", project: "Website Redesign", dueDate: "May 12, 2025", assignedBy: "Eve White", priority: "medium", backlog: "Closed" },
-        { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", assignedBy: "David Black", priority: "low", backlog: "Open" },
-        { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", assignedBy: "John Doe", priority: "urgent", backlog: "Closed" },
-        { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", assignedBy: "Jane Smith", priority: "high", backlog: "Open" }
+        { name: "Design Website Layout", description: "Create initial design layout for the homepage and contact page.", project: "Website Redesign", dueDate: "May 5, 2025", pm: "Jane Smith", priority: "urgent", status: "Open" },
+        { name: "Develop Login Functionality", description: "Implement login and registration functionality with validation.", project: "Website Redesign", dueDate: "May 10, 2025", pm: "John Doe", priority: "high", status: "Development" },
+        { name: "Test User Authentication", description: "Test the login and registration flow to ensure proper functionality.", project: "Website Redesign", dueDate: "May 15, 2025", pm: "Sarah Lee", priority: "medium", status: "In Test" },
+        { name: "Finalize Branding Guide", description: "Complete branding guide including logo, color palette, and typography.", project: "Branding", dueDate: "May 20, 2025", pm: "Chris Green", priority: "low", status: "Open" },
+        { name: "Fix Mobile Navigation Bug", description: "Resolve issue with mobile navigation not displaying correctly on small screens.", project: "Website Redesign", dueDate: "May 8, 2025", pm: "Alice Brown", priority: "urgent", status: "Development" },
+        { name: "Prepare Client Presentation", description: "Prepare PowerPoint slides and talking points for the client presentation on Monday.", project: "Client Meeting", dueDate: "May 1, 2025", pm: "Robert Black", priority: "high", status: "Open" },
+        { name: "Update Website Terms and Conditions", description: "Update the terms and conditions page with new legal requirements.", project: "Website Redesign", dueDate: "May 12, 2025", pm: "Eve White", priority: "medium", status: "Closed" },
+        { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
+        { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
+        { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
     ];
 
 
@@ -50,15 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
         task_overview.appendChild(task_search_panel);
 
         create_search_filters(task_search_panel);
-
-        const search_button = document.createElement("button");
-        search_button.textContent = "Search";
-        search_button.id = "btn-search";
-        search_button.addEventListener('click', search_tasks);
-        task_search_panel.appendChild(search_button);
+        create_task_management_panel(task_overview);
 
         body.appendChild(task_overview);
-        create_task_management_panel(task_overview);
     }
 
 
@@ -74,29 +68,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const label = document.createElement("label");
             label.setAttribute("for", filter.id);
-            label.textContent = filter.label;
+            label.innerText = filter.label;
             input_container.appendChild(label);
 
-            if (filter.type === "text") {
-                const input = document.createElement("input");
-                input.type = filter.type;
-                input.id = filter.id;
-                input.placeholder = filter.placeholder;
-                input_container.appendChild(input);
-            } else if (filter.type === "select") {
-                const select = document.createElement("select");
-                select.id = filter.id;
-                filter.options.forEach(option => {
-                    const option_element = document.createElement("option");
-                    option_element.value = option.toLowerCase().replace(" ", "");
-                    option_element.textContent = option;
-                    select.appendChild(option_element);
-                });
-                input_container.appendChild(select);
-            }
+            const input = document.createElement("input");
+            input.type = filter.type;
+            input.id = filter.id;
+            input.placeholder = filter.placeholder;
+            input_container.appendChild(input);
+
 
             panel.appendChild(input_container);
-        });
+
+        }); 
+
+        const search_button = document.createElement("button");
+        search_button.innerText = "Search";
+        search_button.id = "btn-search";
+        search_button.addEventListener('click', search_tasks);
+        panel.appendChild(search_button);
+
     }
 
     function create_task_management_panel(task_overview) {
@@ -108,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const select_label = document.createElement("label");
         select_label.setAttribute("for", "filter-sort-by");
-        select_label.textContent = "Sort By";
+        select_label.innerText = "Sort By";
         select_container.appendChild(select_label);
 
         const select = document.createElement("select");
@@ -123,19 +114,19 @@ document.addEventListener('DOMContentLoaded', function () {
         panel.appendChild(select_container);
 
         const sortButton = document.createElement("button");
-        sortButton.textContent = "Sort";
+        sortButton.innerText = "Sort";
         sortButton.id = "btn-sort";
         sortButton.addEventListener('click', sort_tasks);
         panel.appendChild(sortButton);
 
         const addButton = document.createElement("button");
-        addButton.textContent = "Add Task";
+        addButton.innerText = "Add Task";
         addButton.id = "btn-add-task";
         addButton.addEventListener('click', open_modal);
         panel.appendChild(addButton);
 
         const printButton = document.createElement("button");
-        printButton.textContent = "Print";
+        printButton.innerText = "Print";
         printButton.id = "btn-print";
         printButton.addEventListener('click', print_tasks);
         panel.appendChild(printButton);
@@ -146,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function create_task_modal() {
         const task_dialog = document.createElement("dialog");
+        task_dialog.id = "task_dialog"
         task_dialog.classList.add("task-dialog");
 
         const task_modal_container = document.createElement("div");
@@ -166,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: "Priority:", id: "taskpriority", type: "select", options: ["None", "Urgent", "High", "Medium", "Low"] },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
             { label: "Project Name:", id: "projectName", type: "text", placeholder: "Enter project name" },
-            { label: "Assigned By:", id: "assignedBy", type: "text", placeholder: "Enter assignee's name" },
+            { label: "Assigned By:", id: "pm", type: "text", placeholder: "Enter assignee's name" },
             { label: "Due Date:", id: "dueDate", type: "date" }
         ];
 
@@ -177,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const label = document.createElement("label");
             label.setAttribute("for", input_val.id);
-            label.textContent = input_val.label;
+            label.innerText = input_val.label;
             input_container.appendChild(label);
 
             if (input_val.type === "select") {
@@ -186,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 input_val.options.forEach(option => {
                     const option_element = document.createElement("option");
                     option_element.value = option.toLowerCase();
-                    option_element.textContent = option;
+                    option_element.innerText = option;
                     select.appendChild(option_element);
                 });
                 input_container.appendChild(select);
@@ -201,27 +193,31 @@ document.addEventListener('DOMContentLoaded', function () {
             modal_container.appendChild(input_container);
         });
 
-        create_task_modal_buttons(modal_container);
-    }
 
-
-    function create_task_modal_buttons(modal_container) {
         const task_modal_buttons = document.createElement("div");
         task_modal_buttons.classList.add("taskmodal-btn");
 
         const add_button = document.createElement("button");
-        add_button.textContent = "Add Task";
+        add_button.innerText = "Add Task";
         add_button.id = "btn-add";
         add_button.addEventListener('click', add_task);
         task_modal_buttons.appendChild(add_button);
 
         const close_button = document.createElement("button");
-        close_button.textContent = "Close";
+        close_button.innerText = "Close";
         close_button.id = "btn-close";
         close_button.addEventListener('click', close_modal);
         task_modal_buttons.appendChild(close_button);
 
         modal_container.appendChild(task_modal_buttons);
+    }
+
+    function open_modal() {
+        document.getElementById("task_dialog").showModal();
+    }
+
+    function close_modal() {
+        document.getElementById("task_dialog").close();
     }
 
 
@@ -245,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const title_element = document.createElement("div");
             title_element.classList.add("kanban-class-title");
             const h3 = document.createElement("h3");
-            h3.textContent = column.title;
+            h3.innerText = column.title;
             title_element.appendChild(h3);
 
             kanban_class.appendChild(title_element);
@@ -270,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         tasks.forEach(task => {
             const task_div = create_task_element(task);
-            const task_column = class_choice[task.backlog];
+            const task_column = class_choice[task.status];
             if (task_column) {
                 task_column.appendChild(task_div);
             }
@@ -329,11 +325,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const task_name = document.createElement("h4");
         task_name.classList.add("task-name");
-        task_name.textContent = task.name;
+        task_name.innerText = task.name;
 
         const task_description = document.createElement("p");
         task_description.classList.add("task-description");
-        task_description.textContent = task.description;
+        task_description.innerText = task.description;
 
         task_body.appendChild(task_name);
         task_body.appendChild(task_description);
@@ -352,26 +348,27 @@ document.addEventListener('DOMContentLoaded', function () {
         due_date.innerHTML = `<i class="fa-solid fa-calendar"></i> Due: ${task.dueDate}`;
 
         const assigned_by = document.createElement("span");
-        assigned_by.innerHTML = `<i class="fa-solid fa-user"></i> Assigned By: ${task.assignedBy}`;
+        assigned_by.innerHTML = `<i class="fa-solid fa-user"></i> Assigned By: ${task.pm}`;
 
-        const backlog_label = document.createElement("span");
-        backlog_label.innerHTML = `<i class="fa-solid fa-clipboard-list"></i> ${task.backlog}`;
+        const status_label = document.createElement("span");
+        status_label.innerHTML = `<i class="fa-solid fa-clipboard-list"></i> ${task.status}`;
 
         task_meta.appendChild(project_name);
         task_meta.appendChild(due_date);
         task_meta.appendChild(assigned_by);
-        task_meta.appendChild(backlog_label);
+        task_meta.appendChild(status_label);
 
         return task_meta;
     }
 
 
     function add_task() {
+
         const title = document.getElementById("taskTitle").value.trim();
         const priority = document.getElementById("taskpriority").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
-        const assigned_by = document.getElementById("assignedBy").value.trim();
+        const assigned_by = document.getElementById("pm").value.trim();
         const due_date = document.getElementById("dueDate").value.trim();
 
         if (!title || !project || !priority || !description || !assigned_by || !due_date) {
@@ -380,21 +377,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const format_date = new Date(due_date);
-        const month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const day = format_date.getDate();
-        const month = month_names[format_date.getMonth()];
-        const year = format_date.getFullYear();
-
-        const formatted_date = `${month} ${day}, ${year}`;
+        const formatted_date = format_date.toLocaleDateString("en-US",{
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    
 
         const task_card = {
             name: title,
             description: description,
             project: project,
             dueDate: formatted_date,
-            assignedBy: assigned_by,
+            pm: assigned_by,
             priority: priority,
-            backlog: "Open"
+            status: "Open"
+
         };
 
         tasks.push(task_card);
@@ -404,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("taskpriority").value = "";
         document.getElementById("taskDescription").value = "";
         document.getElementById("projectName").value = "";
-        document.getElementById("assignedBy").value = "";
+        document.getElementById("pm").value = "";
         document.getElementById("dueDate").value = "";
 
         close_modal();
@@ -413,14 +411,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function remove_task(index) {
         tasks.splice(index, 1);
         render_tasks();
-    }
-
-    function open_modal() {
-        document.querySelector("dialog").showModal();
-    }
-
-    function close_modal() {
-        document.querySelector("dialog").close();
     }
 
     function drag_drop() {
@@ -465,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     dragged_task.classList.remove("is-dragging");
-                    update_task_backlog(dragged_task, closest_task);
+                    update_task_status(dragged_task, closest_task);
                 }
             });
         });
@@ -485,122 +475,126 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // function update_task_backlog(dragged_task, closest_task) {
-    //     const task_name = dragged_task.querySelector(".task-name").textContent;
-    //     const new_backlog = closest_task.backlog_label;
+    // function update_task_status(dragged_task, closest_task) {
+    //     const task_name = dragged_task.querySelector(".task-name").innerText;
+    //     const new_status = closest_task.status_label;
 
     //     const task = tasks.find(t => t.name === task_name);
     //     if (task) {
-    //         task.backlog = new_backlog;
+    //         task.status = new_status;
     //     }
     // }
 
 
     function show_task_details(task) {
-            const show_task_modal = document.createElement("dialog");
-            show_task_modal.classList.add("task-details-modal");
-        
-            const task_details = document.createElement("div");
-            task_details.classList.add("task-details");
-        
-            const task_name_label = document.createElement("label");
-            task_name_label.setAttribute("for", "taskName");
-            task_name_label.textContent = "Task Name:";
-            const task_name = document.createElement("input");
-            task_name.type = "text";
-            task_name.id = "taskName";
-            task_name.value = task.name;
-            task_details.appendChild(task_name_label);
-            task_details.appendChild(task_name);
-        
-            const task_priority_label = document.createElement("label");
-            task_priority_label.setAttribute("for", "taskPriority");
-            task_priority_label.textContent = "Priority:";
-            const task_priority = document.createElement("select");
-            task_priority.id = "taskPriority";
-            const priorities = ["urgent", "high", "medium", "low"];
-            priorities.forEach(priority => {
-                const option = document.createElement("option");
-                option.value = priority;
-                option.textContent = priority; 
-                if (task.priority === priority) option.selected = true;
-                task_priority.appendChild(option);
-            });
-            task_details.appendChild(task_priority_label);
-            task_details.appendChild(task_priority);
-        
-            const task_description_label = document.createElement("label");
-            task_description_label.setAttribute("for", "taskDescription");
-            task_description_label.textContent = "Description:";
-            const task_description = document.createElement("textarea");
-            task_description.id = "taskDescription";
-            task_description.value = task.description;
-            task_details.appendChild(task_description_label);
-            task_details.appendChild(task_description);
-        
-            const task_project_label = document.createElement("label");
-            task_project_label.setAttribute("for", "taskProject");
-            task_project_label.textContent = "Project Name:";
-            const task_project = document.createElement("input");
-            task_project.type = "text";
-            task_project.id = "taskProject";
-            task_project.value = task.project;
-            task_details.appendChild(task_project_label);
-            task_details.appendChild(task_project);
-        
-            const task_assigned_by_label = document.createElement("label");
-            task_assigned_by_label.setAttribute("for", "taskAssignedBy");
-            task_assigned_by_label.textContent = "Assigned By:";
-            const task_assigned_by = document.createElement("input");
-            task_assigned_by.type = "text";
-            task_assigned_by.id = "taskAssignedBy";
-            task_assigned_by.value = task.assignedBy;
-            task_details.appendChild(task_assigned_by_label);
-            task_details.appendChild(task_assigned_by);
-        
-            const task_due_date_label = document.createElement("label");
-            task_due_date_label.setAttribute("for", "taskDueDate");
-            task_due_date_label.textContent = "Due Date:";
-            const task_due_date = document.createElement("input");
-            task_due_date.type = "date";
-            task_due_date.id = "taskDueDate";
-            task_due_date.value = task.dueDate;
-            task_details.appendChild(task_due_date_label);
-            task_details.appendChild(task_due_date);
-        
-            const save_button = document.createElement("button");
-            save_button.textContent = "Save Changes";
-            save_button.addEventListener('click', () => {
-                task.name = task_name.value;
-                task.priority = task_priority.value;
-                task.description = task_description.value;
-                task.project = task_project.value;
-                task.assignedBy = task_assigned_by.value;
-                task.dueDate = task_due_date.value;
-        
-                show_task_modal.close();
-            });
-        
-            const close_button = document.createElement("button");
-            close_button.textContent = "Close";
-            close_button.addEventListener('click', () => {
-                show_task_modal.close();
-            });
-        
-            task_details.appendChild(save_button);
-            task_details.appendChild(close_button);
-        
-            show_task_modal.appendChild(task_details);
-            document.body.appendChild(show_task_modal);
-        
-            show_task_modal.showModal();
-    }
-        
-    function search_tasks() {
-        const searchValue = document.getElementById("search-box").value.toLowerCase();
-        const filteredTasks = tasks.filter(task => {
-            return task.name.toLowerCase().includes(searchValue) || task.description.toLowerCase().includes(searchValue);
+        const show_task_modal = document.createElement("dialog");
+        show_task_modal.classList.add("task-detail-modal");
+
+        const task_details = document.createElement("div");
+        task_details.classList.add("task-details");
+
+        const task_name_label = document.createElement("label");
+        task_name_label.setAttribute("for", "taskName");
+        task_name_label.innerText = "Task Name:";
+        const task_name = document.createElement("input");
+        task_name.type = "text";
+        task_name.id = "taskName";
+        task_name.value = task.name;
+        task_details.appendChild(task_name_label);
+        task_details.appendChild(task_name);
+
+        const task_priority_label = document.createElement("label");
+        task_priority_label.setAttribute("for", "taskPriority");
+        task_priority_label.innerText = "Priority:";
+        const task_priority = document.createElement("select");
+        task_priority.id = "taskPriority";
+        const priorities = ["urgent", "high", "medium", "low"];
+        priorities.forEach(priority => {
+            const option = document.createElement("option");
+            option.value = priority;
+            option.innerText = priority;
+            if (task.priority === priority) option.selected = true;
+            task_priority.appendChild(option);
         });
+        task_details.appendChild(task_priority_label);
+        task_details.appendChild(task_priority);
+
+        const task_description_label = document.createElement("label");
+        task_description_label.setAttribute("for", "taskDescription");
+        task_description_label.innerText = "Description:";
+        const task_description = document.createElement("textarea");
+        task_description.id = "taskDescription";
+        task_description.value = task.description;
+        task_details.appendChild(task_description_label);
+        task_details.appendChild(task_description);
+
+        const task_project_label = document.createElement("label");
+        task_project_label.setAttribute("for", "taskProject");
+        task_project_label.innerText = "Project Name:";
+        const task_project = document.createElement("input");
+        task_project.type = "text";
+        task_project.id = "taskProject";
+        task_project.value = task.project;
+        task_details.appendChild(task_project_label);
+        task_details.appendChild(task_project);
+
+        const task_assigned_by_label = document.createElement("label");
+        task_assigned_by_label.setAttribute("for", "taskpm");
+        task_assigned_by_label.innerText = "Assigned By:";
+        const task_assigned_by = document.createElement("input");
+        task_assigned_by.type = "text";
+        task_assigned_by.id = "taskpm";
+        task_assigned_by.value = task.pm;
+        task_details.appendChild(task_assigned_by_label);
+        task_details.appendChild(task_assigned_by);
+
+        const task_due_date_label = document.createElement("label");
+        task_due_date_label.setAttribute("for", "taskDueDate");
+        task_due_date_label.innerText = "Due Date:";
+        const task_due_date = document.createElement("input");
+        task_due_date.type = "date";
+        task_due_date.id = "taskDueDate";
+        task_due_date.value = task.dueDate;
+        task_details.appendChild(task_due_date_label);
+        task_details.appendChild(task_due_date);
+
+        const save_button = document.createElement("button");
+        save_button.innerText = "Save Changes";
+        save_button.addEventListener('click', () => {
+            task.name = task_name.value;
+            task.priority = task_priority.value;
+            task.description = task_description.value;
+            task.project = task_project.value;
+            task.pm = task_assigned_by.value;
+            task.dueDate = task_due_date.value;
+
+            show_task_modal.close();
+        });
+
+        const close_button = document.createElement("button");
+        close_button.innerText = "Close";
+        close_button.addEventListener('click', () => {
+            show_task_modal.close();
+        });
+
+        task_details.appendChild(save_button);
+        task_details.appendChild(close_button);
+
+        show_task_modal.appendChild(task_details);
+        document.body.appendChild(show_task_modal);
+
+        show_task_modal.showModal();
+    }
+
+    function search_tasks() {
+        const searchValue = document.getElementById("filter-project-name").value.toLowerCase();
+        const filter_task = [];
+        const filter_tasks = tasks.filter(task=>{
+            const project_name_compare = task.project.toLowerCase().includes(searchValue);
+
+        });
+
+      
         render_tasks();
     }
 
@@ -628,15 +622,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         render_tasks();
     }
-    
+
     function sort_by_priority() {
         tasks.sort((a, b) => {
-            const priority_order = { urgent: 1, high: 2, medium: 3, low: 4  };
+            const priority_order = { urgent: 1, high: 2, medium: 3, low: 4 };
             return priority_order[a.priority] - priority_order[b.priority];
         });
         render_tasks();
     }
-    
+
     function sort_by_deadline() {
         tasks.sort((a, b) => {
             const date_a = new Date(a.dueDate);

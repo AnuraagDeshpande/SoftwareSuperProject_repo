@@ -101,16 +101,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const tasks = [
-        { name: "Research", startDate: "2025-04-01", endDate: "2025-04-10", status: "closed" },
-        { name: "Wireframes", startDate: "2025-04-11", endDate: "2025-04-25", status: "development" },
-        { name: "Prototype", startDate: "2025-04-26", endDate: "2025-05-10", status: "in-test" },
-        { name: "Design", startDate: "2025-04-11", endDate: "2025-05-19", status: "closed" },
-        { name: "Deployment", startDate: "2025-04-02", endDate: "2025-06-01", status: "aborted" },
-        { name: "Planning", startDate: "2025-04-01", endDate: "2025-04-15", status: "development" },
-        { name: "Initial Review", startDate: "2025-04-16", endDate: "2025-04-20", status: "open" },
-        { name: "Final Design", startDate: "2025-04-21", endDate: "2025-05-10", status: "closed" },
-        { name: "User Testing", startDate: "2025-05-11", endDate: "2025-05-20", status: "in-test" },
-        { name: "Release", startDate: "2025-05-21", endDate: "2025-06-01", status: "development" }
+        { name: "Research", startDate: "2025-04-01", dueDate: "2025-04-10", status: "closed" },
+        { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "development" },
+        { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "in-test" },
+        { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "closed" },
+        { name: "Deployment", startDate: "2025-04-02", dueDate: "2025-06-01", status: "aborted" },
+        { name: "Planning", startDate: "2025-04-01", dueDate: "2025-04-15", status: "development" },
+        { name: "Initial Review", startDate: "2025-04-16", dueDate: "2025-04-20", status: "open" },
+        { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "closed" },
+        { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "in-test" },
+        { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "development" }
     ];
 
 
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const start = new Date(task.startDate);
-            const end = new Date(task.endDate);
+            const end = new Date(task.dueDate);
             const offset = Math.floor((start - start_date_chart) / microsecond_perday);
             const duration = Math.floor((end - start) / microsecond_perday) + 1;
 
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
             gantt_span.id = task.status;
 
             const today = new Date();
-            if (new Date(task.endDate) < today && task.status !== "closed") {
+            if (new Date(task.dueDate) < today && task.status !== "closed") {
                 gantt_span.style.backgroundColor = "rgba(255, 0, 0, 0.6)";
                 gantt_span.id = "overdue";
             }
