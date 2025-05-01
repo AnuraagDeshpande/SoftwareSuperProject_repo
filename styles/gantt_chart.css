@@ -197,7 +197,6 @@
     color: var(--onSurface);
 }
 
-
 @media (max-width: 768px) {
     #project_overview {
         padding: 20px;

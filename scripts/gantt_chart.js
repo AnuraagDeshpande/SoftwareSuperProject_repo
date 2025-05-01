@@ -228,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const gantt_chart = generate_gantt_chart(tasks);
     body.appendChild(gantt_chart);
 
-    const ganttLegend = document.createElement("div");
-    ganttLegend.classList.add("gantt_legend");
-    ganttLegend.innerHTML = `
+    const gantt_legend = document.createElement("div");
+    gantt_legend.classList.add("gantt_legend");
+    gantt_legend.innerHTML = `
     <div class="legend_item" style="background-color: rgb(40, 167, 69, 40%);"><i class="fa-solid fa-folder-open"></i><span>Open</span></div>
     <div class="legend_item" style="background-color: rgb(119, 221, 119, 40%);"><i class="fa-solid fa-code"></i><span>Development</span></div>
     <div class="legend_item" style="background-color: rgb(244, 197, 66, 40%);"><i class="fa-solid fa-vial"></i><span>In Test</span></div>
@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="legend_item" style="background-color: hsla(271, 76%, 53%, 40%);"><i class="fa-solid fa-ban"></i><span>Aborted</span></div>
     <div class="legend_item" style="background-color: rgba(255, 0, 0, 0.6);"><i class="fa-solid fa-exclamation-triangle"></i><span>Overdue</span></div>
 `;
-    body.appendChild(ganttLegend);
+    body.appendChild(gantt_legend);
+
 });
 

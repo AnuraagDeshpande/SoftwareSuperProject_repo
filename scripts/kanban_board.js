@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
     const tasks = [
         { name: "Design Website Layout", description: "Create initial design layout for the homepage and contact page.", project: "Website Redesign", dueDate: "May 5, 2025", pm: "Jane Smith", priority: "urgent", status: "Open" },
         { name: "Develop Login Functionality", description: "Implement login and registration functionality with validation.", project: "Website Redesign", dueDate: "May 10, 2025", pm: "John Doe", priority: "high", status: "Development" },
