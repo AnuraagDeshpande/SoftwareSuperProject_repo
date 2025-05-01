@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const tasks = [
+    let tasks = [
         // { name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
         // { name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
         // { name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
     ];
-
 
     const body = document.body;
 
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             panel.appendChild(input_container);
 
-        }); 
+        });
 
         const search_button = document.createElement("button");
         search_button.innerText = "Search";
@@ -218,8 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/tasks')
             .then(response => response.json())
             .then(data => {
-                tasks.length = 0;
-                tasks.push(...data);
+                tasks = data;
                 render_tasks();
             })
             .catch(error => console.error('Error fetching tasks:', error));
@@ -257,29 +255,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function render_tasks() {
-        const class_choice = {
-            "Open": document.getElementById("openTasks"),
-            "Development": document.getElementById("devTasks"),
-            "In Test": document.getElementById("testTasks"),
-            "Closed": document.getElementById("closedTasks"),
-            "Unresolved": document.getElementById("abortedTasks")
-        };
         const kanban_classes = document.querySelectorAll(".kanban-class");
         kanban_classes.forEach(column => {
             column.querySelectorAll('.task').forEach(task => task.remove());
         });
+
         tasks.forEach(task => {
             const task_div = create_task_element(task);
-            const task_column = class_choice[task.status];
-            if (task_column) {
-                task_column.appendChild(task_div);
+            const column = document.querySelector(`.kanban-class[data-status="${task.status}"]`);
+            if (column) {
+                column.appendChild(task_div);
             }
         });
 
         drag_drop();
     }
 
-    
+
     function create_task_element(task) {
         const task_div = document.createElement("div");
         task_div.classList.add("task");
@@ -320,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
         options_link.appendChild(options_icon);
         task_header.appendChild(options_link);
 
-        options_link.addEventListener("click", () => remove_task(tasks.indexOf(task)));
+        options_link.addEventListener("click", () => remove_task(tasks.id));
 
         return task_header;
     }
@@ -383,12 +375,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const format_date = new Date(due_date);
-        const formatted_date = format_date.toLocaleDateString("en-US",{
+        const formatted_date = format_date.toLocaleDateString("en-US", {
             month: 'long',
             day: 'numeric',
             year: 'numeric'
         });
-    
+
+        const today = new Date();
+
 
         const task_card = {
             name: title,
@@ -397,7 +391,8 @@ document.addEventListener('DOMContentLoaded', function () {
             dueDate: formatted_date,
             pm: assigned_by,
             priority: priority,
-            status: "Open"
+            status: "Open",
+            startDate: today
 
         };
 
@@ -406,14 +401,12 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(task_card),
         })
-        .then(response => response.json())
-        .then(newTask => {
-            tasks.push(newTask);
-            render_tasks();
-        })
-        .catch(error => console.error('Error adding task:', error));
-
-
+            .then(response => response.json())
+            .then(newTask => {
+                tasks.push(newTask);
+                render_tasks();
+            })
+            .catch(error => console.error('Error adding task:', error));
 
         document.getElementById("taskTitle").value = "";
         document.getElementById("taskpriority").value = "";
@@ -425,21 +418,19 @@ document.addEventListener('DOMContentLoaded', function () {
         close_modal();
     }
 
-    function remove_task(index) {
-        const task = tasks[index];
-
-        fetch(`/api/tasks/${task.id}`, {
+    function remove_task(taskID) {
+        fetch(`/api/tasks/${taskID}`, {
             method: 'DELETE',
         })
-        .then(response => {
-            if (response.ok) {
-                tasks.splice(index, 1);
-                render_tasks();
-            } else {
-                console.error('Error deleting task');
-            }
-        })
-        .catch(error => console.error('Error deleting task:', error));
+            .then(response => {
+                if (response.ok) {
+                    tasks = tasks.filter(task => task.id !== taskID);
+                    render_tasks();
+                } else {
+                    console.error('Error deleting task');
+                }
+            })
+            .catch(error => console.error('Error deleting task:', error));
     }
 
     function drag_drop() {
@@ -484,7 +475,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     dragged_task.classList.remove("is-dragging");
-                   // update_task_status(dragged_task, closest_task);
+                    const new_status = zone.dataset.status;
+                    update_task_status(dragged_task.dataset.taskId, new_status);
                 }
             });
         });
@@ -498,23 +490,31 @@ document.addEventListener('DOMContentLoaded', function () {
             if (offset < 0 && offset > closest.offset) {
                 return { offset: offset, element: task };
             } else {
-                console.log(zone , mouseY);
+                console.log(zone, mouseY);
                 return closest;
             }
         }, { offset: Number.NEGATIVE_INFINITY }).element;
-      
+
     }
 
 
-    // function update_task_status(dragged_task, closest_task) {
-    //     const task_name = dragged_task.querySelector(".task-name").innerText;
-    //     const new_status = closest_task.status_label;
+    function update_task_status(dragged_task, new_status) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
 
-    //     const task = tasks.find(t => t.name === task_name);
-    //     if (task) {
-    //         task.status = new_status;
-    //     }
-    // }
+        fetch(`/api/tasks/${taskId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                status: new_status,
+            }),
+        })
+            .then(response => response.json())
+            .then(updatedTask => {
+                task.status = updatedTask.status;
+            })
+            .catch(error => console.error('Error updating task:', error));
+    }
 
 
     function show_task_details(task) {
@@ -601,13 +601,16 @@ document.addEventListener('DOMContentLoaded', function () {
         save_button.innerText = "Save";
         save_button.id = "btn-add";
         save_button.addEventListener('click', () => {
-            task.name = task_name.value;
-            task.priority = task_priority.value;
-            task.description = task_description.value;
-            task.project = task_project.value;
-            task.pm = task_assigned_by.value;
-            task.dueDate = task_due_date.value;
-
+            update_task({
+                id: task.id,
+                name: task_name.value,
+                priority: task_priority.value,
+                description: task_description.value,
+                project: task_project.value,
+                pm: task_assigned_by.value,
+                dueDate: task_due_date.value,
+                status: task.status
+            });
             show_task_modal.close();
         });
 
@@ -620,13 +623,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         task_detail_btn.appendChild(save_button);
         task_detail_btn.appendChild(close_button);
-
         task_details.appendChild(task_detail_btn);
 
         show_task_modal.appendChild(task_details);
         body.appendChild(show_task_modal);
 
         show_task_modal.showModal();
+    }
+
+    function update_task(updated_task) {
+        fetch(`/api/tasks/${updated_task.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated_task),
+        })
+            .then(response => response.json())
+            .then(task => {
+                const index = tasks.findIndex(t => t.id === task.id);
+                if (index !== -1) {
+                    tasks[index] = task;
+                    render_tasks();
+                }
+            })
+            .catch(error => console.error('Error updating task:', error));
     }
 
     function search_tasks() {
@@ -637,7 +656,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         });
 
-      
+
         render_tasks();
     }
 
@@ -709,5 +728,6 @@ document.addEventListener('DOMContentLoaded', function () {
     create_task_modal();
     create_kanban_board();
     render_tasks();
+    fetch_tasks();
 
 });
