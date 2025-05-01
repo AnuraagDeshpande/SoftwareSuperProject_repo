@@ -162,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: "Due Date:", id: "dueDate", type: "date" }
         ];
 
+        modal_container.appendChild(taskmodal_title);
+
         modal_content.forEach(input_val => {
 
             const input_container = document.createElement("div");
@@ -455,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     dragged_task.classList.remove("is-dragging");
-                    update_task_status(dragged_task, closest_task);
+                   // update_task_status(dragged_task, closest_task);
                 }
             });
         });
@@ -469,9 +471,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (offset < 0 && offset > closest.offset) {
                 return { offset: offset, element: task };
             } else {
+                console.log(zone , mouseY);
                 return closest;
             }
         }, { offset: Number.NEGATIVE_INFINITY }).element;
+      
     }
 
 
@@ -492,6 +496,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const task_details = document.createElement("div");
         task_details.classList.add("task-details");
+
+        const task_detail_title = document.createElement("h2");
+        task_detail_title.innerText = "Edit Task Detail";
+
+        task_details.appendChild(task_detail_title);
 
         const task_name_label = document.createElement("label");
         task_name_label.setAttribute("for", "taskName");
@@ -558,8 +567,12 @@ document.addEventListener('DOMContentLoaded', function () {
         task_details.appendChild(task_due_date_label);
         task_details.appendChild(task_due_date);
 
+        const task_detail_btn = document.createElement("div");
+        task_detail_btn.classList.add("task-detail-btn");
+
         const save_button = document.createElement("button");
-        save_button.innerText = "Save Changes";
+        save_button.innerText = "Save";
+        save_button.id = "btn-add";
         save_button.addEventListener('click', () => {
             task.name = task_name.value;
             task.priority = task_priority.value;
@@ -573,15 +586,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const close_button = document.createElement("button");
         close_button.innerText = "Close";
+        close_button.id = "btn-close";
         close_button.addEventListener('click', () => {
             show_task_modal.close();
         });
 
-        task_details.appendChild(save_button);
-        task_details.appendChild(close_button);
+        task_detail_btn.appendChild(save_button);
+        task_detail_btn.appendChild(close_button);
+
+        task_details.appendChild(task_detail_btn);
 
         show_task_modal.appendChild(task_details);
-        document.body.appendChild(show_task_modal);
+        body.appendChild(show_task_modal);
 
         show_task_modal.showModal();
     }

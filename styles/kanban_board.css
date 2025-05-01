@@ -187,6 +187,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
+    padding: var(--mediumGap);
 }
 
 .task-dialog[open], 
@@ -200,7 +201,8 @@ dialog::backdrop {
     background-color: var(--surfaceDim);
 }
 
-.taskmodal-title {
+.taskmodal-title ,
+.task-details h2{
     width: 100%;
     padding: var(--smallGap);
 }
@@ -214,7 +216,7 @@ dialog::backdrop {
 }
 
 .taskmodal-btn,
-.task-details button{
+.task-detail-btn{
     display: flex;
     flex-direction: row;
     gap: var(--smallGap);
@@ -252,7 +254,8 @@ dialog::backdrop {
 
 .task-search-panel button,
 .task-management-panel button,
-.taskmodal-btn button {
+.taskmodal-btn button,
+.task-detail-modal button {
     margin-top: var(--mediumGap);
     padding: var(--smallGap);
     border: none;
@@ -271,7 +274,10 @@ dialog::backdrop {
 .input-container select,
 .taskmodal-container input,
 .taskmodal-container select,
-.taskmodal-container textarea {
+.taskmodal-container textarea,
+.task-detail-modal input,
+.task-detail-modal textarea,
+.task-detail-modal select {
     padding: var(--smallGap);
     border: 1px solid var(--surfaceDim);
     border-radius: var(--smallRadius);
@@ -280,8 +286,11 @@ dialog::backdrop {
 
 .taskmodal-container input,
 .taskmodal-container select,
-.taskmodal-container textarea{
-    width: 250px;
+.taskmodal-container textarea,
+.task-detail-modal input,
+.task-detail-modal textarea,
+.task-detail-modal select{
+    width: 400px;
 }
 
 .task-search-panel select,
@@ -297,11 +306,7 @@ TASK DETAILS MODAL
 -------------------------------------------------
 */
 
-task-details{
-    display: flex;
-    flex-direction: column;
-    border: none;
-}
+
 
 
 
