@@ -6,6 +6,9 @@ class ProjectCharter{
     objective="";
     acceptance="";
     deliverables={};
+    assumptions=[];
+    constraints=[];
+
     //basic constructor
     constructor(title, desc){
         this.title=title;
@@ -35,6 +38,16 @@ class ProjectCharter{
         addDelListeners();
     }
 
+    /** add to a list in the instance */
+    addToList(value, key){
+        if(Object.keys(this).includes(key)){
+            if(!this[key].includes(value)){
+                this[key].push(value);
+                updateLists();
+                addListListeners();
+            }
+        }
+    }
 }
 
 function loadProjectCharter(){
@@ -49,7 +62,8 @@ displayCharter();
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
-        if(key!="deliverables"){
+        const lists = ["deliverables","assumptions","constraints"];
+        if(!(lists.includes(key))){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -81,6 +95,23 @@ function displayCharter(){
             Object.keys(charter[key]).forEach(del =>{
                 document.querySelector(`#list-del-${del}`).value = charter[key][del];
             });
+        } else if(lists.includes(key)){
+            //we need to add the list elements
+            let field=document.querySelector(`#project-${key}`);
+            let innerHTML="";
+            if(!field) {
+                console.error(`no field ${key} found`);
+                return;
+            }
+            //each property is added to the string
+            Object.keys(charter[key]).forEach(elem =>{
+                innerHTML+=`
+                <div class="blob cool-button list-${key}" data-${key}="${elem}">
+                    ${elem}
+                    <i class="fa fa-times delete" aria-hidden="true"></i>
+                </div>
+                `;
+            });
         }
     });
 }
@@ -104,7 +135,26 @@ function addListeners(){
             console.error("deliverables field not found or empty");
         }
     });
+    //get the add list fields and add the listeners for them
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        let addButton=document.querySelector(`#add-${key}`);
+        if(!addButton) {
+            console.error(`no add ${key} button found found`);
+            return;
+        }
+        addButton.addEventListener("click",(event)=>{
+            event.preventDefault();
+            const newList = document.querySelector(`#${key}`);
+            if(newList && newList.value!=""){
+                charter.addToList(newList.value, key);
+            } else{
+                console.error(`${key} field not found or empty`);
+            }
+        });
+    });
     addDelListeners();
+    addListListeners();
     
 }
 
@@ -153,3 +203,42 @@ function updateDelList(){
     });
 }
 
+function addListListeners(){
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        const elements = document.querySelectorAll(`.list-${key}`);
+        elements.forEach((el)=>{
+            //the the name of the element
+            const name = el.dataset.key;
+            //we want delete button to work
+            el.querySelector(".delete").addEventListener("click",(event)=>{
+                event.preventDefault();
+                console.log("deleting");
+            });
+        });
+    });
+}
+
+function updateLists(){
+    //get the add deliverable field
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        //we need to add the list elements
+        let field=document.querySelector(`#project-${key}`);
+        let innerHTML="";
+        if(!field) {
+            console.error(`no field ${key} found`);
+            return;
+        }
+        //each property is added to the string
+        (charter[key]).forEach(elem =>{
+            innerHTML+=`
+            <div class="blob cool-button list-${key}" data-${key}="${elem}">
+                ${elem}
+                <i class="fa fa-times delete" aria-hidden="true"></i>
+            </div>
+            `;
+        });
+        field.innerHTML=innerHTML;
+    });
+}
