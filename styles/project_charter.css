@@ -61,7 +61,7 @@ button::backdrop{
     border-radius: var(--mediumGap);
     cursor: pointer;
     display: flex;
-    align-items: end;
+    align-items: center;
     justify-content: center;
     background-color: var(--primaryContainer);
     color: var(--onContainer);
