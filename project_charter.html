@@ -40,9 +40,10 @@
                     <label for="project-objective">Objective:</label>
                     <textarea type="text" id="project-objective" placeholder="Project objective" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea>
                     <label for="project-accept-crt">Acceptance criteria:</label>
-                    <input type="text" id="project-accept-crt" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" >
+                    <input type="text" id="project-acceptance" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" >
                     <!--adding a deliverable-->
                     <h2>Other info</h2>
+                    <!--DELIVERABLES-->
                     <label for="deliverables">Deliverables:</label>
                     <div class="input-container add-deliverable">
                         <input type="text" id="deliverables" placeholder="New deliverable" pattern="[A-Za-z0-9 ,.]+" >
@@ -50,7 +51,29 @@
                             Add
                         </button>
                     </div>
-                    <div id="project-deliverables">
+                    <div id="project-deliverables" class="project-list">
+                        <!--javascript-->
+                    </div>
+                    <!--ASSUMPTIONS-->
+                    <label for="assumptions">Assumptions:</label>
+                    <div class="input-container add-deliverable">
+                        <input type="text" id="assumptions" placeholder="New assumption" pattern="[A-Za-z0-9 ,.]+" >
+                        <button id="add-assumptions"class="blob cool-button">
+                            Add
+                        </button>
+                    </div>
+                    <div id="project-assumptions" class="project-list">
+                        <!--javascript-->
+                    </div>
+                    <!--CONSTRAINTS-->
+                    <label for="constraints">Constraints:</label>
+                    <div class="input-container add-deliverable">
+                        <input type="text" id="constraints" placeholder="New constraint" pattern="[A-Za-z0-9 ,.]+" >
+                        <button id="add-constraints"class="blob cool-button">
+                            Add
+                        </button>
+                    </div>
+                    <div id="project-constraints" class="project-list">
                         <!--javascript-->
                     </div>
                     <input type="submit" class="cool-button" value="Submit">

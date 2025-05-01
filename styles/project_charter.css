@@ -69,7 +69,7 @@ button::backdrop{
     gap: var(--mediumGap);
 }
 
-#project-deliverables{
+.project-list{
     display: flex;
     flex-direction: row;
     gap: var(--mediumGap);

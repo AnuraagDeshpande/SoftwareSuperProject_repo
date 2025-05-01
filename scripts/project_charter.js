@@ -4,7 +4,11 @@ class ProjectCharter{
     desc="";
     purpose="";
     objective="";
-    deliverables=[];
+    acceptance="";
+    deliverables={};
+    assumptions=[];
+    constraints=[];
+
     //basic constructor
     constructor(title, desc){
         this.title=title;
@@ -18,8 +22,8 @@ class ProjectCharter{
 
     /** add a deliverable to the list */
     addDeliverable(del){
-        if(!this.deliverables.includes(del)){
-            this.deliverables.push(del);
+        if(!(del in this.deliverables)){
+            this.deliverables[del]="";
             updateDelList();
             addDelListeners();
         }
@@ -27,11 +31,23 @@ class ProjectCharter{
 
     /** remove a deliverable from the list */
     deleteDeliverable(del){
-        this.deliverables = this.deliverables.filter(item => item!==del);
+        if(del in this.deliverables){
+            delete this.deliverables[del];
+        }
         updateDelList();
         addDelListeners();
     }
 
+    /** add to a list in the instance */
+    addToList(value, key){
+        if(Object.keys(this).includes(key)){
+            if(!this[key].includes(value)){
+                this[key].push(value);
+                updateLists();
+                addListListeners();
+            }
+        }
+    }
 }
 
 function loadProjectCharter(){
@@ -42,10 +58,12 @@ const charter=loadProjectCharter();
 //display loaded data
 displayCharter();
 
+/** display the initial project charter information */
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
-        if(key!="deliverables"){
+        const lists = ["deliverables","assumptions","constraints"];
+        if(!(lists.includes(key))){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -63,7 +81,7 @@ function displayCharter(){
                 return;
             }
             //each property is added to the string
-            charter[key].forEach(del =>{
+            Object.keys(charter[key]).forEach(del =>{
                 innerHTML+=`
                 <div class="blob cool-button list-del" data-del="${del}">
                     ${del}
@@ -73,12 +91,34 @@ function displayCharter(){
                 `;
             });
             field.innerHTML=innerHTML;
+            //we set the values of the fields
+            Object.keys(charter[key]).forEach(del =>{
+                document.querySelector(`#list-del-${del}`).value = charter[key][del];
+            });
+        } else if(lists.includes(key)){
+            //we need to add the list elements
+            let field=document.querySelector(`#project-${key}`);
+            let innerHTML="";
+            if(!field) {
+                console.error(`no field ${key} found`);
+                return;
+            }
+            //each property is added to the string
+            Object.keys(charter[key]).forEach(elem =>{
+                innerHTML+=`
+                <div class="blob cool-button list-${key}" data-${key}="${elem}">
+                    ${elem}
+                    <i class="fa fa-times delete" aria-hidden="true"></i>
+                </div>
+                `;
+            });
         }
     });
 }
 
 addListeners();
 
+/** add listeners to each button */
 function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
@@ -95,22 +135,50 @@ function addListeners(){
             console.error("deliverables field not found or empty");
         }
     });
+    //get the add list fields and add the listeners for them
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        let addButton=document.querySelector(`#add-${key}`);
+        if(!addButton) {
+            console.error(`no add ${key} button found found`);
+            return;
+        }
+        addButton.addEventListener("click",(event)=>{
+            event.preventDefault();
+            const newList = document.querySelector(`#${key}`);
+            if(newList && newList.value!=""){
+                charter.addToList(newList.value, key);
+            } else{
+                console.error(`${key} field not found or empty`);
+            }
+        });
+    });
     addDelListeners();
+    addListListeners();
     
 }
 
+/** add event listeners for the blobs for each deliverable */
 function addDelListeners(){
     //set event listeners to deliverables
     const deliverables = document.querySelectorAll(".list-del");
     deliverables.forEach((del)=>{
+        //the deliverable name
         const name = del.dataset.del;
+        //we want delete button to work
         del.querySelector(".delete").addEventListener("click",(event)=>{
             event.preventDefault();
             charter.deleteDeliverable(name);
         });
+        //we want the value to be updated in the variable upon input
+        del.querySelector("input").addEventListener("input",(event)=>{
+            const value = event.target.value;
+            charter.deliverables[name]=value;
+        });
     });
 }
 
+/** update the list of deliverables visuals */
 function updateDelList(){
     let field=document.querySelector(`#project-deliverables`);
     let innerHTML="";
@@ -119,7 +187,7 @@ function updateDelList(){
         return;
     }
     //each property is added to the string
-    charter["deliverables"].forEach(del =>{
+    Object.keys(charter["deliverables"]).forEach(del =>{
         innerHTML+=`
         <div class="blob cool-button list-del" data-del="${del}">
             ${del}
@@ -129,5 +197,48 @@ function updateDelList(){
         `;
     });
     field.innerHTML=innerHTML;
+    //we set the values of the fields
+    Object.keys(charter.deliverables).forEach(del =>{
+        document.querySelector(`#list-del-${del}`).value = charter.deliverables[del];
+    });
 }
 
+function addListListeners(){
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        const elements = document.querySelectorAll(`.list-${key}`);
+        elements.forEach((el)=>{
+            //the the name of the element
+            const name = el.dataset.key;
+            //we want delete button to work
+            el.querySelector(".delete").addEventListener("click",(event)=>{
+                event.preventDefault();
+                console.log("deleting");
+            });
+        });
+    });
+}
+
+function updateLists(){
+    //get the add deliverable field
+    const lists = ["assumptions","constraints"];
+    lists.forEach(key=>{
+        //we need to add the list elements
+        let field=document.querySelector(`#project-${key}`);
+        let innerHTML="";
+        if(!field) {
+            console.error(`no field ${key} found`);
+            return;
+        }
+        //each property is added to the string
+        (charter[key]).forEach(elem =>{
+            innerHTML+=`
+            <div class="blob cool-button list-${key}" data-${key}="${elem}">
+                ${elem}
+                <i class="fa fa-times delete" aria-hidden="true"></i>
+            </div>
+            `;
+        });
+        field.innerHTML=innerHTML;
+    });
+}
