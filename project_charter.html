@@ -7,7 +7,6 @@
         <link href="styles/main.css" rel="stylesheet"/>
         <link href="styles/sidebar.css" rel="stylesheet"/>
         <link href="styles/navbar.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="styles/Style-task.css">
         <link rel="stylesheet" href="styles/project_charter.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,14 +32,17 @@
                     <label for="project-title">Project title/name:</label>
                     <input type="text" id="project-title" placeholder="Project name" pattern="[A-Za-z0-9 ,.]+" required>
                     <label for="project-desc">Description:</label>
-                    <textarea type="text" id="project-desc" placeholder="Project description" cols="100" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea required>
+                    <textarea type="text" id="project-desc" placeholder="Project description" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea required>
                     <!--IMPORTANT INFO-->
-                    <h2>Further project details:</h2>
+                    <h2>Goals of the project:</h2>
                     <label for="project-purpose">Purpose:</label>
                     <input type="text" id="project-purpose" placeholder="Project purpose" pattern="[A-Za-z0-9 ,.]+" >
                     <label for="project-objective">Objective:</label>
-                    <textarea type="text" id="project-objective" placeholder="Project objective" cols="100" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea>
+                    <textarea type="text" id="project-objective" placeholder="Project objective" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea>
+                    <label for="project-accept-crt">Acceptance criteria:</label>
+                    <input type="text" id="project-accept-crt" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" >
                     <!--adding a deliverable-->
+                    <h2>Other info</h2>
                     <label for="deliverables">Deliverables:</label>
                     <div class="input-container add-deliverable">
                         <input type="text" id="deliverables" placeholder="New deliverable" pattern="[A-Za-z0-9 ,.]+" >

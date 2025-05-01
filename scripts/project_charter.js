@@ -65,10 +65,11 @@ function displayCharter(){
             //each property is added to the string
             charter[key].forEach(del =>{
                 innerHTML+=`
-                <button class="blob cool-button list-del" data-del="${del}">
+                <div class="blob cool-button list-del" data-del="${del}">
                     ${del}
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
+                    <input type="text" id="list-del-${del}" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" required>
+                    <i class="fa fa-times delete" aria-hidden="true"></i>
+                </div>
                 `;
             });
             field.innerHTML=innerHTML;
@@ -103,7 +104,7 @@ function addDelListeners(){
     const deliverables = document.querySelectorAll(".list-del");
     deliverables.forEach((del)=>{
         const name = del.dataset.del;
-        del.addEventListener("click",(event)=>{
+        del.querySelector(".delete").addEventListener("click",(event)=>{
             event.preventDefault();
             charter.deleteDeliverable(name);
         });
@@ -120,10 +121,11 @@ function updateDelList(){
     //each property is added to the string
     charter["deliverables"].forEach(del =>{
         innerHTML+=`
-        <button class="blob cool-button list-del" data-del="${del}">
+        <div class="blob cool-button list-del" data-del="${del}">
             ${del}
-            <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
+            <input type="text" id="list-del-${del}" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" required>
+            <i class="fa fa-times delete" aria-hidden="true"></i>
+        </div>
         `;
     });
     field.innerHTML=innerHTML;
