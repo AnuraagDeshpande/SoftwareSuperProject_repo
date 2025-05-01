@@ -28,17 +28,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     create_navbar();
 
-    const project_data = {
-        name: "Website Redesign",
-        pm: "Jane Doe",
-        start_date: "2025-04-01",
-        due_date: "2025-06-01",
-        progress: "45%",
-    };
+    // const project_data = {
+    //     name: "Website Redesign",
+    //     pm: "Jane Doe",
+    //     start_date: "2025-04-01",
+    //     due_date: "2025-06-01",
+    //     progress: "45%",
+    // };
 
-    const project_overview = document.createElement("div");
-    project_overview.classList.add("project_overview");
-    project_overview.id = "project_overview";
+    fetch("/api/project")
+        .then(res => res.json())
+        .then(projectData => {
+            const project_overview = document.createElement("div");
+            project_overview.classList.add("project_overview");
+            project_overview.id = "project_overview";
+            project_overview.appendChild(create_project_overview(projectData));
+            body.appendChild(project_overview);
+
+            fetch("/api/tasks")
+                .then(res => res.json())
+                .then(taskData => {
+                    const gantt_chart = generate_gantt_chart(taskData,projectData); 
+                    body.appendChild(gantt_chart);
+                })
+                .catch(error => console.error('Error fetching tasks:', error));
+        })
+        .catch(error => console.error('Error fetching project data:', error));
+        
+
+    // const project_overview = document.createElement("div");
+    // project_overview.classList.add("project_overview");
+    // project_overview.id = "project_overview";
 
     function create_project_overview(project) {
         const container = document.createElement("div");
@@ -96,25 +116,24 @@ document.addEventListener('DOMContentLoaded', function () {
         return container;
     }
 
-    project_overview.appendChild(create_project_overview(project_data));
-    body.appendChild(project_overview);
+    // project_overview.appendChild(create_project_overview(project_data));
+    // body.appendChild(project_overview);
+
+    // const tasks = [
+    //     { name: "Research", startDate: "2025-04-01", dueDate: "2025-04-10", status: "closed" },
+    //     { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "development" },
+    //     { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "in-test" },
+    //     { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "closed" },
+    //     { name: "Deployment", startDate: "2025-04-02", dueDate: "2025-06-01", status: "aborted" },
+    //     { name: "Planning", startDate: "2025-04-01", dueDate: "2025-04-15", status: "development" },
+    //     { name: "Initial Review", startDate: "2025-04-16", dueDate: "2025-04-20", status: "open" },
+    //     { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "closed" },
+    //     { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "in-test" },
+    //     { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "development" }
+    // ];
 
 
-    const tasks = [
-        { name: "Research", startDate: "2025-04-01", dueDate: "2025-04-10", status: "closed" },
-        { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "development" },
-        { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "in-test" },
-        { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "closed" },
-        { name: "Deployment", startDate: "2025-04-02", dueDate: "2025-06-01", status: "aborted" },
-        { name: "Planning", startDate: "2025-04-01", dueDate: "2025-04-15", status: "development" },
-        { name: "Initial Review", startDate: "2025-04-16", dueDate: "2025-04-20", status: "open" },
-        { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "closed" },
-        { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "in-test" },
-        { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "development" }
-    ];
-
-
-    function generate_gantt_chart(tasks) {
+    function generate_gantt_chart(tasks, project_data) {
         const pixel_width_perday = 60;
         const microsecond_perday = 86400000;
 
