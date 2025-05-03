@@ -1,52 +1,23 @@
-* {
-    font-family: Helvetica, sans-serif;
-    padding: 0;
-    margin: 0;
-}
-
 body {
-    background-color: var(--surface);
-    color: var(--onSurface);
     font-family: Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-image: url("your-image.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
 }
 
-/* Top bar styles */
-.top-bar {
-    width: 100%;
-    padding: var(--smallGap);
-    display: flex;
-    justify-content: flex-end;
-}
-
-#addMemberBtn {
-    background-color: var(--primary);
-    color: var(--onPrimary);
-    border: none;
-    padding: var(--smallGap) var(--mediumGap);
-    font-size: 16px;
-    border-radius: var(--smallRadius);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-#addMemberBtn:hover {
-    opacity: 0.7;
-}
-
-#addMemberBtn:active {
-    opacity: 0.5;
-}
-
-/* Header styles */
 .header {
     position: relative;
     background: url("../media/img3.jpg") center/cover no-repeat;
     color: white;
-    padding: var(--mediumGap);
+    padding: 50px;
     font-size: 24px;
     font-weight: bold;
     text-align: center;
-    border-radius: var(--largeRadius);
+    border-radius: 30px;
 }
 
 .header::before {
@@ -58,7 +29,7 @@ body {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    border-radius: var(--largeRadius);
+    border-radius: 30px;
 }
 
 .header h1, .header input {
@@ -66,14 +37,13 @@ body {
     z-index: 2;
 }
 
-/* Search box styles */
 #searchBox {
-    margin-top: var(--smallGap);
-    padding: var(--smallGap);
+    margin-top: 15px;
+    padding: 10px;
     width: 80%;
     max-width: 400px;
     min-width: 200px;
-    border-radius: var(--smallRadius);
+    border-radius: 10px;
     border: 1px solid #ddd;
     position: relative;
     z-index: 2;
@@ -85,36 +55,39 @@ body {
 @media (max-width: 600px) {
     #searchBox {
         width: 90%;
+        max-width: none;
+        padding: 12px;
     }
 }
 
-/* Members container styles */
 .members-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--mediumGap);
-    padding: var(--mediumGap);
+    gap: 20px;
+    padding: 20px;
 }
 
-/* Member card styles */
 .member-card {
-    width: 300px;
-    padding: var(--smallGap);
-    background-color: var(--surface);
-    border-radius: var(--mediumRadius);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    height: 200px; 
+    background: #f9f9f9;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column; 
     align-items: center;
-    gap: var(--smallGap);
-    transition: transform 0.3s, box-shadow 0.3s;
+    gap: 15px;
+    padding: 10px 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; 
 }
 
 .member-card:hover {
     transform: scale(1.05);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .member-card img {
@@ -124,22 +97,36 @@ body {
     object-fit: cover;
 }
 
-.member-card .text-container {
-    flex-grow: 1;
+/*Container to hold text and delete button vertically */
+.text-delete-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    flex: 1;
+    width: 100%; 
+}
+
+
+.text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
+    flex: 1;
 }
 
 .member-card h2 {
     font-size: 16px;
-    color: var(--onSurface);
+    color: #333;
+    margin: 0;
     font-weight: bold;
 }
 
 .member-card p {
     font-size: 12px;
     color: #555;
+    margin: 2px 0 0 0;
 }
 
 .member-card a {
@@ -152,63 +139,106 @@ body {
     text-decoration: underline;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-    border-radius: var(--mediumRadius);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: var(--smallRadius);
-}
-
-.modal-content button {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--primary);
-    color: var(--onPrimary);
-    border: none;
-    border-radius: var(--smallRadius);
-    cursor: pointer;
-}
-
-.modal-content button:hover {
-    opacity: 0.85;
-}
-
-.closeBtn {
-    float: right;
-    font-size: 24px;
-    cursor: pointer;
-}
+/*delete button centered at the bottom of the card */
 .delete-btn {
-    margin-top: 8px;
-    padding: 5px 10px;
-    font-size: 12px;
+    margin-top: auto; /*push the button to the bottom */
     background-color: #e74c3c;
     color: white;
     border: none;
-    border-radius: var(--smallRadius);
+    padding: 6px 15px;
+    font-size: 12px;
+    border-radius: 12px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: center; 
 }
 
 .delete-btn:hover {
     background-color: #c0392b;
+}
+
+.top-bar {
+    width: 100%;
+    background-color: transparent;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+#addMemberBtn {
+    background-color: #768577;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: -20px;
+    margin-right: 40px;
+}
+
+#addMemberBtn:hover {
+    background-color: #2c2e2c;
+}
+
+.popup-form {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.form-content {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    text-align: left;
+}
+
+.form-content h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-content label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.form-content input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#submitMember, #closeForm {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#submitMember {
+    background-color: #768577;
+    color: white;
+}
+
+#closeForm {
+    background-color: #ccc;
 }
