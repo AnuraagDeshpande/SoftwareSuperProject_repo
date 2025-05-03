@@ -1,0 +1,92 @@
+body{
+    background-color: var(--source);
+}
+
+form{
+    padding: var(--mediumGap);
+    display: grid;
+    gap: var(--mediumGap);
+}
+
+.input-container{
+    display: grid;
+    gap: var(--smallGap);
+    justify-content: center;
+    text-align: center;
+}
+
+form input[type="submit"]{
+    margin-top: var(--mediumGap);
+    padding: var(--smallGap);
+    border: none;
+    border-radius: var(--mediumGap);
+    cursor: pointer;
+    width: 100px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    background-color: var(--tertiaryContainer);
+    color: var(--onTertiraryContainer);
+    justify-self: center;
+}
+
+input{
+    width: 200px;
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
+}
+textarea{
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
+    max-width: 700px;
+    display: block;
+}
+
+.input-container{
+    width: auto
+}
+
+button:hover{
+    opacity: 0.8;
+}
+
+button::backdrop{
+    opacity: 0.5;
+}
+
+.blob{
+    padding: var(--smallGap);
+    border: none;
+    border-radius: var(--mediumGap);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primaryContainer);
+    color: var(--onContainer);
+
+    gap: var(--mediumGap);
+}
+
+.project-list{
+    display: flex;
+    flex-direction: row;
+    gap: var(--mediumGap);
+    flex-wrap: wrap;
+}
+
+.add-deliverable{
+    display: flex;
+    flex-direction: row;
+    gap: var(--mediumGap);
+}
+
+.add-deliverable button{
+    background-color: var(--tertiary);
+    color: var(--onTertiary);
+}
+

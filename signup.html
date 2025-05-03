@@ -18,14 +18,11 @@
         </div>
         <div class="form-side">
             <h2>Create account</h2>
-            <form id="signup-form">
-                <div class="names">
-                    <input type="text" id="full-name" placeholder="Full name" required>
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
+            <form id="signup-form" action="signup.php" method="POST">
+                <input type="text" id="full-name" name="fullname" placeholder="Full name" required>
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="password" id="password" name="LoginPasscode" placeholder="Password" required>
                 <input type="submit" value="Sign up">
             </form>
             <p>Already have an account?
