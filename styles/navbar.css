@@ -49,3 +49,26 @@ HAMBURGER MENU
 #hamburger:active{
     background-color: var(--surfaceBright);
 }
+
+
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;  /* Aligns to the right */
+    gap: 10px;  /* Adds space between the username and logout button */
+}
+
+.username {
+    font-size: 14px;  /* Adjust font size to match the button */
+    color: white;  /* Adjust the text color to white to contrast with the background */
+    background-color: #4281A4;  /* Button-like background color */
+    padding: 8px 16px;  /* Padding to match the button design */
+    border-radius: 25px;  /* Rounded corners to match button */
+    text-align: center;  /* Center align the text */
+}
+
+.dark-button:hover {
+    background-color: #555;  /* Adjust hover effect */
+}
+
