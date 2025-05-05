@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+$isLoggedIn = isset($_SESSION['user_id']);
+$username = $_SESSION['user_name'] ?? '';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -111,6 +119,23 @@
                     Completed as part of the Software Engineering course at Constructor University Bremen
             </div>
         </div>
+
+        <!-- Pass PHP session information to JS -->
+        <script>
+            const isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
+            const username = <?php echo json_encode($username); ?>;
+            console.log('isLoggedIn:', isLoggedIn);
+            console.log('Username:', username);  // Check the username value
+        </script>
+
+        <script type="module">
+            import { generateNavbar } from './scripts/navbar.js';
+            generateNavbar(isLoggedIn, username);  // Pass both isLoggedIn and username
+
+            import { generateSidebar } from './scripts/sidebar.js';
+            generateSidebar();  // This will dynamically generate the sidebar
+        </script>
+        
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/index.js"></script>
     </body>
