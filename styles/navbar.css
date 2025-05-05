@@ -55,20 +55,20 @@ HAMBURGER MENU
 .navbar-user {
     display: flex;
     align-items: center;
-    justify-content: flex-end;  /* Aligns to the right */
-    gap: 10px;  /* Adds space between the username and logout button */
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .username {
-    font-size: 14px;  /* Adjust font size to match the button */
-    color: white;  /* Adjust the text color to white to contrast with the background */
-    background-color: #4281A4;  /* Button-like background color */
-    padding: 8px 16px;  /* Padding to match the button design */
-    border-radius: 25px;  /* Rounded corners to match button */
-    text-align: center;  /* Center align the text */
+    font-size: 14px;
+    color: white; 
+    background-color: #4281A4;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-align: center;
 }
 
 .dark-button:hover {
-    background-color: #555;  /* Adjust hover effect */
+    background-color: #555;
 }
 
