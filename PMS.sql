@@ -9,18 +9,15 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     LoginPasscode VARCHAR(255) NOT NULL, -- Hashed password
     profile_picture VARCHAR(255), -- Optional path to profile picture
-    system_role ENUM('Admin', 'User') NOT NULL DEFAULT 'User', -- System-wide role
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    system_role ENUM('Admin', 'User') NOT NULL DEFAULT 'User'
 );
 
--- Projects table: Stores all project details
+-- Projects table: Stores all project details (source of truth for title + description)
 CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    status ENUM('Active', 'Finished', 'Failed') DEFAULT 'Active',
-    deadline DATE, -- Nullable deadline
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description TEXT NOT NULL,
+    status ENUM('Active', 'Finished', 'Failed') DEFAULT 'Active'
 );
 
 -- Project Members table: Links users to projects with project-specific roles
@@ -41,7 +38,6 @@ CREATE TABLE tasks (
     description TEXT,
     status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
     deadline DATE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
@@ -64,13 +60,17 @@ CREATE TABLE project_stakeholders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Project Charter Table: Stores project objectives and status updates
+-- Project Charter Table: Stores project objectives and additional info
+-- Note: description is NOT repeated here
 CREATE TABLE project_charters (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_id INT NOT NULL,
-    objective TEXT NOT NULL,
-    sponsor_info TEXT NOT NULL,
-    status ENUM('Draft', 'Authorized') DEFAULT 'Draft',
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    objective TEXT,
+    purpose TEXT,           -- JSON
+    deadline DATE,
+    deliverables TEXT,      -- JSON
+    assumptions TEXT,       -- JSON
+    constraints TEXT,       -- JSON
+    risks TEXT,             -- JSON
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
