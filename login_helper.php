@@ -4,7 +4,7 @@ session_start();
 // Database connection
 $host = "localhost";
 $db_user = "root";
-$db_pass = "new_password";
+$db_pass = "...";  // replace with your password
 $db_name = "softwareproject";
 
 // Attempt limiter
