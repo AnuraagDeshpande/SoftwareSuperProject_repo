@@ -24,6 +24,8 @@ if ($conn->connect_error) {
 }
   $conn -> set_charset("utf8mb4");
 
+define('BASE_URL', 'http://localhost/SE_REPO/SoftwareSuperProject_repo/Backend/api');
+
 // Starts session for tracking user login/auth
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
