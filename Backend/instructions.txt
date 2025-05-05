@@ -1,0 +1,11 @@
+Here I will tell step by step how to connect database to login or signin.
+First, You need to download XAMPP app and PHPMAILER document from GITHUB.
+Download and set-up the XAMPP, and remember where the app files and itself located. 
+We will be using XAMPP/xamppfiles/htdocs folder for our project, create a seperate folder on there and add all of the backend and frontend files.
+So does the PHPMAILER folder, add it to the folder that you have created.
+Secondly, check signup and login scripts, there are two things that you need to change,
+    1. XAMPP directory.
+    2. Your database connection details.
+Save your changes, and then head into XAMPP app, go to manage servers and start all of the servers.
+(if you run signup.html from VScode forget this part)When you click signup.html, make sure that url is localhost/SoftwareEngineering/signup.html
+And you should be ready, any questions, don't hesitate ask me. I have added instructions on singup.php as-well, just in case you face with problems.
