@@ -9,6 +9,7 @@ export class ProjectList{
     fetchData(){
         this.projects=[
         {
+            id: crypto.randomUUID(),
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:"User321",
@@ -22,6 +23,7 @@ export class ProjectList{
             status:"error"
         },
         {
+            id: crypto.randomUUID(),
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:"User321",
@@ -51,23 +53,25 @@ export class ProjectList{
                 }
                 //we create the card
                 const card = `
-                <div class="project-card">
-                    <div class="project-card-header">
-                        <img class="project-icon" src="media/${element.projectIcon}">
-                        <div class="project-title">
-                            <h2>${element.projectName}</h2>
-                            <h3>Manager: ${element.manager}</h3>
-                            <h4>Owner: ${element.owner}</h4>
-                        </div>                   
+                <a href="activities.html?projectId=${element.id}" class="project-link">
+                    <div class="project-card">
+                        <div class="project-card-header">
+                            <img class="project-icon" src="media/${element.projectIcon}">
+                            <div class="project-title">
+                                <h2>${element.projectName}</h2>
+                                <h3>Manager: ${element.manager}</h3>
+                                <h4>Owner: ${element.owner}</h4>
+                            </div>                   
+                        </div>
+                        <p>
+                            ${desc}
+                        </p>
+                        <div class="status ${element.status}"></div>
+                        <div class="participants">
+                            ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
+                        </div>
                     </div>
-                    <p>
-                        ${desc}
-                    </p>
-                    <div class="status ${element.status}"></div>
-                    <div class="participants">
-                        ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
-                    </div>
-                </div>
+                </a>
                 `;
                 generatedHTML+=card;
             });
@@ -78,6 +82,7 @@ export class ProjectList{
     }
 
     addProject(newProject){
+        newProject.id = crypto.randomUUID();
         this.projects.push(newProject);
         this.displayProjects();
     }
