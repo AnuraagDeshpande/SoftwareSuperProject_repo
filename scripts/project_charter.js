@@ -294,12 +294,26 @@ function updateLists(){
 
 /** submit the data displayed on the page */
 function submitCharter(){
+    const objective = document.querySelector("#project-objective");
+    const desc = document.querySelector("#project-desc");
+    const msg = document.querySelector(".error-message");
+    const form = document.querySelector("form");
     const submitBut = document.querySelector('form input[type="submit"]');
-    if(submitBut){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+
+    if(submitBut && form && msg){
         submitBut.addEventListener("click", (event)=>{
-            console.log("submitting");
-            event.preventDefault();
-            console.log(charter);
+            event.preventDefault();//we do our own little thing instead
+
+            //this checks text area fields for validity
+            const littleSpecialFields = validPattern.test(objective.value) && validPattern.test(desc.value);
+            //is the user sane?
+            if(form.checkValidity() && littleSpecialFields){
+                console.log("submitting");
+                console.log(charter);
+            } else {
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
+            }
         });
     } else {
         console.error("no submit button found");
