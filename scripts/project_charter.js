@@ -166,6 +166,9 @@ function displayCharter(){
 
 /** add listeners to each add button and fields*/
 function addListeners(){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+    const msg = document.querySelector(".error-message");
+
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
     if(!addButton) {
@@ -175,12 +178,15 @@ function addListeners(){
     addButton.addEventListener("click",(event)=>{
         event.preventDefault();
         const newDel = document.querySelector("#deliverables");
-        if(newDel && newDel.value!=""){
+        if(newDel && newDel.value!="" && validPattern.test(newDel.value)){
             charter.addDeliverable(newDel.value);
+            msg.innerHTML="";
         } else{
             console.error("deliverables field not found or empty");
+            msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
         }
     });
+
     //get the add list fields and add the listeners for them
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
@@ -192,10 +198,12 @@ function addListeners(){
         addButton.addEventListener("click",(event)=>{
             event.preventDefault();
             const newList = document.querySelector(`#${key}`);
-            if(newList && newList.value!=""){
+            if(newList && newList.value!="" && validPattern.test(newList.value)){
                 charter.addToList(newList.value, key);
+                msg.innerHTML="";
             } else{
                 console.error(`${key} field not found or empty`);
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
             }
         });
     });
@@ -205,6 +213,9 @@ function addListeners(){
 
 /** add event listeners for the blobs for each deliverable */
 function addDelListeners(){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+    const msg = document.querySelector(".error-message");
+
     //set event listeners to deliverables
     const deliverables = document.querySelectorAll(".list-del");
     deliverables.forEach((del)=>{
@@ -219,6 +230,11 @@ function addDelListeners(){
         del.querySelector("input").addEventListener("input",(event)=>{
             const value = event.target.value;
             charter.deliverables[name]=value;
+            if(!validPattern.test(value)){
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
+            } else {
+                msg.innerHTML="";
+            }
         });
     });
 }
