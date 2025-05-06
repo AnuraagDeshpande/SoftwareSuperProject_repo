@@ -1,25 +1,38 @@
 class ProjectCharter{
     //properties described by the charter
+    id=1;
     title="";
     desc="";
     purpose="";
     objective="";
     acceptance="";
+    deadline= "2025-12-24";
     deliverables={};
     assumptions=[];
     constraints=[];
     risks=[];
 
-    //basic constructor
-    constructor(title, desc){
-        this.title=title;
-        this.desc=desc;
+    /** construct an instance based on id */
+    constructor(id){
+        const temp = this.fetchData(id);
+        this.id=temp.id;
+        this.title = temp.title;
+        this.desc = temp.desc;
+        this.purpose = temp.purpose;
+        this.objective = temp.objective;
+        this.acceptance = temp.acceptance;
+        this.deadline = temp.deadline;
+        this.deliverables = temp.deliverables;
+        this.assumptions = temp.assumptions;
+        this.constraints = temp.constraints;
+        this.risks = temp.risks;
     }
 
+    /** fetch data from a server based on id */
     fetchData(id){
         return {
             id: 1,
-            deadline:"",
+            deadline:"2025-12-12",
             status: "",
             title:"",
             desc:"",
@@ -33,15 +46,10 @@ class ProjectCharter{
         };
     }
 
-    /** save the edited version*/
-    save(){
-        console.log("saving");
-    }
-
     /** add a deliverable to the list */
     addDeliverable(del){
         if(!(del in this.deliverables)){
-            this.deliverables[del]="";
+            this.deliverables[del]="";//we add the new deliverable
             updateDelList();
             addDelListeners();
         }
@@ -77,20 +85,25 @@ class ProjectCharter{
     }
 }
 
+/** load the project from the database*/
 function loadProjectCharter(){
-    return new ProjectCharter("name of something", "description of something");
+    return new ProjectCharter(1);
 }
 
 const charter=loadProjectCharter();
 //display loaded data
 displayCharter();
+//add listeners to the data
+addListeners();
+//submit button listener
+submitCharter();
 
 /** display the initial project charter information */
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
         const lists = ["deliverables","assumptions","constraints","risks"];
-        if(!lists.includes(key)){
+        if(!lists.includes(key) && key!="id"){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -149,9 +162,9 @@ function displayCharter(){
     });
 }
 
-addListeners();
 
-/** add listeners to each button */
+
+/** add listeners to each add button and fields*/
 function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
@@ -188,7 +201,6 @@ function addListeners(){
     });
     addDelListeners();
     addListListeners();
-    
 }
 
 /** add event listeners for the blobs for each deliverable */
@@ -236,6 +248,7 @@ function updateDelList(){
     });
 }
 
+/** add listeners to blob fields */
 function addListListeners(){
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
@@ -253,6 +266,7 @@ function addListListeners(){
     });
 }
 
+/** create html for blob lists */
 function updateLists(){
     //get the add deliverable field
     const lists = ["assumptions","constraints","risks"];
@@ -277,7 +291,7 @@ function updateLists(){
     });
 }
 
-submitCharter();
+
 /** submit the data displayed on the page */
 function submitCharter(){
     const submitBut = document.querySelector('form input[type="submit"]');
