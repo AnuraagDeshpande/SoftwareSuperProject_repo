@@ -327,6 +327,7 @@ function submitCharter(){
             if(form.checkValidity() && littleSpecialFields){
                 console.log("submitting");
                 console.log(charter);
+                //API call
             } else {
                 msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
             }
