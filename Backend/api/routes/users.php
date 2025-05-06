@@ -9,8 +9,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Strip base API path to extract optional ID from the path
-$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/users';
-$pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
+$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/routes/users';
+$pathTail = trim(substr($uri, strlen($basePath)), '/');
 
 
 if ($method === 'GET') {

@@ -6,7 +6,7 @@ class UserController {
     public function getAllUsers() {
         global $conn;
 
-        $query = "SELECT id, username, email, system_role FROM users";
+        $query = "SELECT id, username, email, system_role, first_name, last_name FROM users";
         $result = $conn->query($query);
 
         if (!$result) {
@@ -28,7 +28,7 @@ class UserController {
         global $conn;
     
         // Define allowed search columns
-        $allowed = ['id', 'username', 'email'];
+        $allowed = ['id', 'username', 'email', 'first_name', 'last_name'];
         if (!in_array($column, $allowed)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Invalid column']);
@@ -57,9 +57,9 @@ class UserController {
         $search = '%' . $conn->real_escape_string($query) . '%';
     
         $stmt = $conn->prepare("
-            SELECT id, username, email, system_role 
+            SELECT id, username, email, system_role, first_name ? OR last_name ?
             FROM users 
-            WHERE username LIKE ? OR email LIKE ? OR first_name LIKE ? OR last_name LIKE ?
+            WHERE username LIKE ? OR email LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR system_role ?
         ");
     
         //bind the search value to the four placeholders in the SQL

@@ -16,6 +16,23 @@ class ProjectCharter{
         this.desc=desc;
     }
 
+    fetchData(id){
+        return {
+            id: 1,
+            deadline:"",
+            status: "",
+            title:"",
+            desc:"",
+            purpose:"",
+            objective:"",
+            acceptance:"",
+            deliverables:{},
+            assumptions:[],
+            constraints:[],
+            risks:[]
+        };
+    }
+
     /** save the edited version*/
     save(){
         console.log("saving");

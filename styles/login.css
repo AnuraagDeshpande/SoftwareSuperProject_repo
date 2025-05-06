@@ -8,7 +8,7 @@ body {
   background: rgb(231, 231, 231);
   width: 100%;
   overflow-x: hidden;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.552), rgba(0, 0, 0, 0.758)), url(/media/background-image-account.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.552), rgba(0, 0, 0, 0.758)), URL(../media/background-image-account.jpg);
   background-size: cover;
 
 
