@@ -15,7 +15,7 @@ export class ProjectList{
     fetchData(){
         this.projects=JSON.parse(localStorage.getItem("project_list"))||[
         {
-            id:1,
+            id: crypto.randomUUID(),
             projectName:"Project on projects",
             projectIcon:"profile-picture-placeholder.png",
             manager:[],
@@ -29,7 +29,7 @@ export class ProjectList{
             status:"error"
         },
         {
-            id:2,
+            id: crypto.randomUUID(),
             projectName:"Project on projects 2",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1"],
@@ -45,7 +45,7 @@ export class ProjectList{
             status: "active"
         },
         {
-            id:3,
+            id: crypto.randomUUID(),
             projectName:"Project on projects 3",
             projectIcon:"profile-picture-placeholder.png",
             manager:["manager 1","user123"],
@@ -122,28 +122,30 @@ export class ProjectList{
                 }
                 //we create the card
                 const card = `
-                <div class="project-card">
-                    <div class="project-card-header">
-                        <img class="project-icon" src="media/${element.projectIcon}">
-                        <div class="project-title">
-                            <div class="project-title-name">
-                                <h2>${element.projectName}</h2>
-                                <div class="status ${element.status}"></div>
+                <a href="activities_page.html?projectId=${element.id}" class="project-link">
+                    <div class="project-card">
+                        <div class="project-card-header">
+                            <img class="project-icon" src="media/${element.projectIcon}">
+                            <div class="project-title">
+                                <div class="project-title-name">
+                                    <h2>${element.projectName}</h2>
+                                    <div class="status ${element.status}"></div>
+                                </div>
+                                <h3>Managers: ${this.#displayList(element.manager)}</h3>
+                                <h4>Owners: ${this.#displayList(element.owner)}</h4>
+                            </div>                   
+                        </div>
+                        <p>
+                            ${desc}
+                        </p>
+                        <div class="card-bottom-row">
+                            <button class="cool-button" id="delete-button" data-id="${element.id}">delete</button>
+                            <div class="participants">
+                                ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
                             </div>
-                            <h3>Managers: ${this.#displayList(element.manager)}</h3>
-                            <h4>Owners: ${this.#displayList(element.owner)}</h4>
-                        </div>                   
-                    </div>
-                    <p>
-                        ${desc}
-                    </p>
-                    <div class="card-bottom-row">
-                        <button class="cool-button" id="delete-button" data-id="${element.id}">delete</button>
-                        <div class="participants">
-                            ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
                         </div>
                     </div>
-                </div>
+                </a>
                 `;
                 generatedHTML+=card;
             });
@@ -182,6 +184,7 @@ export class ProjectList{
 
     /** add project to list of projects*/
     addProject(newProject){
+        newProject.id = crypto.randomUUID();
         this.projects.push(newProject);
         this.save();
         this.displayProjects();

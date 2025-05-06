@@ -1,20 +1,241 @@
 console.log("JS is working");
 
-document.addEventListener('DOMContentLoaded', function () {
+const params = new URLSearchParams(window.location.search);
+const projectId = params.get("projectId");
 
-    document.querySelector('.view-gantt-btn').addEventListener('click', viewGantt);
-    document.querySelector('.view-members-btn').addEventListener('click', viewMembers);
-    document.querySelector('.view-project-charter-btn').addEventListener('click', viewProjectCharter);
+if (!projectId) {
+  alert("No project selected.");
+  // Optional: redirect to main page
+  // window.location.href = "index.html";
+}
+
+// Temporary mock database — replace with real fetch logic later (backend work)
+const mockProjects = [
+    {
+      id: "abc123", // replace with actual ID from project_list.js if hardcoded
+      projectName: "Project on projects",
+      desc: "This project aims at projecting project projects at project.",
+      manager: "User321",
+      owner: "User123",
+      status: "active"
+    },
+    {
+      id: "def456",
+      projectName: "Another Project",
+      desc: "Different project goals and scope.",
+      manager: "User555",
+      owner: "User666",
+      status: "finished"
+    }
+  ];
+  
+  // Find the matching project
+  const project = mockProjects.find(p => p.id === projectId);
+  
+  if (project) {
+    // Populate the UI
+    document.getElementById("project-name").innerText = project.projectName;
+    document.getElementById("project-desc").innerText = project.desc;
+    document.getElementById("project-manager").innerText = project.manager;
+    document.getElementById("project-owner").innerText = project.owner;
+    document.getElementById("project-status").innerText = project.status;
+  } else {
+    console.error("Project not found for ID:", projectId);
+  }
+
+function addActivity() {
+    const activityList = document.getElementById("activity-list");
+    const newActivity = prompt("Enter a new activity:");
+    if (newActivity && newActivity.trim() !== "") {
+        const li = document.createElement("li");
+        li.innerHTML = `${newActivity} <button class="delete-btn" onclick="removeActivity(this)">X</button>`;
+        activityList.appendChild(li);
+        saveActivities();
+    }
+}
+
+// Delete activity
+function removeActivity(button) {
+    if (confirm("Remove this activity?")) {
+        button.parentElement.remove();
+        saveActivities();
+    }
+}
+
+function saveActivities() {
+    const items = [...document.querySelectorAll("#activity-list li")].map(li => li.firstChild.textContent.trim());
+    localStorage.setItem("activities", JSON.stringify(items));
+}
+
+function loadActivities() {
+    const data = JSON.parse(localStorage.getItem("activities") || "[]");
+    const activityList = document.getElementById("activity-list");
+    activityList.innerHTML = "";
+    data.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item} <button class="delete-btn" onclick="removeActivity(this)">X</button>`;
+        activityList.appendChild(li);
+    });
+}
+
+function manageSchedule() {
+    alert("Manage Scheduling button clicked!");
+}
+
+function projectSettings() {
+    alert("Project Settings button clicked!");
+}
+
+// Add and remove team members
+function addMember() {
+    let memberName = document.getElementById("member-name").value;
+    if (memberName.trim() === "") {
+        alert("Please enter a name!");
+        return;
+    }
+
+    let teamList = document.getElementById("team-list");
+    let listItem = document.createElement("li");
+    listItem.innerHTML = `${memberName} <button class="delete-btn" onclick="removeMember(this)">X</button>`;
+
+    teamList.appendChild(listItem);
+    document.getElementById("member-name").value = "";
+    saveTeam();
+}
+
+function removeMember(button) {
+    if (confirm("Remove this member?")) {
+        button.parentElement.remove();
+        saveTeam();
+    }
+}
+
+function saveTeam() {
+    const items = [...document.querySelectorAll("#team-list li")].map(li => li.firstChild.textContent.trim());
+    localStorage.setItem("team", JSON.stringify(items));
+}
+
+function loadTeam() {
+    const data = JSON.parse(localStorage.getItem("team") || "[]");
+    const teamList = document.getElementById("team-list");
+    teamList.innerHTML = "";
+    data.forEach(name => {
+        const li = document.createElement("li");
+        li.innerHTML = `${name} <button class="delete-btn" onclick="removeMember(this)">X</button>`;
+        teamList.appendChild(li);
+    });
+}
+
+// Fetch and display project details (this part added)
+function loadProjectData(projectId) {
+    fetch(`/api/projects?action=get`) // Adjust API URL based on backend (you might need `/projects/get` or something else)
+        .then(response => response.json())
+        .then(projects => {
+            // Find the project with the specified projectId
+            const project = projects.find(p => p.id === parseInt(projectId));
+            if (project) {
+                // Populate the project title, description, and manager(s)
+                document.querySelector(".project-title").innerText = `Activities for: ${project.projectName}`;
+                document.querySelector(".project-desc").innerText = project.desc;
+                document.querySelector(".project-manager").innerText = `Manager(s): ${project.manager.join(", ")}`;
+                document.querySelector(".project-owner").innerText = `Owner(s): ${project.owner.join(", ")}`;
+                document.querySelector(".project-status").innerText = `Status: ${project.status}`;
+
+                // You can also add more fields for participants or anything else as needed
+            } else {
+                alert("Project not found.");
+            }
+        })
+        .catch(err => {
+            console.error("Error fetching project data:", err);
+            alert("Failed to load project data.");
+        });
+}
+
+// Function to load project details using projectId
+function loadProjectData(projectId) {
+    fetch(`/path/to/backend.php?action=getById&projectId=${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success === false) {
+                alert(data.error); // Handle error if project is not found
+            } else {
+                // Update the HTML with the project details
+                document.getElementById('project-name').innerText = data.projectName;
+                document.getElementById('project-desc').innerText = data.desc;
+                document.getElementById('project-manager').innerText = data.manager.join(", ");
+                document.getElementById('project-owner').innerText = data.owner.join(", ");
+                document.getElementById('project-status').innerText = data.status;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching project data:', error);
+        });
+}
+
+// Call the function with the projectId from the URL
+document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+
+    if (projectId) {
+        loadProjectData(projectId);  // Load the project data if projectId is available
+    } else {
+        alert("No project selected.");
+    }
 });
 
-function viewGantt() {
-    alert("View Gantt Chart button clicked!");
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 500,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        events: [
+            {
+                title: 'Kickoff Meeting',
+                start: '2025-04-05'
+            },
+            {
+                title: 'Prototype Demo',
+                start: '2025-04-12',
+                end: '2025-04-14'
+            },
+            {
+                title: 'Final Review',
+                start: '2025-04-28'
+            }
+        ]
+    });
+    calendar.render();
+
+    loadActivities();
+    loadTeam();
+
+    // Call loadProjectData to fetch and display the project data once the page loads
+    if (projectId) {
+        loadProjectData(projectId);
+    }
+});
+
+const ganttFrame = document.getElementById("gantt-frame");
+if (ganttFrame && projectId) {
+  ganttFrame.src = `gantt_chart.html?projectId=${projectId}`;
 }
 
-function viewMembers() {
-    alert("View Members button clicked!");
-}
-
-function viewProjectCharter() {
-    alert("View Project Charter button clicked!");
-}
+function goToProjectMembers() {
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+  
+    if (!projectId) {
+      alert("No project selected.");
+      return;
+    }
+  
+    window.location.href = `project_memb.html?projectId=${projectId}`;
+  }
