@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         sendWelcomeEmail($email, $fullname);
-        header("Location: login.html"); // Redirect to login page
+        header("Location: login.php"); // Redirect to login page
         exit();
     } else {
         echo "Error: " . $stmt->error;
