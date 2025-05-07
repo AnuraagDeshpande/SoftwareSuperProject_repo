@@ -1,4 +1,4 @@
-class ProjectCharter{
+export class ProjectCharter{
     //properties described by the charter
     id=1;
     title="";
@@ -50,8 +50,8 @@ class ProjectCharter{
     addDeliverable(del){
         if(!(del in this.deliverables)){
             this.deliverables[del]="";//we add the new deliverable
-            updateDelList();
-            addDelListeners();
+            window.updateDelList();
+            window.addDelListeners();
         }
     }
 
@@ -60,8 +60,8 @@ class ProjectCharter{
         if(del in this.deliverables){
             delete this.deliverables[del];
         }
-        updateDelList();
-        addDelListeners();
+        window.updateDelList();
+        window.addDelListeners();
     }
 
     /** add to a list in the instance */
@@ -69,8 +69,8 @@ class ProjectCharter{
         if(Object.keys(this).includes(key)){
             if(!this[key].includes(value)){
                 this[key].push(value);
-                updateLists();
-                addListListeners();
+                window.updateLists();
+                window.addListListeners();
             }
         }
     }
@@ -79,18 +79,25 @@ class ProjectCharter{
     removeFromList(value,key){
         if(Object.keys(this).includes(key)){
             this[key]=this[key].filter(el=>{return el!=value});
-            updateLists();
-            addListListeners();
+            window.updateLists();
+            window.addListListeners();
         }
     }
 }
 
 /** load the project from the database*/
-function loadProjectCharter(){
+export function loadProjectCharter(){
     return new ProjectCharter(1);
 }
 
+//we load the charter
 const charter=loadProjectCharter();
+//this makes testing work easier kinda
+window.updateDelList = updateDelList;
+window.addDelListeners = addDelListeners;
+window.updateLists = updateLists;
+window.addListListeners = addListListeners;
+window.charter= charter;
 //display loaded data
 displayCharter();
 //add listeners to the data
@@ -99,8 +106,8 @@ addListeners();
 submitCharter();
 
 /** display the initial project charter information */
-function displayCharter(){
-    Object.keys(charter).forEach(key=>{
+export function displayCharter(){
+    Object.keys(window.charter).forEach(key=>{
         //text field values are set
         const lists = ["deliverables","assumptions","constraints","risks"];
         if(!lists.includes(key) && key!="id"){
@@ -110,12 +117,12 @@ function displayCharter(){
                 console.error(`no field ${key} found`);
                 return;
             }
-            field.value=charter[key];
+            field.value=window.charter[key];
 
             //user input should be stored in the variable as they type
             field.addEventListener("input",(event)=>{
                 const value = event.target.value;
-                charter[key]=value;
+                window.charter[key]=value;
             });
         }
         //deliverables are set differently via inner HTML
@@ -127,7 +134,7 @@ function displayCharter(){
                 return;
             }
             //each property is added to the string
-            Object.keys(charter[key]).forEach(del =>{
+            Object.keys(window.charter[key]).forEach(del =>{
                 innerHTML+=`
                 <div class="blob cool-button list-del" data-del="${del}">
                     ${del}
@@ -138,8 +145,8 @@ function displayCharter(){
             });
             field.innerHTML=innerHTML;
             //we set the values of the fields
-            Object.keys(charter[key]).forEach(del =>{
-                document.querySelector(`#list-del-${del}`).value = charter[key][del];
+            Object.keys(window.charter[key]).forEach(del =>{
+                document.querySelector(`#list-del-${del}`).value = window.charter[key][del];
             });
         } else if(lists.includes(key)){
             //we need to add the list elements
@@ -150,7 +157,7 @@ function displayCharter(){
                 return;
             }
             //each property is added to the string
-            Object.keys(charter[key]).forEach(elem =>{
+            Object.keys(window.charter[key]).forEach(elem =>{
                 innerHTML+=`
                 <div class="blob cool-button list-${key}" data-${key}="${elem}">
                     ${elem}
@@ -162,10 +169,8 @@ function displayCharter(){
     });
 }
 
-
-
 /** add listeners to each add button and fields*/
-function addListeners(){
+export function addListeners(){
     const validPattern = /^[A-Za-z0-9 ,\.]+$/;
     const msg = document.querySelector(".error-message");
 
@@ -212,7 +217,7 @@ function addListeners(){
 }
 
 /** add event listeners for the blobs for each deliverable */
-function addDelListeners(){
+export function addDelListeners(){
     const validPattern = /^[A-Za-z0-9 ,\.]+$/;
     const msg = document.querySelector(".error-message");
 
@@ -224,12 +229,12 @@ function addDelListeners(){
         //we want delete button to work
         del.querySelector(".delete").addEventListener("click",(event)=>{
             event.preventDefault();
-            charter.deleteDeliverable(name);
+            window.charter.deleteDeliverable(name);
         });
         //we want the value to be updated in the variable upon input
         del.querySelector("input").addEventListener("input",(event)=>{
             const value = event.target.value;
-            charter.deliverables[name]=value;
+            window.charter.deliverables[name]=value;
             if(!validPattern.test(value)){
                 msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
             } else {
@@ -240,7 +245,7 @@ function addDelListeners(){
 }
 
 /** update the list of deliverables visuals */
-function updateDelList(){
+export function updateDelList(){
     let field=document.querySelector(`#project-deliverables`);
     let innerHTML="";
     if(!field) {
@@ -265,7 +270,7 @@ function updateDelList(){
 }
 
 /** add listeners to blob fields */
-function addListListeners(){
+export function addListListeners(){
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
         const elements = document.querySelectorAll(`.list-${key}`);
@@ -283,7 +288,7 @@ function addListListeners(){
 }
 
 /** create html for blob lists */
-function updateLists(){
+export function updateLists(){
     //get the add deliverable field
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
@@ -309,7 +314,7 @@ function updateLists(){
 
 
 /** submit the data displayed on the page */
-function submitCharter(){
+export function submitCharter(){
     const objective = document.querySelector("#project-objective");
     const desc = document.querySelector("#project-desc");
     const msg = document.querySelector(".error-message");
@@ -329,6 +334,7 @@ function submitCharter(){
                 console.log(charter);
                 //API call
             } else {
+                console.log(`form: ${form.checkValidity()}, fields: ${littleSpecialFields}`);
                 msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
             }
         });
