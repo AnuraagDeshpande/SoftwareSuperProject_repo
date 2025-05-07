@@ -146,8 +146,12 @@ describe("PROJECT CHARTER PAGE:",()=>{
         expect(window.addDelListeners).toHaveBeenCalled();
     });
 
-    it("should delete a deliverable and trigger UI updates", () => {
+    it("should keep deliverable if already exists",()=>{
+        charter.addDeliverable("Deliverable1");
+        expect(charter.deliverables["Deliverable1"]).toBe("Criteria1");
+    });
 
+    it("should delete a deliverable and trigger UI updates", () => {
         charter.deleteDeliverable("Deliverable1");
         expect(charter.deliverables["Deliverable1"]).toBeUndefined();
         expect(window.updateDelList).toHaveBeenCalled();
@@ -175,7 +179,6 @@ describe("PROJECT CHARTER PAGE:",()=>{
     });
 
     it("should update deliverable input and validate pattern", () => {
-        
         displayCharter(); // Triggers initial render
         addDelListeners();
 
