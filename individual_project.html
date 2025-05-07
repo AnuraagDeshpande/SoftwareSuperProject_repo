@@ -1,7 +1,3 @@
-<!--This page is for individual projects, which is supposed to display gannt chart, member view 
-and project charter info. Can be modified in terms of button descriptions 
-and is a base page for linking other pages via buttons.-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,33 +6,111 @@ and is a base page for linking other pages via buttons.-->
   <title>Activities</title>
   <link rel="stylesheet" href="styles/individual_project.css" />
   <link rel="stylesheet" href="styles/main.css" />
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+
 </head>
 <body>
   <div class="content-box">
-    <!-- Top Buttons -->
     <div class="top-buttons">
-      <button class="primary-button" onclick="viewGantt()">View Gantt Chart</button>
-      <button class="primary-button" onclick="viewMembers()">View Members</button>
-      <button class="primary-button" onclick="viewProjectCharter()">View Project Charter</button>
-
+      <button class="primary-button" onclick="addActivity()">Add Activity</button>
+      <button class="primary-button" onclick="manageSchedule()">Manage Scheduling</button>
+      <button class="primary-button" onclick="goToProjectMembers()">Manage Team</button>
     </div>
 
-    <!-- Progress bar -->
-    <div class="secondary-card section">
-      <h2>Project Progress</h2>
-      <div class="progress-container">
-        <div class="progress-bar" style="width: 60%;">60%</div>
+    <div class="grid-layout">
+      <div class="secondary-card section">
+        <h2>Recent Activities</h2>
+        <div class="activity-table-container">
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Status</th>
+                <th>Deadline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sample Activity 1</td>
+                <td class="status completed">Completed</td>
+                <td>2025-05-10</td>
+              </tr>
+              <tr>
+                <td>Sample Activity 2</td>
+                <td class="status in-progress">In Progress</td>
+                <td>2025-05-15</td>
+              </tr>
+              <tr>
+                <td>Sample Activity 3</td>
+                <td class="status not-started">Not Started</td>
+                <td>2025-05-20</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        
+      </div>
+
+      <div class="primary-card section">
+        <h2>Gantt Chart</h2>
+        <iframe
+        id="gantt-frame"
+        src="gantt_chart.html"
+        width="100%"
+        height="500"
+        style="border:none;"
+        title="Gantt Chart"
+      ></iframe>
+      </div>
+
+      <!-- div class="tertiary-card section">
+        <h2>Manage Team</h2>
+        <div class="team-input">
+          <input type="text" id="member-name" placeholder="Enter member name" />
+          <button class="primary-button" onclick="addMember()">Add</button>
+        </div>
+        <ul id="team-list"></ul>
+      </div -->
+
+      <!-- div class="primary-card content-box" style="margin-top: var(--mediumGap);">
+        <h2>Project Timeline</h2>
+        <div id="calendar"></div>
+      </div -->
+
+      <!-- New section to display project details -->
+      <div class="primary-card section">
+        <h2>Project Details</h2>
+        <div>
+          <strong>Project Name:</strong> <span id="project-name">Loading...</span>
+        </div>
+        <div>
+          <strong>Description:</strong> <span id="project-desc">Loading...</span>
+        </div>
+        <div>
+          <strong>Manager(s):</strong> <span id="project-manager">Loading...</span>
+        </div>
+        <div>
+          <strong>Owner(s):</strong> <span id="project-owner">Loading...</span>
+        </div>
+        <div>
+          <strong>Status:</strong> <span id="project-status">Loading...</span>
+        </div>
+      </div>
+
+      <div class="secondary-card section">
+        <h2>Project Progress</h2>
+        <div class="placeholder">
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 60%;">60%</div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Gantt Chart Container -->
-    <div class="secondary-card section">
-      <h2>Gantt Chart</h2>
-      <div class="gantt-container">
-        <button class="primary-button" onclick="viewGantt()">View</button>
-      </div>
-    </div>
+  <script src="scripts/activities_page.js"></script>
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
 
-  <script src="scripts/individual_project.js"></script>
 </body>
 </html>
