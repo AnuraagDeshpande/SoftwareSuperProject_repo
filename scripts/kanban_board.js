@@ -1,22 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tasks = [
-        { id: 1, name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "Open" },
-        { id: 2, name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Closed" },
-        { id: 3, name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Open" }
+        { id: 1, name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", pm: "David Black", priority: "low", status: "In Progress" },
+        { id: 2, name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", pm: "John Doe", priority: "urgent", status: "Pending" },
+        { id: 3, name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", pm: "Jane Smith", priority: "high", status: "Completed" }
     ];
 
     const body = document.body;
 
+    // Creates a Navbar
     function create_navbar() {
         const navbar = document.createElement("nav");
         navbar.classList.add("navbar");
-
+ 
+        // Create the left side of the navbar
         const nav_left = document.createElement("div");
         nav_left.classList.add("nav-left");
         const page_title = document.createElement("h2");
         page_title.innerText = "Kanban-Board";
         nav_left.appendChild(page_title);
 
+         // Create the right side of the navbar
         const nav_right = document.createElement("div");
         nav_right.classList.add("nav-right");
         const icons = ["fa-gear", "fa-magnifying-glass", "fa-circle-user"];
@@ -31,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(navbar);
     }
 
-
+    // Creates the task overview panel with search and Management panel
     function create_task_overview() {
         const task_overview = document.createElement("div");
         task_overview.classList.add("task-overview");
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task_search_panel.classList.add("task-search-panel");
         task_overview.appendChild(task_search_panel);
 
+        // function to create the elements
         create_search_filters(task_search_panel);
         create_task_management_panel(task_overview);
 
@@ -47,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    // Creates the search filter
     function create_search_filters(panel) {
         const filters = [
             { label: "Project Name", id: "filter-project-name", type: "text", placeholder: "Search by project name" },
@@ -81,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    //creates the panel for the buttons sorting , adding and
     function create_task_management_panel(task_overview) {
         const panel = document.createElement("div");
         panel.classList.add("task-management-panel");
@@ -125,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task_overview.appendChild(panel);
     }
 
-
+    // Creates a dialog for adding tasks
     function create_task_modal() {
         const task_dialog = document.createElement("dialog");
         task_dialog.id = "task_dialog"
@@ -140,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(task_dialog);
     }
 
-
+   // Creates content within the dialog
     function create_task_modal_content(modal_container) {
         const taskmodal_title = document.createElement("h2");
         taskmodal_title.innerText = "Enter Task Details";
@@ -155,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         modal_container.appendChild(taskmodal_title);
 
+        // Creates and input fields baseed on type
         modal_content.forEach(input_val => {
 
             const input_container = document.createElement("div");
@@ -213,28 +220,30 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("task_dialog").close();
     }
 
-    function fetch_tasks() {
-        fetch('/api/tasks')
-            .then(response => response.json())
-            .then(data => {
-                tasks = data;
-                render_tasks();
-            })
-            .catch(error => console.error('Error fetching tasks:', error));
-    }
+    //Fetch the tasks from API
+    // function fetch_tasks() {
+    //     fetch('/api/tasks')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             tasks = data;
+    //             render_tasks();
+    //         })
+    //         .catch(error => console.error('Error fetching tasks:', error));
+    // }
 
+
+    // Creates the board with columns
     function create_kanban_board() {
         const kanban_board = document.createElement("div");
         kanban_board.classList.add("kanban-board");
 
         const columns = [
-            { id: "openTasks", title: "Open", status: "Open" },
-            { id: "devTasks", title: "Development", status: "Development" },
-            { id: "testTasks", title: "In Test", status: "In Test" },
-            { id: "closedTasks", title: "Closed", status: "Closed" },
-            { id: "abortedTasks", title: "Unresolved", status: "Unresolved" }
+            { id: "Pending", title: "Pending", status: "Pending" },
+            { id: "In_progress", title: "In Progress", status: "In Progress" },
+            { id: "Completed", title: "Completed", status: "Completed" },
         ];
 
+        //Creating each column
         columns.forEach(column => {
             const kanban_class = document.createElement("div");
             kanban_class.classList.add("kanban-class");
@@ -254,22 +263,23 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(kanban_board);
     }
 
-
+    // Render task on Kanban board
     function render_tasks() {
         console.log("Rendering tasks:", tasks);
         const kanban_classes = document.querySelectorAll(".kanban-class");
+       
+        //removing all existing tasks
         kanban_classes.forEach(column => {
             column.querySelectorAll('.task').forEach(task => task.remove());
         });
 
         const kanban_status = {
-            "Open": "openTasks",
-            "Development": "devTasks",
-            "In Test": "testTasks",
-            "Closed": "closedTasks",
-            "Unresolved": "abortedTasks"
+            "Pending":  "Pending",
+            "In Progress": "In_progress",
+            "Completed": "Completed",
         };
 
+        // creates task and places them in the column 
         tasks.forEach(task => {
             const task_div = create_task_element(task);
             const column_belong = kanban_status[task.status];
@@ -282,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
         drag_drop();
     }
 
-
+    // Creates Task Element
     function create_task_element(task) {
         const task_div = document.createElement("div");
         task_div.classList.add("task");
@@ -299,13 +309,14 @@ document.addEventListener('DOMContentLoaded', function () {
         task_div.appendChild(task_meta);
 
 
-        task_div.addEventListener('dblclick', () =>
+        task_div.addEventListener('click', () =>
             show_task_details(task)
         );
 
         return task_div;
     }
 
+    // Creates task header element
     function create_task_header(task) {
         const task_header = document.createElement("div");
         task_header.classList.add("task-header");
@@ -329,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return task_header;
     }
 
+    // Create task body elments
     function create_task_body(task) {
         const task_body = document.createElement("div");
         task_body.classList.add("task-body");
@@ -347,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return task_body;
     }
 
+    // Create task meta information element
     function create_task_meta(task) {
         const task_meta = document.createElement("div");
         task_meta.classList.add("task-meta");
@@ -371,9 +384,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return task_meta;
     }
 
-
+    // To add new tasks 
     function add_task() {
 
+        //Gets the form value from within the task dialog
         const title = document.getElementById("taskTitle").value.trim();
         const priority = document.getElementById("taskpriority").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
@@ -395,6 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const today = new Date();
 
+        // creating a task object
         const task_card = {
             name: title,
             description: description,
@@ -407,18 +422,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         };
 
+    
+        //sending a POST request to add task
         fetch('/api/tasks', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(task_card),
         })
             .then(response => response.json())
-            .then(newTask => {
-                tasks.push(newTask);
+            .then(data => {
+                tasks.push(data);
                 render_tasks();
             })
             .catch(error => console.error('Error adding task:', error));
 
+        // Clear form fields
         document.getElementById("taskTitle").value = "";
         document.getElementById("taskpriority").value = "";
         document.getElementById("taskDescription").value = "";
@@ -429,6 +447,8 @@ document.addEventListener('DOMContentLoaded', function () {
         close_modal();
     }
 
+
+    //Removes task
     function remove_task(taskID) {
         fetch(`/api/tasks/${taskID}`, {
             method: 'DELETE',
@@ -444,6 +464,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error deleting task:', error));
     }
 
+
+// Drag drop functionality
     function drag_drop() {
         const draggables = document.querySelectorAll(".task");
         const droppables = document.querySelectorAll(".kanban-class");
@@ -487,13 +509,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     dragged_task.classList.remove("is-dragging");
                     const new_status = zone.dataset.status;
-                    console.log(dragged_task.dataset.taskId);
-                    update_task_status(dragged_task.dataset.TaskId, new_status);
+                    console.log( dragged_task,dragged_task.dataset.taskId , new_status);
+                    update_task_status(dragged_task.dataset.taskId, new_status);
                 }
             });
         });
     }
 
+    // Helper function finding the position of the mouse to drop the tasks
     function insert_above_task(zone, mouseY) {
         const draggable_elements = [...zone.querySelectorAll(".task:not(.is-dragging)")];
         let closest_task = null;
@@ -512,10 +535,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-
+   // Update task status when dropped
     function update_task_status(taskId, new_status) {
         const task = tasks.find(t => t.id === taskId);
-        if (!task) return;
+        if (!task) console.log("Not found");
 
         const updated_task = {
             id: task.id,
@@ -528,21 +551,25 @@ document.addEventListener('DOMContentLoaded', function () {
             status: new_status
         }
 
-        fetch(`/api/tasks/${taskId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                status: new_status,
-            }),
-        })
-            .then(response => response.json())
-            .then(updatedTask => {
-                task.status = updatedTask.status;
-            })
-            .catch(error => console.error('Error updating task:', error));
+        task.status = new_status;
+        console.log(task);
+        render_tasks();
+
+        // fetch(`/api/tasks/${taskId}`, {
+        //     method: 'PUT',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         status: new_status,
+        //     }),
+        // })
+        //     .then(response => response.json())
+        //     .then(updatedTask => {
+        //         task.status = updatedTask.status;
+        //     })
+        //     .catch(error => console.error('Error updating task:', error));
     }
 
-
+    // Enables to show details of the task and edit the contents
     function show_task_details(task) {
         const show_task_modal = document.createElement("dialog");
         show_task_modal.classList.add("task-detail-modal");
@@ -754,6 +781,6 @@ document.addEventListener('DOMContentLoaded', function () {
     create_task_modal();
     create_kanban_board();
     render_tasks();
-    fetch_tasks();
+    //fetch_tasks();
 
 });
