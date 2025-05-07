@@ -79,7 +79,15 @@ function loadActivities() {
 }
 
 function manageSchedule() {
-    alert("Manage Scheduling button clicked!");
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+  
+    if (!projectId) {
+      alert("No project selected.");
+      return;
+    }
+  
+    window.location.href = `gantt_chart.html?projectId=${projectId}`;
 }
 
 function projectSettings() {

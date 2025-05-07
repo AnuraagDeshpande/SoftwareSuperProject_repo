@@ -129,7 +129,7 @@ ul li {
 
 .activity-table th,
 .activity-table td {
-  text-align: left;
+  text-align: center;
   padding: var(--smallGap);
   border-bottom: 1px solid var(--surfaceDim);
 }
@@ -137,13 +137,17 @@ ul li {
 .activity-table th {
   background-color: var(--primaryContainer);
   color: var(--onPrimaryContainer);
+  text-align: center;
 }
 
 .status {
   font-weight: bold;
+  text-align: center;
   border-radius: var(--smallRadius);
   padding: 3px 8px;
   display: inline-block;
+  width: 100%;                 /* Optional: stretch to full width if desired */
+  box-sizing: border-box;      /* Ensures padding doesn’t overflow */
 }
 
 .status.completed {

@@ -122,7 +122,7 @@ export class ProjectList{
                 }
                 //we create the card
                 const card = `
-                <a href="activities_page.html?projectId=${element.id}" class="project-link">
+                <a href="individual_project.html?projectId=${element.id}" class="project-link">
                     <div class="project-card">
                         <div class="project-card-header">
                             <img class="project-icon" src="media/${element.projectIcon}">
