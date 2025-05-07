@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tasks = [
-        { id: 1, title: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", deadline: "May 18, 2025", status: "In Progress" },
+        //{ id: 1, title: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", deadline: "May 18, 2025", status: "In Progress" },
         { id: 2, title: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", deadline: "May 25, 2025", status: "Pending" },
         { id: 3, title: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", deadline: "May 4, 2025", status: "Completed" }
     ];
