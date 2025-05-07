@@ -157,24 +157,17 @@
     justify-content: center;
 }
 
-#open {
-    background-color: rgb(40, 167, 69, 40%);
-}
 
-#development {
+#completed {
     background-color: rgb(119, 221, 119, 40%);
 }
 
-#in-test {
-    background-color: rgb(244, 197, 66, 40%);
-}
-
-#closed {
+#pending {
     background-color: rgb(65, 116, 212, 40%);
 }
 
-#aborted {
-    background-color: hsla(271, 76%, 53%, 40%);
+#in_progress {
+    background-color: rgb(244, 197, 66, 40%);
 }
 
 .gantt_legend {

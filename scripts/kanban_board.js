@@ -290,30 +290,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Creates Task Element
     function create_task_element(task) {
+
         const task_div = document.createElement("div");
         task_div.classList.add("task");
         task_div.setAttribute("draggable", "true");
         task_div.dataset.taskId = task.id;
 
-        const task_header = create_task_header(task);
-        task_div.appendChild(task_header);
-
-        const task_body = create_task_body(task);
-        task_div.appendChild(task_body);
-
-        const task_meta = create_task_meta(task);
-        task_div.appendChild(task_meta);
-
-
-        task_div.addEventListener('dblclick', () => {
-            create_task_modal(task);
-        });
-
-        return task_div;
-    }
-
-    // Creates task header element
-    function create_task_header(task) {
         const task_header = document.createElement("div");
         task_header.classList.add("task-header");
 
@@ -325,12 +307,8 @@ document.addEventListener('DOMContentLoaded', function () {
         task_header.appendChild(options_link);
 
         options_link.addEventListener("click", () => remove_task(tasks.id));
+        task_div.appendChild(task_header);
 
-        return task_header;
-    }
-
-    // Create task body elments
-    function create_task_body(task) {
         const task_body = document.createElement("div");
         task_body.classList.add("task-body");
 
@@ -344,12 +322,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         task_body.appendChild(task_name);
         task_body.appendChild(task_description);
+        task_div.appendChild(task_body);
 
-        return task_body;
-    }
-
-    // Create task meta information element
-    function create_task_meta(task) {
         const task_meta = document.createElement("div");
         task_meta.classList.add("task-meta");
 
@@ -365,9 +339,16 @@ document.addEventListener('DOMContentLoaded', function () {
         task_meta.appendChild(project_name);
         task_meta.appendChild(due_date);
         task_meta.appendChild(status_label);
+        task_div.appendChild(task_meta);
 
-        return task_meta;
+
+        task_div.addEventListener('dblclick', () => {
+            create_task_modal(task);
+        });
+
+        return task_div;
     }
+
 
     // To add new tasks 
     function add_task() {
@@ -540,7 +521,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function update_task() {
-
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
