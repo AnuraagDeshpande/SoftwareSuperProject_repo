@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tasks = [
-        { id: 1, name: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", dueDate: "May 18, 2025", status: "In Progress" },
-        { id: 2, name: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", dueDate: "May 25, 2025", status: "Pending" },
-        { id: 3, name: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", dueDate: "May 4, 2025", status: "Completed" }
+        { id: 1, title: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", deadline: "May 18, 2025", status: "In Progress" },
+        { id: 2, title: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", deadline: "May 25, 2025", status: "Pending" },
+        { id: 3, title: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", deadline: "May 4, 2025", status: "Completed" }
     ];
 
     const body = document.body;
@@ -12,10 +12,44 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/tasks')
             .then(response => response.json())
             .then(data => {
-                tasks = data;
+                tasks = data.data;
                 render_tasks();
             })
             .catch(error => console.error('Error fetching tasks:', error));
+    }
+
+    // sending a POST request to add task
+    function AddTasks(task_card) {
+        fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task_card),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // tasks.push(data.data);
+                    // render_tasks();
+                    fetch_tasks();
+                }
+            })
+            .catch(error => console.error('Error adding task:', error));
+    }
+
+    //Removes task
+    function remove_task(taskID) {
+        fetch(`/api/tasks/${taskID}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    tasks = tasks.filter(task => task.id !== taskID);
+                    render_tasks();
+                } else {
+                    console.error('Error deleting task');
+                }
+            })
+            .catch(error => console.error('Error deleting task:', error));
     }
 
 
@@ -161,14 +195,14 @@ document.addEventListener('DOMContentLoaded', function () {
         task_dialog.appendChild(task_modal_container);
 
         const taskmodal_title = document.createElement("h2");
-        taskmodal_title.innerText = data ? `Edit Task: ${data.name}` : "Enter Task Details";
+        taskmodal_title.innerText = data ? `Edit Task: ${data.title}` : "Enter Task Details";
         task_modal_container.appendChild(taskmodal_title);
 
         const modal_content = [
             { label: "Title:", id: "taskTitle", type: "text", placeholder: "Enter task title" },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
             { label: "Project Name:", id: "projectName", type: "text", placeholder: "Enter project name" },
-            { label: "Due Date:", id: "dueDate", type: "date" }
+            { label: "Deadline:", id: "deadline", type: "date" }
         ];
 
         modal_content.forEach(input_val => {
@@ -210,10 +244,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(task_dialog);
 
         if (data) {
-            document.getElementById("taskTitle").value = data.name;
+            document.getElementById("taskTitle").value = data.title;
             document.getElementById("taskDescription").value = data.description;
             document.getElementById("projectName").value = data.project;
-            document.getElementById("dueDate").value = data.dueDate;
+            document.getElementById("deadline").value = data.deadline;
             add_button.addEventListener('click', () => update_task());
         } else {
             add_button.addEventListener('click', add_task);
@@ -314,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const task_name = document.createElement("h4");
         task_name.classList.add("task-name");
-        task_name.innerText = task.name;
+        task_name.innerText = task.title;
 
         const task_description = document.createElement("p");
         task_description.classList.add("task-description");
@@ -330,19 +364,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const project_name = document.createElement("span");
         project_name.innerHTML = `<i class="fa-solid fa-folder"></i> Project: ${task.project}`;
 
-        const due_date = document.createElement("span");
-        due_date.innerHTML = `<i class="fa-solid fa-calendar"></i> Due: ${task.dueDate}`;
+        const deadline = document.createElement("span");
+        deadline.innerHTML = `<i class="fa-solid fa-calendar"></i> Due: ${task.deadline}`;
 
         const status_label = document.createElement("span");
         status_label.innerHTML = `<i class="fa-solid fa-clipboard-list"></i> ${task.status}`;
 
         task_meta.appendChild(project_name);
-        task_meta.appendChild(due_date);
+        task_meta.appendChild(deadline);
         task_meta.appendChild(status_label);
         task_div.appendChild(task_meta);
 
 
-        task_div.addEventListener('dblclick', () => {
+        task_div.addEventListener('click', () => {
             create_task_modal(task);
         });
 
@@ -357,14 +391,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
-        const due_date = document.getElementById("dueDate").value.trim();
+        const deadline = document.getElementById("deadline").value.trim();
 
-        if (!title || !project || !description || !due_date) {
+        if (!title || !project || !description || !deadline) {
             alert("Please fill in all the fields.");
             return;
         }
 
-        const format_date = new Date(due_date);
+        const format_date = new Date(deadline);
         const formatted_date = format_date.toLocaleDateString("en-US", {
             month: 'long',
             day: 'numeric',
@@ -375,10 +409,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // creating a task object
         const task_card = {
-            name: title,
+            title: title,
             description: description,
             project: project,
-            dueDate: due_date,
+            deadline: deadline,
             status: "Pending",
             startDate: today
 
@@ -387,44 +421,15 @@ document.addEventListener('DOMContentLoaded', function () {
         tasks.push(task_card);
         render_tasks();
 
-
-        //sending a POST request to add task
-        // fetch('/api/tasks', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(task_card),
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         tasks.push(data);
-        //         render_tasks();
-        //     })
-        //     .catch(error => console.error('Error adding task:', error));
+        AddTasks(task_card);
 
         // Clear form fields
         document.getElementById("taskTitle").value = "";
         document.getElementById("taskDescription").value = "";
         document.getElementById("projectName").value = "";
-        document.getElementById("dueDate").value = "";
+        document.getElementById("deadline").value = "";
 
         close_modal();
-    }
-
-
-    //Removes task
-    function remove_task(taskID) {
-        fetch(`/api/tasks/${taskID}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (response.ok) {
-                    tasks = tasks.filter(task => task.id !== taskID);
-                    render_tasks();
-                } else {
-                    console.error('Error deleting task');
-                }
-            })
-            .catch(error => console.error('Error deleting task:', error));
     }
 
     // Drag drop functionality
@@ -524,13 +529,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
-        const due_date = document.getElementById("dueDate").value.trim();
+        const deadline = document.getElementById("deadline").value.trim();
 
         const task_card = {
-            name: title,
+            title: title,
             description: description,
             project: project,
-            dueDate: due_date,
+            deadline: deadline,
             status: "Pending",
         };
 
@@ -577,10 +582,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function sort_by_task_name() {
         tasks.sort(function (a, b) {
-            if (a.name < b.name) {
+            if (a.title < b.title) {
                 return -1;
             }
-            if (a.name > b.name) {
+            if (a.title > b.title) {
                 return 1;
             }
             return 0;
@@ -590,8 +595,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function sort_by_deadline() {
         tasks.sort((a, b) => {
-            const date_a = new Date(a.dueDate);
-            const date_b = new Date(b.dueDate);
+            const date_a = new Date(a.deadline);
+            const date_b = new Date(b.deadline);
             return date_a - date_b;
         });
         render_tasks();
