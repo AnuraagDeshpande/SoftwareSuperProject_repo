@@ -509,7 +509,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     dragged_task.classList.remove("is-dragging");
                     const new_status = zone.dataset.status;
-                    console.log( dragged_task,dragged_task.dataset.taskId , new_status);
                     update_task_status(dragged_task.dataset.taskId, new_status);
                 }
             });
@@ -537,36 +536,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Update task status when dropped
     function update_task_status(taskId, new_status) {
+        taskId = Number(taskId);
         const task = tasks.find(t => t.id === taskId);
         if (!task) console.log("Not found");
 
-        const updated_task = {
-            id: task.id,
-            name: task.name,
-            priority: task.priority,
-            description: task.description,
-            project: task.project,
-            pm: task.pm,
-            dueDate: task.dueDate,
-            status: new_status
-        }
-
         task.status = new_status;
-        console.log(task);
         render_tasks();
 
-        // fetch(`/api/tasks/${taskId}`, {
-        //     method: 'PUT',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         status: new_status,
-        //     }),
-        // })
-        //     .then(response => response.json())
-        //     .then(updatedTask => {
-        //         task.status = updatedTask.status;
-        //     })
-        //     .catch(error => console.error('Error updating task:', error));
+        fetch(`/api/tasks/${taskId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                status: new_status,
+            }),
+        })
+            .then(response => response.json())
+            .then(updatedTask => {
+                task.status = updatedTask.status;
+                render_tasks();
+            })
+            .catch(error => console.error('Error updating task:', error));
     }
 
     // Enables to show details of the task and edit the contents
