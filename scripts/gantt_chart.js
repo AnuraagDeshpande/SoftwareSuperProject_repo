@@ -28,37 +28,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     create_navbar();
 
-    // const project_data = {
-    //     name: "Website Redesign",
-    //     pm: "Jane Doe",
-    //     start_date: "2025-04-01",
-    //     due_date: "2025-06-01",
-    //     progress: "45%",
-    // };
+    const project_data = {
+        name: "Website Redesign",
+        pm: "Jane Doe",
+        start_date: "2025-04-01",
+        due_date: "2025-06-01",
+        progress: "45%",
+    };
 
-    fetch("/api/project")
-        .then(res => res.json())
-        .then(projectData => {
-            const project_overview = document.createElement("div");
-            project_overview.classList.add("project_overview");
-            project_overview.id = "project_overview";
-            project_overview.appendChild(create_project_overview(projectData));
-            body.appendChild(project_overview);
+    // fetch("/api/project")
+    //     .then(res => res.json())
+    //     .then(projectData => {
+    //         const project_overview = document.createElement("div");
+    //         project_overview.classList.add("project_overview");
+    //         project_overview.id = "project_overview";
+    //         project_overview.appendChild(create_project_overview(projectData));
+    //         body.appendChild(project_overview);
 
-            fetch("/api/tasks")
-                .then(res => res.json())
-                .then(taskData => {
-                    const gantt_chart = generate_gantt_chart(taskData, projectData); 
-                    body.appendChild(gantt_chart);
-                })
-                .catch(error => console.error('Error fetching tasks:', error));
-        })
-        .catch(error => console.error('Error fetching project data:', error));
+    //         fetch("/api/tasks")
+    //             .then(res => res.json())
+    //             .then(taskData => {
+    //                 const gantt_chart = generate_gantt_chart(taskData, projectData); 
+    //                 body.appendChild(gantt_chart);
+    //             })
+    //             .catch(error => console.error('Error fetching tasks:', error));
+    //     })
+    //     .catch(error => console.error('Error fetching project data:', error));
         
 
-    // const project_overview = document.createElement("div");
-    // project_overview.classList.add("project_overview");
-    // project_overview.id = "project_overview";
+    const project_overview = document.createElement("div");
+    project_overview.classList.add("project_overview");
+    project_overview.id = "project_overview";
 
     function create_project_overview(project) {
         const container = document.createElement("div");
@@ -116,24 +116,24 @@ document.addEventListener('DOMContentLoaded', function () {
         return container;
     }
 
-    // project_overview.appendChild(create_project_overview(project_data));
-    // body.appendChild(project_overview);
+    project_overview.appendChild(create_project_overview(project_data));
+    body.appendChild(project_overview);
 
-    // const tasks = [
-    //     { name: "Research", startDate: "2025-04-01", dueDate: "2025-04-10", status: "closed" },
-    //     { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "development" },
-    //     { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "in-test" },
-    //     { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "closed" },
-    //     { name: "Deployment", startDate: "2025-04-02", dueDate: "2025-06-01", status: "aborted" },
-    //     { name: "Planning", startDate: "2025-04-01", dueDate: "2025-04-15", status: "development" },
-    //     { name: "Initial Review", startDate: "2025-04-16", dueDate: "2025-04-20", status: "open" },
-    //     { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "closed" },
-    //     { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "in-test" },
-    //     { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "development" }
-    // ];
+    const tasks = [
+        { name: "Research", startDate: "2025-04-01", dueDate: "2025-05-10", status: "In Progress" },
+        { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "Pending" },
+        { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "Completed" },
+        { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "In Progress" },
+        { name: "Deployment", startDate: "2025-04-02", dueDate: "2025-06-01", status: "Completed" },
+        { name: "Planning", startDate: "2025-04-01", dueDate: "2025-04-15", status: "Pending" },
+        { name: "Initial Review", startDate: "2025-04-16", dueDate: "2025-04-20", status: "Completed" },
+        { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "In Progress" },
+        { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "In Progress" },
+        { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "Pending" }
+    ];
 
 
-    function generate_gantt_chart(tasks, project_data) {
+    function generate_gantt_chart(tasks, project_data)  {
         const pixel_width_perday = 60;
         const microsecond_perday = 86400000;
 
@@ -166,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         gantt_chart_container.appendChild(date_header);
 
+        
         const task_list = document.createElement("div");
         task_list.classList.add("gantt_task_list");
 
@@ -194,10 +195,9 @@ document.addEventListener('DOMContentLoaded', function () {
             gantt_span.style.left = `${offset * pixel_width_perday}px`;
             gantt_span.style.width = `${duration * pixel_width_perday}px`;
             gantt_span.style.height = "12px";
-            gantt_span.id = task.status;
-
+    
             const today = new Date();
-            if (new Date(task.dueDate) < today && task.status !== "closed") {
+            if (new Date(task.dueDate) < today && task.status !== "In Progress") {
                 gantt_span.style.backgroundColor = "rgba(255, 0, 0, 0.6)";
                 gantt_span.id = "overdue";
             }
@@ -207,21 +207,18 @@ document.addEventListener('DOMContentLoaded', function () {
             status_icon.classList.add("fa-solid");
             status_icon.style.marginRight = "6px";
 
-            switch (gantt_span.id) {
-                case "open":
+            switch (task.status) {
+                case "Pending":
                     status_icon.classList.add("fa-folder-open");
+                    gantt_span.id = "pending";
                     break;
-                case "development":
-                    status_icon.classList.add("fa-code");
-                    break;
-                case "in-test":
+                case "In Progress":
                     status_icon.classList.add("fa-vial");
+                    gantt_span.id = "in_progress";
                     break;
-                case "closed":
+                case "Completed":
                     status_icon.classList.add("fa-check-circle");
-                    break;
-                case "aborted":
-                    status_icon.classList.add("fa-ban");
+                    gantt_span.id = "completed";
                     break;
                 case "overdue":
                     status_icon.classList.add("fa-exclamation-triangle");
@@ -244,17 +241,18 @@ document.addEventListener('DOMContentLoaded', function () {
         return gantt_container;
     }
 
+    const gantt_chart = generate_gantt_chart(tasks, project_data); 
+    body.appendChild(gantt_chart);
+
     const gantt_legend = document.createElement("div");
     gantt_legend.classList.add("gantt_legend");
     gantt_legend.innerHTML = `
-    <div class="legend_item" style="background-color: rgb(40, 167, 69, 40%);"><i class="fa-solid fa-folder-open"></i><span>Open</span></div>
-    <div class="legend_item" style="background-color: rgb(119, 221, 119, 40%);"><i class="fa-solid fa-code"></i><span>Development</span></div>
-    <div class="legend_item" style="background-color: rgb(244, 197, 66, 40%);"><i class="fa-solid fa-vial"></i><span>In Test</span></div>
-    <div class="legend_item" style="background-color: rgb(65, 116, 212, 40%);"><i class="fa-solid fa-check-circle"></i><span>Closed</span></div>
-    <div class="legend_item" style="background-color: hsla(271, 76%, 53%, 40%);"><i class="fa-solid fa-ban"></i><span>Aborted</span></div>
+    <div class="legend_item" style="background-color: rgb(65, 116, 212, 40%);"><i class="fa-solid fa-folder-open"></i><span>Pending</span></div>
+    <div class="legend_item" style="background-color: rgb(244, 197, 66, 40%);"><i class="fa-solid fa-vial"></i><span>In Progress</span></div>
+    <div class="legend_item" style="background-color: rgb(119, 221, 119, 40%);"><i class="fa-solid fa-check-circle"></i><span>Completed</span></div>
     <div class="legend_item" style="background-color: rgba(255, 0, 0, 0.6);"><i class="fa-solid fa-exclamation-triangle"></i><span>Overdue</span></div>
 `;
     body.appendChild(gantt_legend);
-
+    
 });
 
