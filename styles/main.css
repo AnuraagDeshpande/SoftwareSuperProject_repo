@@ -155,3 +155,7 @@ footer-end{
     background-color: var(--error);
     color: var(--onError);
 }
+
+.error-message{
+    color: var(--error);
+}

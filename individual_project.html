@@ -1,0 +1,42 @@
+<!--This page is for individual projects, which is supposed to display gannt chart, member view 
+and project charter info. Can be modified in terms of button descriptions 
+and is a base page for linking other pages via buttons.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activities</title>
+  <link rel="stylesheet" href="styles/individual_project.css" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <div class="content-box">
+    <!-- Top Buttons -->
+    <div class="top-buttons">
+      <button class="primary-button" onclick="viewGantt()">View Gantt Chart</button>
+      <button class="primary-button" onclick="viewMembers()">View Members</button>
+      <button class="primary-button" onclick="viewProjectCharter()">View Project Charter</button>
+
+    </div>
+
+    <!-- Progress bar -->
+    <div class="secondary-card section">
+      <h2>Project Progress</h2>
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 60%;">60%</div>
+      </div>
+    </div>
+
+    <!-- Gantt Chart Container -->
+    <div class="secondary-card section">
+      <h2>Gantt Chart</h2>
+      <div class="gantt-container">
+        <button class="primary-button" onclick="viewGantt()">View</button>
+      </div>
+    </div>
+
+  <script src="scripts/individual_project.js"></script>
+</body>
+</html>

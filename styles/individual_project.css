@@ -1,0 +1,92 @@
+/* Top Buttons */
+.top-buttons {
+  display: flex;
+  gap: var(--smallGap);
+  margin-bottom: var(--mediumGap);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.top-buttons .primary-button {
+  background-color: var(--primary);  
+  color: var(--onPrimary);
+  font-weight: bold;
+  padding: var(--smallGap) 20px;  
+  border-style: none;
+  border-radius: 50px;  
+  transition: all 0.3s;
+  height: 40px;  
+  min-width: 120px;  
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-buttons .primary-button:hover {
+  opacity: 0.8;
+}
+
+.top-buttons .primary-button:active {
+  opacity: 0.6;
+}
+
+.section {
+  /* General spacing between sections */
+  margin-bottom: var(--mediumGap); 
+}
+
+.section h2 {
+  margin-bottom: var(--smallGap);
+}
+
+/* Placeholder Styles */
+.placeholder {
+  background-color: var(--surfaceBright);
+  border: 2px dashed var(--surfaceDim);
+  border-radius: var(--smallRadius);
+  padding: var(--mediumGap);
+  text-align: center;
+  color: var(--onSurface);
+  font-style: italic;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  background-color: var(--surfaceDim);
+  border-radius: var(--smallRadius);
+  overflow: hidden;
+  height: 25px;
+  margin-top: var(--smallGap);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  color: var(--onPrimary);
+  text-align: center;
+  line-height: 25px;
+  font-weight: bold;
+}
+
+.gantt-container {
+  background-color: var(--surfaceBright);
+  padding: var(--mediumGap);
+  border-radius: var(--mediumRadius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;  
+  align-items: center; 
+}
+
+.gantt-container h2 {
+  margin-bottom: var(--smallGap);
+}
+
+.gantt-container .primary-button {
+  margin-top: var(--smallGap);
+  margin-left: 0;
+}

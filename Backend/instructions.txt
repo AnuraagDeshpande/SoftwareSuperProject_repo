@@ -1,6 +1,6 @@
 Here I will tell step by step how to connect database to login or signin.
 First, You need to download XAMPP app and PHPMAILER document from GITHUB.
-Download and set-up the XAMPP, and remember where the app files and itself located. 
+Download and set-up the XAMPP, and remember where the app files and itself located. (On linux systems it is in /opt/lampp/manager-linux-x64.run)
 We will be using XAMPP/xamppfiles/htdocs folder for our project, create a seperate folder on there and add all of the backend and frontend files.
 So does the PHPMAILER folder, add it to the folder that you have created.
 Secondly, check signup and login scripts, there are two things that you need to change,

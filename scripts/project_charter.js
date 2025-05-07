@@ -1,30 +1,55 @@
 class ProjectCharter{
     //properties described by the charter
+    id=1;
     title="";
     desc="";
     purpose="";
     objective="";
     acceptance="";
+    deadline= "2025-12-24";
     deliverables={};
     assumptions=[];
     constraints=[];
     risks=[];
 
-    //basic constructor
-    constructor(title, desc){
-        this.title=title;
-        this.desc=desc;
+    /** construct an instance based on id */
+    constructor(id){
+        const temp = this.fetchData(id);
+        this.id=temp.id;
+        this.title = temp.title;
+        this.desc = temp.desc;
+        this.purpose = temp.purpose;
+        this.objective = temp.objective;
+        this.acceptance = temp.acceptance;
+        this.deadline = temp.deadline;
+        this.deliverables = temp.deliverables;
+        this.assumptions = temp.assumptions;
+        this.constraints = temp.constraints;
+        this.risks = temp.risks;
     }
 
-    /** save the edited version*/
-    save(){
-        console.log("saving");
+    /** fetch data from a server based on id */
+    fetchData(id){
+        return {
+            id: 1,
+            deadline:"2025-12-12",
+            status: "",
+            title:"",
+            desc:"",
+            purpose:"",
+            objective:"",
+            acceptance:"",
+            deliverables:{},
+            assumptions:[],
+            constraints:[],
+            risks:[]
+        };
     }
 
     /** add a deliverable to the list */
     addDeliverable(del){
         if(!(del in this.deliverables)){
-            this.deliverables[del]="";
+            this.deliverables[del]="";//we add the new deliverable
             updateDelList();
             addDelListeners();
         }
@@ -60,20 +85,25 @@ class ProjectCharter{
     }
 }
 
+/** load the project from the database*/
 function loadProjectCharter(){
-    return new ProjectCharter("name of something", "description of something");
+    return new ProjectCharter(1);
 }
 
 const charter=loadProjectCharter();
 //display loaded data
 displayCharter();
+//add listeners to the data
+addListeners();
+//submit button listener
+submitCharter();
 
 /** display the initial project charter information */
 function displayCharter(){
     Object.keys(charter).forEach(key=>{
         //text field values are set
         const lists = ["deliverables","assumptions","constraints","risks"];
-        if(!lists.includes(key)){
+        if(!lists.includes(key) && key!="id"){
             //node is retrieved
             let field=document.querySelector(`#project-${key}`);
             if(!field) {
@@ -132,10 +162,13 @@ function displayCharter(){
     });
 }
 
-addListeners();
 
-/** add listeners to each button */
+
+/** add listeners to each add button and fields*/
 function addListeners(){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+    const msg = document.querySelector(".error-message");
+
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
     if(!addButton) {
@@ -145,12 +178,15 @@ function addListeners(){
     addButton.addEventListener("click",(event)=>{
         event.preventDefault();
         const newDel = document.querySelector("#deliverables");
-        if(newDel && newDel.value!=""){
+        if(newDel && newDel.value!="" && validPattern.test(newDel.value)){
             charter.addDeliverable(newDel.value);
+            msg.innerHTML="";
         } else{
             console.error("deliverables field not found or empty");
+            msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
         }
     });
+
     //get the add list fields and add the listeners for them
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
@@ -162,20 +198,24 @@ function addListeners(){
         addButton.addEventListener("click",(event)=>{
             event.preventDefault();
             const newList = document.querySelector(`#${key}`);
-            if(newList && newList.value!=""){
+            if(newList && newList.value!="" && validPattern.test(newList.value)){
                 charter.addToList(newList.value, key);
+                msg.innerHTML="";
             } else{
                 console.error(`${key} field not found or empty`);
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
             }
         });
     });
     addDelListeners();
     addListListeners();
-    
 }
 
 /** add event listeners for the blobs for each deliverable */
 function addDelListeners(){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+    const msg = document.querySelector(".error-message");
+
     //set event listeners to deliverables
     const deliverables = document.querySelectorAll(".list-del");
     deliverables.forEach((del)=>{
@@ -190,6 +230,11 @@ function addDelListeners(){
         del.querySelector("input").addEventListener("input",(event)=>{
             const value = event.target.value;
             charter.deliverables[name]=value;
+            if(!validPattern.test(value)){
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
+            } else {
+                msg.innerHTML="";
+            }
         });
     });
 }
@@ -219,6 +264,7 @@ function updateDelList(){
     });
 }
 
+/** add listeners to blob fields */
 function addListListeners(){
     const lists = ["assumptions","constraints","risks"];
     lists.forEach(key=>{
@@ -236,6 +282,7 @@ function addListListeners(){
     });
 }
 
+/** create html for blob lists */
 function updateLists(){
     //get the add deliverable field
     const lists = ["assumptions","constraints","risks"];
@@ -260,15 +307,30 @@ function updateLists(){
     });
 }
 
-submitCharter();
+
 /** submit the data displayed on the page */
 function submitCharter(){
+    const objective = document.querySelector("#project-objective");
+    const desc = document.querySelector("#project-desc");
+    const msg = document.querySelector(".error-message");
+    const form = document.querySelector("form");
     const submitBut = document.querySelector('form input[type="submit"]');
-    if(submitBut){
+    const validPattern = /^[A-Za-z0-9 ,\.]+$/;
+
+    if(submitBut && form && msg){
         submitBut.addEventListener("click", (event)=>{
-            console.log("submitting");
-            event.preventDefault();
-            console.log(charter);
+            event.preventDefault();//we do our own little thing instead
+
+            //this checks text area fields for validity
+            const littleSpecialFields = validPattern.test(objective.value) && validPattern.test(desc.value);
+            //is the user sane?
+            if(form.checkValidity() && littleSpecialFields){
+                console.log("submitting");
+                console.log(charter);
+                //API call
+            } else {
+                msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
+            }
         });
     } else {
         console.error("no submit button found");
