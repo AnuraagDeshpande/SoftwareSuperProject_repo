@@ -1,34 +1,23 @@
 <?php
-session_start();
-header('Content-Type: application/json');
-
-$host = "localhost";
-$db_user = "root";
-$db_pass = "..."; // replace with your password
-$db_name = "softwareproject";
-
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Database connection failed']);
-    exit;
-}
-
 class ProjectController {
+    // GET /projects
     public function getAllProjects() {
         global $conn;
-        $projects = [];
-    
-        $projectResult = $conn->query("SELECT * FROM projects");
-        if (!$projectResult) {
+
+        $query = "SELECT id, title, description, status FROM projects";
+        $result = $conn->query($query);
+
+        if (!$result) {
             http_response_code(500);
-            echo json_encode(['success' => false, 'error' => 'Failed to fetch projects']);
+            echo json_encode(['success' => false, 'error' => 'Database query failed.']);
             return;
         }
-    
-        while ($project = $projectResult->fetch_assoc()) {
+
+        $projects = [];
+
+        while ($project = $result->fetch_assoc()) {
             $project_id = $project['id'];
-    
+
             $membersStmt = $conn->prepare("
                 SELECT u.username, pm.role 
                 FROM project_members pm
@@ -38,15 +27,15 @@ class ProjectController {
             if (!$membersStmt) {
                 continue;
             }
-    
+
             $membersStmt->bind_param("i", $project_id);
             $membersStmt->execute();
             $members = $membersStmt->get_result();
-    
+
             $owners = [];
             $managers = [];
             $participants = [];
-    
+
             while ($member = $members->fetch_assoc()) {
                 switch ($member['role']) {
                     case 'Owner':
@@ -60,7 +49,7 @@ class ProjectController {
                         break;
                 }
             }
-    
+
             $formattedProject = [
                 'id' => (int)$project['id'],
                 'projectName' => $project['title'],
@@ -71,166 +60,163 @@ class ProjectController {
                 'participants' => $participants,
                 'status' => strtolower($project['status']) ?? 'active'
             ];
-    
+
             $projects[] = $formattedProject;
             $membersStmt->close();
         }
-    
-        echo json_encode($projects);
-    }    
+
+        echo json_encode(['success' => true, 'data' => $projects]);
+    }
+
+    public function getProjectById($id) {
+        global $conn;
+
+        $stmt = $conn->prepare("SELECT id, title, description, status FROM projects WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $project = $result->fetch_assoc();
+
+        if ($project) {
+            echo json_encode(['success' => true, 'data' => $project]);
+        } else {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'Project not found']);
+        }
+    }
 
     public function createProject($data) {
         global $conn;
-    
-        // Extract data from the request
+
         $title = trim($data['projectName'] ?? '');
         $description = trim($data['desc'] ?? '');
         $status = strtolower(trim($data['status'] ?? 'active'));
         $ownerUsernames = $data['owner'] ?? [];
-        $participantsUsernames = $data['participants'] ?? [];
-    
-        // Validate required fields
+        $managerUsernames = $data['manager'] ?? [];
+        $participantUsernames = $data['participants'] ?? [];
+
         if (empty($title) || empty($description) || empty($ownerUsernames)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Missing required fields']);
             return;
         }
-    
-        // Validate input formats
-        if (!preg_match('/^[A-Za-z0-9 ,.]+$/', $title) || !preg_match('/^[A-Za-z0-9 ,.]+$/', $description) || strlen($title) > 50) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Invalid input format']);
-            return;
-        }
-    
-        // Insert project into database
+
         $stmt = $conn->prepare("INSERT INTO projects (title, description, status) VALUES (?, ?, ?)");
         if (!$stmt) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => 'Failed to prepare insert statement']);
             return;
         }
-    
+
         $stmt->bind_param("sss", $title, $description, $status);
         if (!$stmt->execute()) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => 'Failed to insert project']);
             return;
         }
-    
-        // Get the project ID after insertion
+
         $project_id = $stmt->insert_id;
         $stmt->close();
-    
-        // Insert owner (first one in the list)
-        $owner_username = $ownerUsernames[0]; // assuming only one owner
-        $userStmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-        $userStmt->bind_param("s", $owner_username);
-        $userStmt->execute();
-        $userResult = $userStmt->get_result();
-        $userRow = $userResult->fetch_assoc();
-        $userStmt->close();
-    
-        if ($userRow) {
-            $user_id = $userRow['id'];
-    
-            // Insert owner into project_members table
-            $memberStmt = $conn->prepare("INSERT INTO project_members (user_id, project_id, role) VALUES (?, ?, 'Owner')");
-            $memberStmt->bind_param("ii", $user_id, $project_id);
-            $memberStmt->execute();
-            $memberStmt->close();
-        }
-    
-        // Insert participants
-        foreach ($participantsUsernames as $participant_username) {
-            $userStmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-            $userStmt->bind_param("s", $participant_username);
-            $userStmt->execute();
-            $userResult = $userStmt->get_result();
-            $userRow = $userResult->fetch_assoc();
-            $userStmt->close();
-    
-            if ($userRow) {
-                $user_id = $userRow['id'];
-    
-                // Insert participant into project_members table
-                $memberStmt = $conn->prepare("INSERT INTO project_members (user_id, project_id, role) VALUES (?, ?, 'Participant')");
-                $memberStmt->bind_param("ii", $user_id, $project_id);
-                $memberStmt->execute();
-                $memberStmt->close();
+
+        // Function to insert members
+        $insertMembers = function($usernames, $role) use ($conn, $project_id) {
+            foreach ($usernames as $username) {
+                $userStmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+                $userStmt->bind_param("s", $username);
+                $userStmt->execute();
+                $userResult = $userStmt->get_result();
+                $userRow = $userResult->fetch_assoc();
+                $userStmt->close();
+
+                if ($userRow) {
+                    $user_id = $userRow['id'];
+
+                    $memberStmt = $conn->prepare("INSERT INTO project_members (user_id, project_id, role) VALUES (?, ?, ?)");
+                    $memberStmt->bind_param("iis", $user_id, $project_id, $role);
+                    $memberStmt->execute();
+                    $memberStmt->close();
+                }
             }
-        }
-    
-        // Return success response
+        };
+
+        // Insert owners, managers, and participants
+        $insertMembers($ownerUsernames, 'Owner');
+        $insertMembers($managerUsernames, 'Manager');
+        $insertMembers($participantUsernames, 'Participant');
+
         echo json_encode(['success' => true, 'message' => 'Project created', 'project_id' => $project_id]);
     }
 
-    function deleteProject($projectId) {
+    public function updateProject($id, $data) {
         global $conn;
-    
-        // Validate the project ID
-        if (empty($projectId) || !is_numeric($projectId)) {
+
+        $allowedFields = ['title', 'description', 'status'];
+        $fieldsToUpdate = [];
+        $values = [];
+
+        foreach ($allowedFields as $field) {
+            if (isset($data[$field])) {
+                $fieldsToUpdate[] = "$field = ?";
+                $values[] = $data[$field];
+            }
+        }
+
+        if (empty($fieldsToUpdate)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'No valid fields for update']);
+            return;
+        }
+
+        $query = "UPDATE projects SET " . implode(", ", $fieldsToUpdate) . " WHERE id = ?";
+        $stmt = $conn->prepare($query);
+
+        $values[] = $id;
+        $types = str_repeat("s", count($values) - 1) . "i";
+
+        $stmt->bind_param($types, ...$values);
+
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Project updated successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Failed to update project']);
+        }
+
+        $stmt->close();
+    }
+
+    public function deleteProject($id) {
+        global $conn;
+
+        if (empty($id) || !is_numeric($id)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Invalid project ID']);
             return;
         }
-    
-        // Begin a transaction to ensure data integrity
+
         $conn->begin_transaction();
-    
+
         try {
-            // First, remove the project members (participants and owners) associated with the project
             $stmt = $conn->prepare("DELETE FROM project_members WHERE project_id = ?");
-            $stmt->bind_param("i", $projectId);
+            $stmt->bind_param("i", $id);
             if (!$stmt->execute()) {
                 throw new Exception('Failed to delete project members');
             }
-    
-            // Then, delete the project itself
+
             $stmt = $conn->prepare("DELETE FROM projects WHERE id = ?");
-            $stmt->bind_param("i", $projectId);
+            $stmt->bind_param("i", $id);
             if (!$stmt->execute()) {
                 throw new Exception('Failed to delete the project');
             }
-    
-            // Commit the transaction
+
             $conn->commit();
-    
-            // Return success message
+
             echo json_encode(['success' => true, 'message' => 'Project deleted successfully']);
         } catch (Exception $e) {
-            // Rollback the transaction if something goes wrong
             $conn->rollback();
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-}
-
-// Dispatcher
-$controller = new ProjectController();
-$rawInput = json_decode(file_get_contents("php://input"), true);
-$action = $_GET['action'] ?? $_POST['action'] ?? ($rawInput['action'] ?? '');
-
-switch ($action) {
-    case 'get':
-        $controller->getAllProjects();
-        break;
-    case 'add':
-        $controller->createProject($_POST ?: $rawInput);
-        break;
-    case 'delete':
-        $id = $_POST['id'] ?? ($rawInput['id'] ?? null);
-        if (is_numeric($id)) {
-            $controller->deleteProject((int)$id);
-        } else {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Invalid or missing ID']);
-        }
-        break;
-    default:
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Unknown action']);
-        break;
 }
 ?>
