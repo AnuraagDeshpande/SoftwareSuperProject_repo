@@ -63,7 +63,7 @@ HAMBURGER MENU
     font-size: 14px;
     color: white; 
     background-color: #4281A4;
-    padding: 8px 16px;
+    padding: var(--smallGap);
     border-radius: 25px;
     text-align: center;
 }
