@@ -6,16 +6,30 @@
   <title>Activities</title>
   <link rel="stylesheet" href="styles/individual_project.css" />
   <link rel="stylesheet" href="styles/main.css" />
+  <link href="styles/sidebar.css" rel="stylesheet"/>
+  <link href="styles/navbar.css" rel="stylesheet"/>
   <!-- FullCalendar CSS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+  <!--NAVIGATION BAR CODE-->
+  <div class="navbar">
+    <!--javaScript-->
+  </div>
+
+    <div class="page-body">
+        <!--SIDEBAR CODE-->
+        <div class="sidebar">
+        <!--javaScript-->
+    </div>
+
   <div class="content-box">
     <div class="top-buttons">
       <button class="primary-button" onclick="addActivity()">Add Activity</button>
-      <button class="primary-button" onclick="manageSchedule()">Manage Scheduling</button>
+      <button class="primary-button" onclick="manageSchedule()">View Gantt Chart</button>
       <button class="primary-button" onclick="goToProjectMembers()">Manage Team</button>
+      <button class="primary-button" onclick="goToCharter()">View project charter</button>
     </div>
 
     <div class="grid-layout">
@@ -25,6 +39,7 @@
           <table class="activity-table">
             <thead>
               <tr>
+                <th>Done</th> <!-- New column -->
                 <th>Activity</th>
                 <th>Status</th>
                 <th>Deadline</th>
@@ -32,16 +47,19 @@
             </thead>
             <tbody>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 1</td>
                 <td class="status completed">Completed</td>
                 <td>2025-05-10</td>
               </tr>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 2</td>
                 <td class="status in-progress">In Progress</td>
                 <td>2025-05-15</td>
               </tr>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 3</td>
                 <td class="status not-started">Not Started</td>
                 <td>2025-05-20</td>
@@ -101,7 +119,7 @@
         <h2>Project Progress</h2>
         <div class="placeholder">
           <div class="progress-container">
-            <div class="progress-bar" style="width: 60%;">60%</div>
+            <div class="progress-bar" id = "custom-progress-bar" style="width: 60%;">60%</div>
           </div>
         </div>
       </div>
@@ -111,6 +129,6 @@
   <script src="scripts/individual_project.js"></script>
   <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
-
+  <script type="module" src="scripts/navigation.js"></script>
 </body>
 </html>
