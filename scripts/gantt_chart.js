@@ -7,39 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Use projectId as needed
 
-    function create_navbar() {
-        const navbar = document.createElement("nav");
-        navbar.classList.add("navbar_gc");
-
-        const nav_left = document.createElement("div");
-        nav_left.classList.add("nav-left");
-        const page_title = document.createElement("h2");
-        page_title.innerText = "Gantt Chart";
-        nav_left.appendChild(page_title);
-
-        const nav_right = document.createElement("div");
-        nav_right.classList.add("nav-right");
-        const icons = ["fa-gear", "fa-magnifying-glass", "fa-circle-user"];
-        icons.forEach(icon_symbol => {
-            const icon = document.createElement("i");
-            icon.classList.add("fa-solid", icon_symbol);
-            nav_right.appendChild(icon);
-        });
-
-        navbar.appendChild(nav_left);
-        navbar.appendChild(nav_right);
-        body.appendChild(navbar);
-    }
-
-    create_navbar();
-
-    const project_data = {
-        name: "Website Redesign",
-        pm: "Jane Doe",
-        start_date: "2025-04-01",
-        due_date: "2025-06-01",
-        progress: "45%",
-    };
 
     // fetch("/api/project")
     //     .then(res => res.json())
@@ -61,68 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
     //     .catch(error => console.error('Error fetching project data:', error));
         
 
-    const project_overview = document.createElement("div");
-    project_overview.classList.add("project_overview");
-    project_overview.id = "project_overview";
+    const project_data = {
+        name: "Website Redesign",
+        pm: "Jane Doe",
+        start_date: "2025-04-01",
+        due_date: "2025-06-01",
+        progress: "45%",
+    };
 
-    function create_project_overview(project) {
-        const container = document.createElement("div");
-        container.classList.add("project_info_section");
-
-        const info_left_box = document.createElement("div");
-        info_left_box.classList.add("info_box");
-
-        function add_project_info(label, value, icon_class) {
-            const info_section = document.createElement("div");
-            info_section.classList.add("info_section");
-
-            const label_titles = document.createElement("h4");
-
-            const icon = document.createElement("i");
-            icon.classList.add("fa-solid", icon_class);
-            icon.style.marginRight = "8px";
-
-            label_titles.appendChild(icon);
-            label_titles.append(label);
-
-            const value_names = document.createElement("p");
-            value_names.innerText = `${value}`;
-
-            info_section.append(label_titles, value_names);
-            info_left_box.appendChild(info_section);
-        }
-
-
-        add_project_info("Project Name", project.name, "fa-folder-open");
-        add_project_info("Project Manager", project.pm, "fa-user-tie");
-        add_project_info("Start Date", project.start_date, "fa-calendar-day");
-        add_project_info("Due Date", project.due_date, "fa-calendar-check");
-        container.appendChild(info_left_box);
-
-        const project_progress = document.createElement("div");
-        project_progress.classList.add("info_box");
-        project_progress.id = "project_progress";
-
-        const project_progress_title = document.createElement("h4");
-
-        const progress_icon = document.createElement("i");
-        progress_icon.classList.add("fa-solid", "fa-chart-line");
-        progress_icon.style.marginRight = "8px";
-
-        project_progress_title.appendChild(progress_icon);
-        project_progress_title.append("Project Progress");
-
-        const progress_value = document.createElement("p");
-        progress_value.innerText = project.progress;
-
-        project_progress.append(project_progress_title, progress_value);
-        container.appendChild(project_progress);
-
-        return container;
-    }
-
-    project_overview.appendChild(create_project_overview(project_data));
-    body.appendChild(project_overview);
 
     const tasks = [
         { name: "Research", startDate: "2025-04-01", dueDate: "2025-05-10", status: "In Progress" },
@@ -258,5 +171,5 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="legend_item" style="background-color: rgba(255, 0, 0, 0.6);"><i class="fa-solid fa-exclamation-triangle"></i><span>Overdue</span></div>
 `;
     body.appendChild(gantt_legend);
-    
+
 });

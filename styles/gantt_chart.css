@@ -1,82 +1,3 @@
-
-.navbar_gc {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--surfaceDim);
-    align-items: center;
-    margin-top: var(--tinyGap);
-}
-
-.nav-left,
-.nav-right {
-    display: flex;
-    justify-content: right;
-    gap: var(--smallGap);
-    padding: var(--tinyGap) var(--smallGap);
-}
-
-.nav-left h2 {
-    margin-left: var(--bigGap);
-}
-
-.nav-right i {
-    cursor: pointer;
-    padding: var(--smallGap);
-    transition: color 0.3s;
-}
-.project_overview {
-    display: flex;
-    flex-direction: column;
-    max-height: 200px;
-    margin: var(--smallGap);
-    padding: var(--mediumGap);
-}
-
-.project_info_section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    gap: var(--mediumGap);
-    height: 100px;
-    margin-top: var(--mediumGap);
-}
-
-.info_box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: var(--mediumGap);
-    background-color: var(--secondaryContainer);
-    color: var(--onSecondaryContainer);
-    padding: var(--smallGap) var(--mediumGap);
-    border-radius: var(--mediumRadius);
-    width: 800px;
-}
-
-.info_section {
-    gap: var(--mediumGap);
-    padding: var(--smallGap);
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
-.info_section h3 {
-    color: var(--onSecondaryContainer);
-}
-
-#project_progress {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: var( --tertiaryContainer);
-    max-width: 200px;
-}
-
-
-
 .gantt_chart_wrapper {
     overflow-x: auto;
     margin: var(--mediumGap);
@@ -179,15 +100,13 @@
     margin: var(--mediumGap);
     padding: var(--smallGap);
     flex-wrap: wrap;
-    /* border-top: 1px solid var(--surfaceDim);
-    border-bottom: 1px solid var(--surfaceDim); */
     background-color: var(--surface);
 }
 
 .legend_item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--tinyGap);
     font-size: 14px;
     color: var(--onSurface);
 }
