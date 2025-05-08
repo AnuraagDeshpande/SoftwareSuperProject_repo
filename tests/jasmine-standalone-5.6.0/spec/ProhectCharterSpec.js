@@ -125,6 +125,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
         spyOn(window, "addDelListeners").and.callThrough();
         spyOn(window, "updateLists").and.callThrough();
         spyOn(window, "addListListeners").and.callThrough();
+        spyOn(console, "error");
 
     });
 
@@ -212,39 +213,111 @@ describe("PROJECT CHARTER PAGE:",()=>{
     });
 
     describe("#other functions in the file:",()=>{
-        it("should display the charter properly",()=>{
-            window.displayCharter();
-            Object.keys(window.charter).forEach(key=>{
-                //text field values are set
-                const lists = ["deliverables","assumptions","constraints","risks"];
-                if(!lists.includes(key) && key!="id"){
-                    //node is retrieved
-                    let field=document.querySelector(`#project-${key}`);
-                    expect(field).not.toBeNull();
+        describe("#display charter tests:",()=>{
+            it("should display the charter properly(general test)",()=>{
+                window.displayCharter();
+                Object.keys(window.charter).forEach(key=>{
+                    //text field values are set
+                    const lists = ["deliverables","assumptions","constraints","risks"];
+                    if(!lists.includes(key) && key!="id"){
+                        //node is retrieved
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
 
-                    expect(field.value).toEqual(window.charter[key]);
-                }
-                //deliverables are set differently via inner HTML
-                if(key==="deliverables"){
-                    let field=document.querySelector(`#project-${key}`);
-                    expect(field).not.toBeNull();
-                    expect(field.innerHTML).not.toBeNull();
-                    //we set the values of the fields
-                    Object.keys(window.charter[key]).forEach(del =>{
-                        expect(document.querySelector(`#list-del-${del}`).value).toEqual(window.charter[key][del]);
-                    });
-                } else if(lists.includes(key)){
-                    //we need to add the list elements
-                    let field=document.querySelector(`#project-${key}`);
-                    expect(field).not.toBeNull();
+                        expect(field.value).toEqual(window.charter[key]);
+                    }
+                    //deliverables are set differently via inner HTML
+                    if(key==="deliverables"){
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
+                        expect(field.innerHTML).not.toBeNull();
+                        //we set the values of the fields
+                        Object.keys(window.charter[key]).forEach(del =>{
+                            expect(document.querySelector(`#list-del-${del}`).value).toEqual(window.charter[key][del]);
+                        });
+                    } else if(lists.includes(key)){
+                        //we need to add the list elements
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
 
-                    expect(field.innerHTML).not.toBeNull();
-                }
+                        expect(field.innerHTML).not.toBeNull();
+                    }
+                });
+            });
+
+            it("display charter should populate input fields with charter values", () => {
+                displayCharter();
+                expect(document.querySelector("#project-title").value).toBe("Fake Project");
+                expect(document.querySelector("#project-desc").value).toBe("Fake Description");
+                expect(document.querySelector("#project-objective").value).toBe("Fake Objective");
+            });
+
+            it("display charter should create a deliverable blob with correct input value", () => {
+                displayCharter();
+                const input = document.querySelector("#list-del-Deliverable1");
+                expect(input).not.toBeNull();
+                expect(input.value).toBe("Criteria1");
             });
         });
 
-        it("empty",()=>{
-            expect(1).toEqual(1);
+        it("should log and not show error on valid form submit", () => {
+            displayCharter();
+            addListeners();
+            submitCharter();
+        
+            const msg = document.querySelector(".error-message");
+            const submitBtn = document.querySelector('form input[type="submit"]');
+            spyOn(console, 'log');
+        
+            // valid inputs
+            document.querySelector("#project-objective").value = "Valid Objective";
+            document.querySelector("#project-desc").value = "Valid Description";
+        
+            submitBtn.click();
+            expect(console.log).toHaveBeenCalledWith("submitting");
+            expect(msg.innerHTML).toBe("");
         });
+
+        describe("#update del list function:",()=>{
+            it("update del list should update the deliverables DOM with current data", () => {
+                charter.deliverables = { "TestDel": "TestCriteria" };
+                updateDelList();
+                const input = document.querySelector("#list-del-TestDel");
+                expect(input).not.toBeNull();
+                expect(input.value).toBe("TestCriteria");
+            });
+
+            it("update del list should throw an error if no field is present",()=>{
+                let field=document.querySelector(`#project-deliverables`);
+                field.remove();
+
+                updateDelList();
+                expect(console.error).toHaveBeenCalled();
+            });
+        });
+
+        describe("#addDelListeners", () => {
+            it("should attach input and delete listeners to each deliverable blob", () => {
+                charter.deliverables = { "TestDel": "Initial" };
+                updateDelList();
+                addDelListeners();
+                const input = document.querySelector("#list-del-TestDel");
+                input.value = "Updated";
+                input.dispatchEvent(new Event("input"));
+    
+                expect(charter.deliverables["TestDel"]).toBe("Updated");
+            });
+    
+            it("should remove deliverable when delete is clicked", () => {
+                charter.deliverables = { "TempDel": "Whatever" };
+                updateDelList();
+                addDelListeners();
+                const deleteBtn = document.querySelector(".list-del .delete");
+                deleteBtn.click();
+                expect(charter.deliverables["TempDel"]).toBeUndefined();
+            });
+        });
+
+
     });
 });

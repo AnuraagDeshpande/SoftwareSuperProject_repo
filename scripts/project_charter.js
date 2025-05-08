@@ -287,7 +287,7 @@ export function updateDelList(){
         return;
     }
     //each property is added to the string
-    Object.keys(charter["deliverables"]).forEach(del =>{
+    Object.keys(window.charter["deliverables"]).forEach(del =>{
         innerHTML+=`
         <div class="blob cool-button list-del" data-del="${del}">
             ${del}
@@ -298,8 +298,8 @@ export function updateDelList(){
     });
     field.innerHTML=innerHTML;
     //we set the values of the fields
-    Object.keys(charter.deliverables).forEach(del =>{
-        document.querySelector(`#list-del-${del}`).value = charter.deliverables[del];
+    Object.keys(window.charter.deliverables).forEach(del =>{
+        document.querySelector(`#list-del-${del}`).value = window.charter.deliverables[del];
     });
 }
 
