@@ -11,23 +11,23 @@ export function generateSidebar(){
         sidebar.innerHTML = `
         <h1>NAME</h1>
         <div class="sidebar-links">
+            <button class="dark-button sidebar-button"  onclick="document.location='index.php'">
+                Main page
+                <div class="sidebar-status active">
+                </div>
+            </button>
             <button class="dark-button sidebar-button" onclick="document.location='project_list.php'" id="btn-project-list">
                 Projects
                 <div class="sidebar-status active">
                 </div>
             </button>        
-            <button class="dark-button sidebar-button">
-                Team
-                <div class="sidebar-status error">
-                </div>
-            </button>
             <button class="dark-button sidebar-button"  onclick="document.location='Task-view.html'">
                 Tasks
                 <div class="sidebar-status active">
                 </div>
             </button>
             <button class="dark-button sidebar-button">
-                Schedule
+                Error example
                 <div class="sidebar-status error">
                 </div>
             </button>

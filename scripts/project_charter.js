@@ -30,6 +30,21 @@ export class ProjectCharter{
 
     /** fetch data from a server based on id */
     fetchData(id){
+        /*
+        starter code for integrating with the backend
+        const path = `${baseurl}/projectcharter?id=${id}`
+
+        return fetch("")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+            return null;
+        });*/
         return {
             id: 1,
             deadline:"2025-12-12",
@@ -82,6 +97,25 @@ export class ProjectCharter{
             window.updateLists();
             window.addListListeners();
         }
+    }
+
+    /** submit the data to the database */
+    submit(){
+        /*
+        starter code for integrating with the backend
+        const path = `${baseurl}/projectcharter?id=${id}`
+
+        return fetch("")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+            return null;
+        });*/
     }
 }
 

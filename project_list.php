@@ -1,3 +1,15 @@
+<?php
+// Enable PHP error reporting (development only)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include init.php for DB connection, BASE_URL, and session
+require_once(__DIR__ . '/Backend/init.php');
+
+// Show the API base URL (debugging)
+//var_dump(BASE_URL);
+?>
 <!DOCTYPE html>
 <html>
     <head>

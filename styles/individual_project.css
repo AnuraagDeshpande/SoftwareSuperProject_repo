@@ -2,7 +2,7 @@
   display: flex;
   gap: var(--smallGap);
   margin-bottom: var(--mediumGap);
-  justify-content: center;
+  justify-content: left;
   flex-wrap: wrap;
 }
 
@@ -161,6 +161,6 @@ ul li {
 }
 
 .status.not-started {
-  background-color: var(--surfaceDim);
+  background-color:  rgba(231, 19, 40, 60%); 
   color: var(--onSurface);
 }
