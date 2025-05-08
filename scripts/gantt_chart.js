@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const body = document.body;
 
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+
+    // Use projectId as needed
+
     function create_navbar() {
         const navbar = document.createElement("nav");
         navbar.classList.add("navbar");
@@ -253,6 +258,9 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="legend_item" style="background-color: rgba(255, 0, 0, 0.6);"><i class="fa-solid fa-exclamation-triangle"></i><span>Overdue</span></div>
 `;
     body.appendChild(gantt_legend);
+<<<<<<< HEAD
     
+=======
+>>>>>>> 07ad7be (Auto-commit: Updating iteration-2)
 });
 

@@ -1,56 +1,69 @@
-/** generate the html inside a div with navbar class */
-export function generateNavbar(passedIsLoggedIn, passedUsername) {
+// navbar.js
+
+function generateNavbar(passedIsLoggedIn, passedUsername) {
     const navbar = document.querySelector(".navbar");
-    console.log("Navbar generation triggered");
+    if (!navbar) return;
 
-    // If login status is not passed, fetch it from the server
-    if (typeof passedIsLoggedIn === "undefined" || typeof passedUsername === "undefined") {
-        fetch('./auth_status.php')
-            .then(res => res.json())
-            .then(data => {
-                console.log("Fetched isLoggedIn:", data.isLoggedIn);
-                console.log("Fetched Username:", data.username);
-                renderNavbar(data.isLoggedIn, data.username);
-            })
-            .catch(err => {
-                console.error("Failed to fetch login status:", err);
-                renderNavbar(false, '');
-            });
-    } else {
-        console.log("isLoggedIn:", passedIsLoggedIn);
-        console.log("Username:", passedUsername);
-        renderNavbar(passedIsLoggedIn, passedUsername);
-    }
+    // Get the current filename (e.g., "index.php", "account.php")
+    const currentPage = window.location.pathname.split("/").pop();
 
+    // Helper: render navbar
     function renderNavbar(isLoggedIn, username) {
-        if (navbar) {
-            navbar.innerHTML = `
-                <div>
-                    <button id="hamburger" onclick="hideSidebar();">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
+        let leftSection = `
+            <button id="hamburger" onclick="hideSidebar();">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+        `;
+
+        // Only show "Main Page" button on account.php
+        if (currentPage === "account.php") {
+            leftSection += `
+                <button class="dark-button" onclick="window.location.href='index.php'">
+                    Main Page
+                </button>
+            `;
+        }
+
+        navbar.innerHTML = `
+            <div>
+                ${leftSection}
+            </div>
+        `;
+
+        if (isLoggedIn) {
+            navbar.innerHTML += `
+                <div class="navbar-user">
+                    <span class="username">Welcome, ${username}</span>
+                    <button class="dark-button" onclick="window.location.href='account.php'" id="btn-account">
+                        Account Details
                     </button>
-                    <a href="./index.php">NAME</a>
+                    <button class="dark-button" onclick="window.location.href='logout.php'" id="btn-logout">
+                        Log out
+                    </button>
                 </div>
             `;
-
-            if (isLoggedIn) {
-                navbar.innerHTML += `
-                    <div class="navbar-user">
-                        <span class="username">${username}</span> <!-- Display the username -->
-                        <button class="dark-button" onclick="window.location.href='logout.php'" id="btn-logout">
-                            Log out
-                        </button>
-                    </div>
-                `;
-            } else {
-                navbar.innerHTML += `
-                    <button class="dark-button" onclick="window.location.href='login.php'" id="btn-login">
-                        Log in
-                    </button>
-                `;
-            }
         } else {
-            console.log("No navbar found");
+            navbar.innerHTML += `
+                <button class="dark-button" onclick="window.location.href='login.php'" id="btn-login">
+                    Log in
+                </button>
+            `;
         }
     }
+
+    // If login status was passed
+    if (typeof passedIsLoggedIn !== "undefined" && typeof passedUsername !== "undefined") {
+        renderNavbar(passedIsLoggedIn, passedUsername);
+    } else {
+        // Otherwise, fetch it from backend
+        fetch('./auth_status.php')
+            .then(res => res.json())
+            .then(data => renderNavbar(data.isLoggedIn, data.username))
+            .catch(err => {
+                console.error("Navbar: login check failed", err);
+                renderNavbar(false, "");
+            });
+    }
 }
+
+export { generateNavbar };

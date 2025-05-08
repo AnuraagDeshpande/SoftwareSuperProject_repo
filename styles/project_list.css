@@ -271,3 +271,8 @@ i.close-add-project{
     visibility: visible;
     display: flex;
 }
+
+.project-link {
+    text-decoration: none;
+    color: inherit;
+}
