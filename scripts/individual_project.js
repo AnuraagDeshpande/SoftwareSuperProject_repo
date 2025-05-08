@@ -247,3 +247,15 @@ function goToProjectMembers() {
   
     window.location.href = `project_memb.html?projectId=${projectId}`;
   }
+
+  function goToCharter() {
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+  
+    if (!projectId) {
+      alert("No project selected.");
+      return;
+    }
+  
+    window.location.href = `project_charter.html?projectId=${projectId}`;
+  }
