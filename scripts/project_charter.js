@@ -218,7 +218,7 @@ export function addListeners(){
         event.preventDefault();
         const newDel = document.querySelector("#deliverables");
         if(newDel && newDel.value!="" && validPattern.test(newDel.value)){
-            charter.addDeliverable(newDel.value);
+            window.charter.addDeliverable(newDel.value);
             msg.innerHTML="";
         } else{
             console.error("deliverables field not found or empty");
@@ -238,7 +238,7 @@ export function addListeners(){
             event.preventDefault();
             const newList = document.querySelector(`#${key}`);
             if(newList && newList.value!="" && validPattern.test(newList.value)){
-                charter.addToList(newList.value, key);
+                window.charter.addToList(newList.value, key);
                 msg.innerHTML="";
             } else{
                 console.error(`${key} field not found or empty`);
@@ -246,8 +246,8 @@ export function addListeners(){
             }
         });
     });
-    addDelListeners();
-    addListListeners();
+    window.addDelListeners();
+    window.addListListeners();
 }
 
 /** add event listeners for the blobs for each deliverable */

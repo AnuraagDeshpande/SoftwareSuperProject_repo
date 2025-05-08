@@ -117,6 +117,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
         window.addDelListeners = addDelListeners;
         window.updateLists = updateLists;
         window.addListListeners = addListListeners;
+        window.displayCharter = displayCharter;
         window.charter = charter;
 
         // Spy on update functions
@@ -132,78 +133,118 @@ describe("PROJECT CHARTER PAGE:",()=>{
         testDiv.innerHTML="";
     });
 
-    it("should initialize from fetchData", function() {
-        expect(ProjectCharter.prototype.fetchData).toHaveBeenCalledWith(99);
-        expect(charter.id).toBe(99);
-        expect(charter.title).toBe("Fake Project");
-        expect(charter.deliverables).toEqual({ "Deliverable1": "Criteria1" });
+    describe("#the project charter class tests:",()=>{
+        it("should initialize from fetchData", function() {
+            expect(ProjectCharter.prototype.fetchData).toHaveBeenCalledWith(99);
+            expect(charter.id).toBe(99);
+            expect(charter.title).toBe("Fake Project");
+            expect(charter.deliverables).toEqual({ "Deliverable1": "Criteria1" });
+        });
+        
+        it("should add a new deliverable and trigger UI updates", () => {
+            charter.addDeliverable("NewDel");
+            expect(charter.deliverables["NewDel"]).toBe("");
+            expect(window.updateDelList).toHaveBeenCalled();
+            expect(window.addDelListeners).toHaveBeenCalled();
+        });
+
+        it("should keep deliverable if already exists",()=>{
+            charter.addDeliverable("Deliverable1");
+            expect(charter.deliverables["Deliverable1"]).toBe("Criteria1");
+        });
+
+        it("should delete a deliverable and trigger UI updates", () => {
+            charter.deleteDeliverable("Deliverable1");
+            expect(charter.deliverables["Deliverable1"]).toBeUndefined();
+            expect(window.updateDelList).toHaveBeenCalled();
+            expect(window.addDelListeners).toHaveBeenCalled();
+
+        });
+
+        it("should add to list (assumptions)", () => {
+            charter.addToList("NewAssumption", "assumptions");
+            expect(charter.assumptions).toContain("NewAssumption");
+            expect(window.updateLists).toHaveBeenCalled();
+            expect(window.addListListeners).toHaveBeenCalled();
+        });
+
+        it("should not add duplicate to list", () => {
+            charter.addToList("Assumption1", "assumptions");
+            expect(charter.assumptions.length).toBe(1);
+        });
+
+        it("should remove from list", () => {
+            charter.removeFromList("Assumption1", "assumptions");
+            expect(charter.assumptions).not.toContain("Assumption1");
+            expect(window.updateLists).toHaveBeenCalled();
+            expect(window.addListListeners).toHaveBeenCalled();
+        });
+
+        it("should update deliverable input and validate pattern", () => {
+            displayCharter(); // Triggers initial render
+            addDelListeners();
+
+            const input = document.querySelector("#list-del-Deliverable1");
+            input.value = "Updated Criteria";
+
+            input.dispatchEvent(new Event("input"));
+            //updateDelList();
+            console.log(charter.deliverables["Deliverable1"]);
+            expect(charter.deliverables["Deliverable1"]).toBe("Updated Criteria");
+        });
+
+        it("should not break if invalid pattern is input", () => {
+            displayCharter();
+            addListeners();
+            const input = document.querySelector("#list-del-Deliverable1");
+            expect(input).not.toBeNull();
+            input.value = "###INVALID###";
+            input.dispatchEvent(new Event("input"));
+            const msg = document.querySelector(".error-message");
+            expect(msg.innerHTML).toContain("INVALID INPUT");
+        });
+
+        it("should not crash or modify state with invalid list key", () => {
+            const original = [...charter.assumptions];
+            charter.addToList("Oops", "nonexistentKey");
+            expect(charter.assumptions).toEqual(original);
+        });
     });
-    
-    it("should add a new deliverable and trigger UI updates", () => {
-        charter.addDeliverable("NewDel");
-        expect(charter.deliverables["NewDel"]).toBe("");
-        expect(window.updateDelList).toHaveBeenCalled();
-        expect(window.addDelListeners).toHaveBeenCalled();
-    });
 
-    it("should keep deliverable if already exists",()=>{
-        charter.addDeliverable("Deliverable1");
-        expect(charter.deliverables["Deliverable1"]).toBe("Criteria1");
-    });
+    describe("#other functions in the file:",()=>{
+        it("should display the charter properly",()=>{
+            window.displayCharter();
+            Object.keys(window.charter).forEach(key=>{
+                //text field values are set
+                const lists = ["deliverables","assumptions","constraints","risks"];
+                if(!lists.includes(key) && key!="id"){
+                    //node is retrieved
+                    let field=document.querySelector(`#project-${key}`);
+                    expect(field).not.toBeNull();
 
-    it("should delete a deliverable and trigger UI updates", () => {
-        charter.deleteDeliverable("Deliverable1");
-        expect(charter.deliverables["Deliverable1"]).toBeUndefined();
-        expect(window.updateDelList).toHaveBeenCalled();
-        expect(window.addDelListeners).toHaveBeenCalled();
+                    expect(field.value).toEqual(window.charter[key]);
+                }
+                //deliverables are set differently via inner HTML
+                if(key==="deliverables"){
+                    let field=document.querySelector(`#project-${key}`);
+                    expect(field).not.toBeNull();
+                    expect(field.innerHTML).not.toBeNull();
+                    //we set the values of the fields
+                    Object.keys(window.charter[key]).forEach(del =>{
+                        expect(document.querySelector(`#list-del-${del}`).value).toEqual(window.charter[key][del]);
+                    });
+                } else if(lists.includes(key)){
+                    //we need to add the list elements
+                    let field=document.querySelector(`#project-${key}`);
+                    expect(field).not.toBeNull();
 
-    });
+                    expect(field.innerHTML).not.toBeNull();
+                }
+            });
+        });
 
-    it("should add to list (assumptions)", () => {
-        charter.addToList("NewAssumption", "assumptions");
-        expect(charter.assumptions).toContain("NewAssumption");
-        expect(window.updateLists).toHaveBeenCalled();
-        expect(window.addListListeners).toHaveBeenCalled();
-    });
-
-    it("should not add duplicate to list", () => {
-        charter.addToList("Assumption1", "assumptions");
-        expect(charter.assumptions.length).toBe(1);
-    });
-
-    it("should remove from list", () => {
-        charter.removeFromList("Assumption1", "assumptions");
-        expect(charter.assumptions).not.toContain("Assumption1");
-        expect(window.updateLists).toHaveBeenCalled();
-        expect(window.addListListeners).toHaveBeenCalled();
-    });
-
-    it("should update deliverable input and validate pattern", () => {
-        displayCharter(); // Triggers initial render
-        addDelListeners();
-
-        const input = document.querySelector("#list-del-Deliverable1");
-        input.value = "Updated Criteria";
-
-        input.dispatchEvent(new Event("input"));
-        //updateDelList();
-        console.log(charter.deliverables["Deliverable1"]);
-        expect(charter.deliverables["Deliverable1"]).toBe("Updated Criteria");
-    });
-
-    it("should not break if invalid pattern is input", () => {
-        displayCharter();
-        addListeners();
-        const input = document.querySelector("#list-del-Deliverable1");
-        expect(input).not.toBeNull();
-        input.value = "###INVALID###";
-        input.dispatchEvent(new Event("input"));
-        const msg = document.querySelector(".error-message");
-        expect(msg.innerHTML).toContain("INVALID INPUT");
-    });
-
-
-    it("empty",()=>{
-        expect(1).toEqual(1);
+        it("empty",()=>{
+            expect(1).toEqual(1);
+        });
     });
 });
