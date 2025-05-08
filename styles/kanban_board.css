@@ -1,11 +1,13 @@
 /* -------------------------------------------------
    Navigation Section
 ------------------------------------------------- */
-.navbar {
+
+.navbar_kb {
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid var(--surfaceDim);
     align-items: center;
+    margin-top: var(--tinyGap);
 }
 
 .nav-left,

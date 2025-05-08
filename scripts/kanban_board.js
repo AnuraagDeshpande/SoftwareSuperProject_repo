@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Creates a Navbar
     function create_navbar() {
         const navbar = document.createElement("nav");
-        navbar.classList.add("navbar");
+        navbar.classList.add("navbar_kb");
 
         // Create the left side of the navbar
         const nav_left = document.createElement("div");

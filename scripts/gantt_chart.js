@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function create_navbar() {
         const navbar = document.createElement("nav");
-        navbar.classList.add("navbar");
+        navbar.classList.add("navbar_gc");
 
         const nav_left = document.createElement("div");
         nav_left.classList.add("nav-left");
@@ -258,9 +258,5 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="legend_item" style="background-color: rgba(255, 0, 0, 0.6);"><i class="fa-solid fa-exclamation-triangle"></i><span>Overdue</span></div>
 `;
     body.appendChild(gantt_legend);
-<<<<<<< HEAD
     
-=======
->>>>>>> 07ad7be (Auto-commit: Updating iteration-2)
 });
-
