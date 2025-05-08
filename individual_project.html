@@ -6,15 +6,28 @@
   <title>Activities</title>
   <link rel="stylesheet" href="styles/individual_project.css" />
   <link rel="stylesheet" href="styles/main.css" />
+  <link href="styles/sidebar.css" rel="stylesheet"/>
+  <link href="styles/navbar.css" rel="stylesheet"/>
   <!-- FullCalendar CSS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+  <!--NAVIGATION BAR CODE-->
+  <div class="navbar">
+    <!--javaScript-->
+  </div>
+
+    <div class="page-body">
+        <!--SIDEBAR CODE-->
+        <div class="sidebar">
+        <!--javaScript-->
+    </div>
+
   <div class="content-box">
     <div class="top-buttons">
       <button class="primary-button" onclick="addActivity()">Add Activity</button>
-      <button class="primary-button" onclick="manageSchedule()">Manage Scheduling</button>
+      <button class="primary-button" onclick="manageSchedule()">View Gantt Chart</button>
       <button class="primary-button" onclick="goToProjectMembers()">Manage Team</button>
     </div>
 
@@ -111,6 +124,6 @@
   <script src="scripts/individual_project.js"></script>
   <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
-
+  <script type="module" src="scripts/navigation.js"></script>
 </body>
 </html>
