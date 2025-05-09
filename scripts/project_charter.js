@@ -16,49 +16,41 @@ export class ProjectCharter{
     constructor(id){
         const temp = this.fetchData(id);
         this.id=temp.id;
-        this.title = temp.title;
-        this.desc = temp.desc;
-        this.purpose = temp.purpose;
-        this.objective = temp.objective;
-        this.acceptance = temp.acceptance;
-        this.deadline = temp.deadline;
-        this.deliverables = temp.deliverables;
-        this.assumptions = temp.assumptions;
-        this.constraints = temp.constraints;
-        this.risks = temp.risks;
+        this.title = temp.title||"";
+        this.desc = temp.desc||"";
+        this.purpose = temp.purpose||"";
+        this.objective = temp.objective||"";
+        this.acceptance = temp.acceptance||"";
+        this.deadline = temp.deadline||"2025-12-24";
+        this.deliverables = temp.deliverables||{};
+        this.assumptions = temp.assumptions||[];
+        this.constraints = temp.constraints||[];
+        this.risks = temp.risks||[];
     }
 
     /** fetch data from a server based on id */
     fetchData(id){
-        /*
-        starter code for integrating with the backend
-        const path = `${baseurl}/projectcharter?id=${id}`
+        //starter code for integrating with the backend
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php/${id}`;
+        //const path = `${BASE_URL}/users`;
+        console.log(`the base url:${path}`);
+        console.log(`id: ${id}`);
 
-        return fetch("")
+        return fetch(path)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
             return response.json();
         })
+        .then(data => {
+            console.log("Received JSON:", data); //we log passed data
+            return data;
+        })
         .catch(error => {
             console.error("Fetch error:", error);
             return null;
-        });*/
-        return {
-            id: 1,
-            deadline:"2025-12-12",
-            status: "",
-            title:"",
-            desc:"",
-            purpose:"",
-            objective:"",
-            acceptance:"",
-            deliverables:{},
-            assumptions:[],
-            constraints:[],
-            risks:[]
-        };
+        });
     }
 
     /** add a deliverable to the list */

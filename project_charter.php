@@ -1,3 +1,12 @@
+<?php
+// Enable PHP error reporting (development only)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include init.php for DB connection, BASE_URL, and session
+require_once(__DIR__ . '/Backend/init.php');
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +21,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <script>
+            const BASE_URL = <?= json_encode(BASE_URL) ?>;
+        </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
             <!--javaScript-->
