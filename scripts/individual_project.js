@@ -247,3 +247,36 @@ function goToProjectMembers() {
   
     window.location.href = `project_memb.html?projectId=${projectId}`;
   }
+
+  function goToCharter() {
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("projectId");
+  
+    if (!projectId) {
+      alert("No project selected.");
+      return;
+    }
+  
+    window.location.href = `project_charter.html?projectId=${projectId}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const checkboxes = document.querySelectorAll('.activity-checkbox');
+    const progressBar = document.getElementById('custom-progress-bar');
+  
+    function updateProgress() {
+      const total = checkboxes.length;
+      const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  
+      if (progressBar) {
+        progressBar.style.width = `${percent}%`;
+        progressBar.textContent = `${percent}%`;
+      }
+    }
+  
+    checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+  
+    // Initialize on load
+    updateProgress();
+  });

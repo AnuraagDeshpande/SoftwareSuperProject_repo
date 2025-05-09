@@ -117,6 +117,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
         window.addDelListeners = addDelListeners;
         window.updateLists = updateLists;
         window.addListListeners = addListListeners;
+        window.displayCharter = displayCharter;
         window.charter = charter;
 
         // Spy on update functions
@@ -124,6 +125,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
         spyOn(window, "addDelListeners").and.callThrough();
         spyOn(window, "updateLists").and.callThrough();
         spyOn(window, "addListListeners").and.callThrough();
+        spyOn(console, "error");
 
     });
 
@@ -132,78 +134,251 @@ describe("PROJECT CHARTER PAGE:",()=>{
         testDiv.innerHTML="";
     });
 
-    it("should initialize from fetchData", function() {
-        expect(ProjectCharter.prototype.fetchData).toHaveBeenCalledWith(99);
-        expect(charter.id).toBe(99);
-        expect(charter.title).toBe("Fake Project");
-        expect(charter.deliverables).toEqual({ "Deliverable1": "Criteria1" });
+    describe("#the project charter class tests:",()=>{
+        it("should initialize from fetchData", function() {
+            expect(ProjectCharter.prototype.fetchData).toHaveBeenCalledWith(99);
+            expect(charter.id).toBe(99);
+            expect(charter.title).toBe("Fake Project");
+            expect(charter.deliverables).toEqual({ "Deliverable1": "Criteria1" });
+        });
+        
+        it("should add a new deliverable and trigger UI updates", () => {
+            charter.addDeliverable("NewDel");
+            expect(charter.deliverables["NewDel"]).toBe("");
+            expect(window.updateDelList).toHaveBeenCalled();
+            expect(window.addDelListeners).toHaveBeenCalled();
+        });
+
+        it("should keep deliverable if already exists",()=>{
+            charter.addDeliverable("Deliverable1");
+            expect(charter.deliverables["Deliverable1"]).toBe("Criteria1");
+        });
+
+        it("should delete a deliverable and trigger UI updates", () => {
+            charter.deleteDeliverable("Deliverable1");
+            expect(charter.deliverables["Deliverable1"]).toBeUndefined();
+            expect(window.updateDelList).toHaveBeenCalled();
+            expect(window.addDelListeners).toHaveBeenCalled();
+
+        });
+
+        it("should add to list (assumptions)", () => {
+            charter.addToList("NewAssumption", "assumptions");
+            expect(charter.assumptions).toContain("NewAssumption");
+            expect(window.updateLists).toHaveBeenCalled();
+            expect(window.addListListeners).toHaveBeenCalled();
+        });
+
+        it("should not add duplicate to list", () => {
+            charter.addToList("Assumption1", "assumptions");
+            expect(charter.assumptions.length).toBe(1);
+        });
+
+        it("should remove from list", () => {
+            charter.removeFromList("Assumption1", "assumptions");
+            expect(charter.assumptions).not.toContain("Assumption1");
+            expect(window.updateLists).toHaveBeenCalled();
+            expect(window.addListListeners).toHaveBeenCalled();
+        });
+
+        it("should update deliverable input and validate pattern", () => {
+            displayCharter(); // Triggers initial render
+            addDelListeners();
+
+            const input = document.querySelector("#list-del-Deliverable1");
+            input.value = "Updated Criteria";
+
+            input.dispatchEvent(new Event("input"));
+            //updateDelList();
+            console.log(charter.deliverables["Deliverable1"]);
+            expect(charter.deliverables["Deliverable1"]).toBe("Updated Criteria");
+        });
+
+        it("should not break if invalid pattern is input", () => {
+            displayCharter();
+            addListeners();
+            const input = document.querySelector("#list-del-Deliverable1");
+            expect(input).not.toBeNull();
+            input.value = "###INVALID###";
+            input.dispatchEvent(new Event("input"));
+            const msg = document.querySelector(".error-message");
+            expect(msg.innerHTML).toContain("INVALID INPUT");
+        });
+
+        it("should not crash or modify state with invalid list key", () => {
+            const original = [...charter.assumptions];
+            charter.addToList("Oops", "nonexistentKey");
+            expect(charter.assumptions).toEqual(original);
+        });
     });
+
+    describe("#other functions in the file:",()=>{
+        describe("#display charter tests:",()=>{
+            it("should display the charter properly(general test)",()=>{
+                window.displayCharter();
+                Object.keys(window.charter).forEach(key=>{
+                    //text field values are set
+                    const lists = ["deliverables","assumptions","constraints","risks"];
+                    if(!lists.includes(key) && key!="id"){
+                        //node is retrieved
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
+
+                        expect(field.value).toEqual(window.charter[key]);
+                    }
+                    //deliverables are set differently via inner HTML
+                    if(key==="deliverables"){
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
+                        expect(field.innerHTML).not.toBeNull();
+                        //we set the values of the fields
+                        Object.keys(window.charter[key]).forEach(del =>{
+                            expect(document.querySelector(`#list-del-${del}`).value).toEqual(window.charter[key][del]);
+                        });
+                    } else if(lists.includes(key)){
+                        //we need to add the list elements
+                        let field=document.querySelector(`#project-${key}`);
+                        expect(field).not.toBeNull();
+
+                        expect(field.innerHTML).not.toBeNull();
+                    }
+                });
+            });
+
+            it("display charter should populate input fields with charter values", () => {
+                displayCharter();
+                expect(document.querySelector("#project-title").value).toBe("Fake Project");
+                expect(document.querySelector("#project-desc").value).toBe("Fake Description");
+                expect(document.querySelector("#project-objective").value).toBe("Fake Objective");
+            });
+
+            it("display charter should create a deliverable blob with correct input value", () => {
+                displayCharter();
+                const input = document.querySelector("#list-del-Deliverable1");
+                expect(input).not.toBeNull();
+                expect(input.value).toBe("Criteria1");
+            });
+        });
+
+        it("should log and not show error on valid form submit", () => {
+            displayCharter();
+            addListeners();
+            submitCharter();
+        
+            const msg = document.querySelector(".error-message");
+            const submitBtn = document.querySelector('form input[type="submit"]');
+            spyOn(console, 'log');
+        
+            // valid inputs
+            document.querySelector("#project-objective").value = "Valid Objective";
+            document.querySelector("#project-desc").value = "Valid Description";
+        
+            submitBtn.click();
+            expect(console.log).toHaveBeenCalledWith("submitting");
+            expect(msg.innerHTML).toBe("");
+        });
+
+        describe("#update del list function:",()=>{
+            it("update del list should update the deliverables DOM with current data", () => {
+                charter.deliverables = { "TestDel": "TestCriteria" };
+                updateDelList();
+                const input = document.querySelector("#list-del-TestDel");
+                expect(input).not.toBeNull();
+                expect(input.value).toBe("TestCriteria");
+            });
+
+            it("update del list should throw an error if no field is present",()=>{
+                let field=document.querySelector(`#project-deliverables`);
+                field.remove();
+
+                updateDelList();
+                expect(console.error).toHaveBeenCalled();
+            });
+        });
+
+        describe("#addDelListeners", () => {
+            it("should attach input and delete listeners to each deliverable blob", () => {
+                charter.deliverables = { "TestDel": "Initial" };
+                updateDelList();
+                addDelListeners();
+                const input = document.querySelector("#list-del-TestDel");
+                input.value = "Updated";
+                input.dispatchEvent(new Event("input"));
     
-    it("should add a new deliverable and trigger UI updates", () => {
-        charter.addDeliverable("NewDel");
-        expect(charter.deliverables["NewDel"]).toBe("");
-        expect(window.updateDelList).toHaveBeenCalled();
-        expect(window.addDelListeners).toHaveBeenCalled();
-    });
+                expect(charter.deliverables["TestDel"]).toBe("Updated");
+            });
+    
+            it("should remove deliverable when delete is clicked", () => {
+                charter.deliverables = { "TempDel": "Whatever" };
+                updateDelList();
+                addDelListeners();
+                const deleteBtn = document.querySelector(".list-del .delete");
+                deleteBtn.click();
+                expect(charter.deliverables["TempDel"]).toBeUndefined();
+            });
+        });
 
-    it("should keep deliverable if already exists",()=>{
-        charter.addDeliverable("Deliverable1");
-        expect(charter.deliverables["Deliverable1"]).toBe("Criteria1");
-    });
+        describe("#updateLists", () => {
+            it("should update the assumptions, constraints, and risks DOM sections", () => {
+                charter.assumptions = ["NewAssumption"];
+                charter.constraints = ["NewConstraint"];
+                charter.risks = ["NewRisk"];
+                updateLists();
+    
+                expect(document.querySelector(".list-assumptions").textContent).toContain("NewAssumption");
+                expect(document.querySelector(".list-constraints").textContent).toContain("NewConstraint");
+                expect(document.querySelector(".list-risks").textContent).toContain("NewRisk");
+            });
 
-    it("should delete a deliverable and trigger UI updates", () => {
-        charter.deleteDeliverable("Deliverable1");
-        expect(charter.deliverables["Deliverable1"]).toBeUndefined();
-        expect(window.updateDelList).toHaveBeenCalled();
-        expect(window.addDelListeners).toHaveBeenCalled();
+            it("should return nothing and throw an error for a missoing field",()=>{
+                let field=document.querySelector(`#project-assumptions`);
+                field.remove();
+                updateLists();
+                expect(console.error).toHaveBeenCalled();
+            });
+        });
+    
+        describe("#addListListeners", () => {
+            it("should remove assumption from charter when delete is clicked", () => {
+                charter.assumptions = ["ToDelete"];
+                updateLists();
+                addListListeners();
+                expect(charter.assumptions.includes("ToDelete")).toBeTrue();
+                const delBtn = document.querySelector(".list-assumptions .delete");
+                delBtn.click();
+                expect(charter.assumptions.includes("ToDelete")).toBeFalse();
+            });
+        });
+    
+        describe("#addListeners", () => {
+            it("should add valid deliverable to charter on button click", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#deliverables");
+                input.value = "NewDeliverable";
+                document.querySelector("#add-deliverable").click();
+                expect(window.charter.deliverables["NewDeliverable"]).toBe("");
+            });
+    
+            it("should add valid risk to charter on button click", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#risks");
+                input.value = "NewRisk";
+                document.querySelector("#add-risks").click();
+                expect(charter.risks).toContain("NewRisk");
+            });
+    
+            it("should show error for invalid input", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#assumptions");
+                const msg = document.querySelector(".error-message");
+                input.value = "!!INVALID!!";
+                document.querySelector("#add-assumptions").click();
+                expect(msg.innerHTML).toContain("INVALID INPUT");
+            });
+        });
 
-    });
-
-    it("should add to list (assumptions)", () => {
-        charter.addToList("NewAssumption", "assumptions");
-        expect(charter.assumptions).toContain("NewAssumption");
-        expect(window.updateLists).toHaveBeenCalled();
-        expect(window.addListListeners).toHaveBeenCalled();
-    });
-
-    it("should not add duplicate to list", () => {
-        charter.addToList("Assumption1", "assumptions");
-        expect(charter.assumptions.length).toBe(1);
-    });
-
-    it("should remove from list", () => {
-        charter.removeFromList("Assumption1", "assumptions");
-        expect(charter.assumptions).not.toContain("Assumption1");
-        expect(window.updateLists).toHaveBeenCalled();
-        expect(window.addListListeners).toHaveBeenCalled();
-    });
-
-    it("should update deliverable input and validate pattern", () => {
-        displayCharter(); // Triggers initial render
-        addDelListeners();
-
-        const input = document.querySelector("#list-del-Deliverable1");
-        input.value = "Updated Criteria";
-
-        input.dispatchEvent(new Event("input"));
-        //updateDelList();
-        console.log(charter.deliverables["Deliverable1"]);
-        expect(charter.deliverables["Deliverable1"]).toBe("Updated Criteria");
-    });
-
-    it("should not break if invalid pattern is input", () => {
-        displayCharter();
-        addListeners();
-        const input = document.querySelector("#list-del-Deliverable1");
-        expect(input).not.toBeNull();
-        input.value = "###INVALID###";
-        input.dispatchEvent(new Event("input"));
-        const msg = document.querySelector(".error-message");
-        expect(msg.innerHTML).toContain("INVALID INPUT");
-    });
-
-
-    it("empty",()=>{
-        expect(1).toEqual(1);
     });
 });

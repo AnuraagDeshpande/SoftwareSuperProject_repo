@@ -16,49 +16,41 @@ export class ProjectCharter{
     constructor(id){
         const temp = this.fetchData(id);
         this.id=temp.id;
-        this.title = temp.title;
-        this.desc = temp.desc;
-        this.purpose = temp.purpose;
-        this.objective = temp.objective;
-        this.acceptance = temp.acceptance;
-        this.deadline = temp.deadline;
-        this.deliverables = temp.deliverables;
-        this.assumptions = temp.assumptions;
-        this.constraints = temp.constraints;
-        this.risks = temp.risks;
+        this.title = temp.title||"";
+        this.desc = temp.desc||"";
+        this.purpose = temp.purpose||"";
+        this.objective = temp.objective||"";
+        this.acceptance = temp.acceptance||"";
+        this.deadline = temp.deadline||"2025-12-24";
+        this.deliverables = temp.deliverables||{};
+        this.assumptions = temp.assumptions||[];
+        this.constraints = temp.constraints||[];
+        this.risks = temp.risks||[];
     }
 
     /** fetch data from a server based on id */
     fetchData(id){
-        /*
-        starter code for integrating with the backend
-        const path = `${baseurl}/projectcharter?id=${id}`
+        //starter code for integrating with the backend
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php/${id}`;
+        //const path = `${BASE_URL}/users`;
+        console.log(`the base url:${path}`);
+        console.log(`id: ${id}`);
 
-        return fetch("")
+        return fetch(path)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
             return response.json();
         })
+        .then(data => {
+            console.log("Received JSON:", data); //we log passed data
+            return data;
+        })
         .catch(error => {
             console.error("Fetch error:", error);
             return null;
-        });*/
-        return {
-            id: 1,
-            deadline:"2025-12-12",
-            status: "",
-            title:"",
-            desc:"",
-            purpose:"",
-            objective:"",
-            acceptance:"",
-            deliverables:{},
-            assumptions:[],
-            constraints:[],
-            risks:[]
-        };
+        });
     }
 
     /** add a deliverable to the list */
@@ -211,14 +203,14 @@ export function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
     if(!addButton) {
-        console.error(`no add deliverable button found found`);
+        console.error(`no add deliverable button found`);
         return;
     }
     addButton.addEventListener("click",(event)=>{
         event.preventDefault();
         const newDel = document.querySelector("#deliverables");
         if(newDel && newDel.value!="" && validPattern.test(newDel.value)){
-            charter.addDeliverable(newDel.value);
+            window.charter.addDeliverable(newDel.value);
             msg.innerHTML="";
         } else{
             console.error("deliverables field not found or empty");
@@ -238,7 +230,7 @@ export function addListeners(){
             event.preventDefault();
             const newList = document.querySelector(`#${key}`);
             if(newList && newList.value!="" && validPattern.test(newList.value)){
-                charter.addToList(newList.value, key);
+                window.charter.addToList(newList.value, key);
                 msg.innerHTML="";
             } else{
                 console.error(`${key} field not found or empty`);
@@ -246,8 +238,8 @@ export function addListeners(){
             }
         });
     });
-    addDelListeners();
-    addListListeners();
+    window.addDelListeners();
+    window.addListListeners();
 }
 
 /** add event listeners for the blobs for each deliverable */
@@ -287,7 +279,7 @@ export function updateDelList(){
         return;
     }
     //each property is added to the string
-    Object.keys(charter["deliverables"]).forEach(del =>{
+    Object.keys(window.charter["deliverables"]).forEach(del =>{
         innerHTML+=`
         <div class="blob cool-button list-del" data-del="${del}">
             ${del}
@@ -298,8 +290,8 @@ export function updateDelList(){
     });
     field.innerHTML=innerHTML;
     //we set the values of the fields
-    Object.keys(charter.deliverables).forEach(del =>{
-        document.querySelector(`#list-del-${del}`).value = charter.deliverables[del];
+    Object.keys(window.charter.deliverables).forEach(del =>{
+        document.querySelector(`#list-del-${del}`).value = window.charter.deliverables[del];
     });
 }
 
@@ -315,7 +307,7 @@ export function addListListeners(){
             el.querySelector(".delete").addEventListener("click",(event)=>{
                 event.preventDefault();
                 console.log(`want to delete ${name} from ${key}`)
-                charter.removeFromList(name, key);
+                window.charter.removeFromList(name, key);
             });
         });
     });
@@ -334,7 +326,7 @@ export function updateLists(){
             return;
         }
         //each property is added to the string
-        (charter[key]).forEach(elem =>{
+        (window.charter[key]).forEach(elem =>{
             innerHTML+=`
             <div class="blob cool-button list-${key}" data-${key}="${elem}">
                 ${elem}

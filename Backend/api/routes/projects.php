@@ -12,11 +12,16 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
+// /projects/u=?
+
 if ($method === 'GET') {
     if ($pathTail === '') {
         $controller->getAllProjects();
     } elseif (is_numeric($pathTail)) {
         $controller->getProjectById((int)$pathTail);
+    } elseif (preg_match('/^user=(\d+)$/', $pathTail, $matches)) {
+        $userId = (int)$matches[1];
+        $controller->getAllRelatedProjects($userId);
     } else {
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Invalid project request']);

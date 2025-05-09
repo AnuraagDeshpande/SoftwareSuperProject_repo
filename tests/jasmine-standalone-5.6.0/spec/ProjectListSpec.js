@@ -241,25 +241,6 @@ describe("PROJECT LIST PAGE:", ()=>{
             addPopUpToggle();
             expect(console.error).toHaveBeenCalledWith("no pop up div found");
         });
-
-        //this test is kinda broken
-        it("should add a valid project", function() {
-            document.querySelector("#project-name").value = "Project 1";
-            document.querySelector("#project-desc").value = "A sample project.";
-    
-            document.querySelector("#add-project-submit").click(); // Trigger event
-
-            setTimeout(() => {
-                console.log("Checking if addProject was called...");
-                expect(projects.addProject).toHaveBeenCalledWith(jasmine.objectContaining({
-                    projectName: "Project 1",
-                    desc: "A sample project.",
-                    status: "active"
-                }));
-                console.log("Test passed!");
-                done(); // Finish test
-            }, 100);
-        });
     
         it("should toggle pop-up when add/hide buttons are clicked", function() {
             const popUp = document.querySelector(".pop-up-screen");
@@ -320,7 +301,7 @@ describe("PROJECT LIST PAGE:", ()=>{
         });
 
         //apply filter to the elemets displayed
-        it("shoudl filter properly when searched and clear it correctly",()=>{
+        it("should filter properly when searched and clear it correctly",()=>{
             const name=document.querySelector("#filter-project-name");
             const desc=document.querySelector("#filter-description");
             const status = document.querySelector("#filter-status");

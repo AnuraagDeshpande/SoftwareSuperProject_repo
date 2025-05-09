@@ -29,6 +29,7 @@
       <button class="primary-button" onclick="addActivity()">Add Activity</button>
       <button class="primary-button" onclick="manageSchedule()">View Gantt Chart</button>
       <button class="primary-button" onclick="goToProjectMembers()">Manage Team</button>
+      <button class="primary-button" onclick="goToCharter()">View project charter</button>
     </div>
 
     <div class="grid-layout">
@@ -38,6 +39,7 @@
           <table class="activity-table">
             <thead>
               <tr>
+                <th>Done</th> <!-- New column -->
                 <th>Activity</th>
                 <th>Status</th>
                 <th>Deadline</th>
@@ -45,16 +47,19 @@
             </thead>
             <tbody>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 1</td>
                 <td class="status completed">Completed</td>
                 <td>2025-05-10</td>
               </tr>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 2</td>
                 <td class="status in-progress">In Progress</td>
                 <td>2025-05-15</td>
               </tr>
               <tr>
+                <td><input type="checkbox" class="activity-checkbox" /></td>
                 <td>Sample Activity 3</td>
                 <td class="status not-started">Not Started</td>
                 <td>2025-05-20</td>
@@ -114,7 +119,7 @@
         <h2>Project Progress</h2>
         <div class="placeholder">
           <div class="progress-container">
-            <div class="progress-bar" style="width: 60%;">60%</div>
+            <div class="progress-bar" id = "custom-progress-bar" style="width: 60%;">60%</div>
           </div>
         </div>
       </div>
