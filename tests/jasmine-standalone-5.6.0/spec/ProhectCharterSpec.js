@@ -318,6 +318,67 @@ describe("PROJECT CHARTER PAGE:",()=>{
             });
         });
 
+        describe("#updateLists", () => {
+            it("should update the assumptions, constraints, and risks DOM sections", () => {
+                charter.assumptions = ["NewAssumption"];
+                charter.constraints = ["NewConstraint"];
+                charter.risks = ["NewRisk"];
+                updateLists();
+    
+                expect(document.querySelector(".list-assumptions").textContent).toContain("NewAssumption");
+                expect(document.querySelector(".list-constraints").textContent).toContain("NewConstraint");
+                expect(document.querySelector(".list-risks").textContent).toContain("NewRisk");
+            });
+
+            it("should return nothing and throw an error for a missoing field",()=>{
+                let field=document.querySelector(`#project-assumptions`);
+                field.remove();
+                updateLists();
+                expect(console.error).toHaveBeenCalled();
+            });
+        });
+    
+        describe("#addListListeners", () => {
+            it("should remove assumption from charter when delete is clicked", () => {
+                charter.assumptions = ["ToDelete"];
+                updateLists();
+                addListListeners();
+                expect(charter.assumptions.includes("ToDelete")).toBeTrue();
+                const delBtn = document.querySelector(".list-assumptions .delete");
+                delBtn.click();
+                expect(charter.assumptions.includes("ToDelete")).toBeFalse();
+            });
+        });
+    
+        describe("#addListeners", () => {
+            it("should add valid deliverable to charter on button click", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#deliverables");
+                input.value = "NewDeliverable";
+                document.querySelector("#add-deliverable").click();
+                expect(window.charter.deliverables["NewDeliverable"]).toBe("");
+            });
+    
+            it("should add valid risk to charter on button click", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#risks");
+                input.value = "NewRisk";
+                document.querySelector("#add-risks").click();
+                expect(charter.risks).toContain("NewRisk");
+            });
+    
+            it("should show error for invalid input", () => {
+                displayCharter();
+                addListeners();
+                const input = document.querySelector("#assumptions");
+                const msg = document.querySelector(".error-message");
+                input.value = "!!INVALID!!";
+                document.querySelector("#add-assumptions").click();
+                expect(msg.innerHTML).toContain("INVALID INPUT");
+            });
+        });
 
     });
 });

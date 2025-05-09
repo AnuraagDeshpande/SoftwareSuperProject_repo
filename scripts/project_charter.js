@@ -211,7 +211,7 @@ export function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
     if(!addButton) {
-        console.error(`no add deliverable button found found`);
+        console.error(`no add deliverable button found`);
         return;
     }
     addButton.addEventListener("click",(event)=>{
@@ -315,7 +315,7 @@ export function addListListeners(){
             el.querySelector(".delete").addEventListener("click",(event)=>{
                 event.preventDefault();
                 console.log(`want to delete ${name} from ${key}`)
-                charter.removeFromList(name, key);
+                window.charter.removeFromList(name, key);
             });
         });
     });
@@ -334,7 +334,7 @@ export function updateLists(){
             return;
         }
         //each property is added to the string
-        (charter[key]).forEach(elem =>{
+        (window.charter[key]).forEach(elem =>{
             innerHTML+=`
             <div class="blob cool-button list-${key}" data-${key}="${elem}">
                 ${elem}
