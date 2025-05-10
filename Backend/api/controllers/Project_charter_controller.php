@@ -61,7 +61,10 @@ switch ($method) {
 // Function to fetch all project charters
 function getAllProjectCharters() {
     global $conn;
-    $sql = "SELECT * FROM project_charters";
+    $sql = "SELECT pc.*, p.title, p.description
+        FROM project_charters pc
+        JOIN projects p ON pc.project_id = p.id";
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -78,7 +81,11 @@ function getAllProjectCharters() {
 // Function to fetch a specific project charter by project_id
 function getProjectCharter($project_id) {
     global $conn;
-    $sql = "SELECT * FROM project_charters WHERE project_id = ?";
+    $sql = "SELECT pc.*, p.title, p.description
+        FROM project_charters pc
+        JOIN projects p ON pc.project_id = p.id
+        WHERE pc.project_id = ?";
+
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $project_id);
     $stmt->execute();
@@ -110,7 +117,6 @@ function formatCharter($row) {
         'project_desc' => $row['description'],
         'project_purpose' => $purposeText,
         'project_objective' => $row['objective'],
-        'project_acceptance' => $row['acceptance'],
         'project_deadline' => $row['deadline'],
         'project_deliverables' => $deliverables,
         'project_assumptions' => $assumptions,
@@ -130,15 +136,14 @@ function createProjectCharter() {
     $desc = $data['desc'];
     $purpose = json_encode($data['purpose']);
     $objective = $data['objective'];
-    $acceptance = $data['acceptance'];
     $deadline = $data['deadline'];
     $deliverables = json_encode($data['deliverables']);
     $assumptions = json_encode($data['assumptions']);
     $constraints = json_encode($data['constraints']);
     $risks = json_encode($data['risks']);
 
-    $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, acceptance, deadline, deliverables, assumptions, constraints, risks)
-            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$acceptance', '$deadline', '$deliverables', '$assumptions', '$constraints', '$risks')";
+    $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, deadline, deliverables, assumptions, constraints, risks)
+            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$constraints', '$risks')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "New project charter created successfully"]);
@@ -156,7 +161,6 @@ function updateProjectCharter($project_id) {
     $desc = $data['desc'];
     $purpose = json_encode($data['purpose']);
     $objective = $data['objective'];
-    $acceptance = $data['acceptance'];
     $deadline = $data['deadline'];
     $deliverables = json_encode($data['deliverables']);
     $assumptions = json_encode($data['assumptions']);
@@ -164,7 +168,7 @@ function updateProjectCharter($project_id) {
     $risks = json_encode($data['risks']);
 
     $sql = "UPDATE project_charters SET title = '$title', description = '$desc', purpose = '$purpose', objective = '$objective',
-            acceptance = '$acceptance', deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
+            deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
             constraints = '$constraints', risks = '$risks' WHERE project_id = $project_id";
 
     if ($conn->query($sql) === TRUE) {
