@@ -112,5 +112,12 @@ require_once(__DIR__ . '/Backend/init.php');
 
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/project_charter.js"></script>
+        <script type="module">
+            //The code is ran here to make the page interactive
+            //this can be seen similar to a main function as it allows for
+            //easier testing without weird js errors
+            import { setUpFun  } from "./scripts/project_charter.js";
+            setUpFun();
+        </script>
     </body>
 </html>

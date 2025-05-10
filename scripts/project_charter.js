@@ -14,6 +14,7 @@ export class ProjectCharter{
 
     /** construct an instance based on id */
     static async create(id){
+        console.log("create is being called");
         const instance = new ProjectCharter();
         const temp = await instance.fetchData(id);
 
@@ -115,20 +116,22 @@ export class ProjectCharter{
     return new ProjectCharter();
 }*/
 
-//we load the charter
-const charter= await ProjectCharter.create(1);
-//this makes testing work easier kinda
-window.updateDelList = updateDelList;
-window.addDelListeners = addDelListeners;
-window.updateLists = updateLists;
-window.addListListeners = addListListeners;
-window.charter= charter;
-//display loaded data
-displayCharter();
-//add listeners to the data
-addListeners();
-//submit button listener
-submitCharter();
+export async function setUpFun(){
+    //we load the charter
+    const charter= await ProjectCharter.create(1);
+    //this makes testing work easier kinda
+    window.updateDelList = updateDelList;
+    window.addDelListeners = addDelListeners;
+    window.updateLists = updateLists;
+    window.addListListeners = addListListeners;
+    window.charter= charter;
+    //display loaded data
+    displayCharter();
+    //add listeners to the data
+    addListeners();
+    //submit button listener
+    submitCharter();
+}
 
 /** display the initial project charter information */
 export function displayCharter(){

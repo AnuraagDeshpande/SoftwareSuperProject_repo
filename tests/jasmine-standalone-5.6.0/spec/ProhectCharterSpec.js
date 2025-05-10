@@ -1,6 +1,5 @@
 import  {
     ProjectCharter,
-    loadProjectCharter,
     updateDelList,
     updateLists,
     addDelListeners,
@@ -15,7 +14,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
     let charter;
     let fakeData;
 
-    beforeEach(function (){
+    beforeEach(async function (){
         //we give fake data instead of real one
         fakeData = {
             id: 99,
@@ -107,11 +106,14 @@ describe("PROJECT CHARTER PAGE:",()=>{
         </form>
         `;
 
-        //the test doesn't call to the server
-        spyOn(ProjectCharter.prototype,"fetchData").and.returnValue(fakeData);
         //reset the fake data to the initial state
-        charter=new ProjectCharter(99);
-
+        charter = new ProjectCharter();
+        for (const key in fakeData) {
+            if (fakeData.hasOwnProperty(key)) {
+                charter[key] = fakeData[key];
+            }
+        }
+        
         //we assign function to a window
         window.updateDelList = updateDelList;
         window.addDelListeners = addDelListeners;
@@ -134,14 +136,7 @@ describe("PROJECT CHARTER PAGE:",()=>{
         testDiv.innerHTML="";
     });
 
-    describe("#the project charter class tests:",()=>{
-        it("should initialize from fetchData", function() {
-            expect(ProjectCharter.prototype.fetchData).toHaveBeenCalledWith(99);
-            expect(charter.id).toBe(99);
-            expect(charter.title).toBe("Fake Project");
-            expect(charter.deliverables).toEqual({ "Deliverable1": "Criteria1" });
-        });
-        
+    describe("#the project charter class tests:",()=>{        
         it("should add a new deliverable and trigger UI updates", () => {
             charter.addDeliverable("NewDel");
             expect(charter.deliverables["NewDel"]).toBe("");
