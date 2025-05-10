@@ -152,10 +152,10 @@ class UserController {
         $fullname = $data['fullname'];
     
         $stmt = $conn->prepare("
-            INSERT INTO users (username, email, password, system_role, fullname)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO users (username, email, LoginPasscode, system_role, fullname)
+            VALUES (?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("ssssss", $username, $email, $password, $system_role, $fullname);
+        $stmt->bind_param("sssss", $username, $email, $password, $system_role, $fullname);
     
         if ($stmt->execute()) {
             http_response_code(201);
@@ -167,6 +167,7 @@ class UserController {
     
         $stmt->close();
     }
+    
     
     
     
