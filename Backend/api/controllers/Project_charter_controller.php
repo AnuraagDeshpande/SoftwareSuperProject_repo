@@ -19,8 +19,9 @@ if ($conn->connect_error) {
 
 // Handle the HTTP request method
 $method = $_SERVER['REQUEST_METHOD'];
-$requestUri = explode('/', trim($_SERVER['PATH_INFO'], '/'));
-$projectId = isset($requestUri[1]) ? intval($requestUri[1]) : null; // Get project_id from URL, if available
+$pathInfo = $_SERVER['PATH_INFO'] ?? '';
+$requestUri = explode('/', trim($pathInfo, '/'));
+$project_id = isset($requestUri[1]) ? intval($requestUri[1]) : null; // Get project_id from URL, if available
 
 // Handle the API request based on the method
 switch ($method) {
@@ -37,16 +38,16 @@ switch ($method) {
         break;
 
     case 'PUT':
-        if ($projectId) {
-            updateProjectCharter($projectId);
+        if ($project_id) {
+            updateProjectCharter($project_id);
         } else {
             echo json_encode(["error" => "Project ID is required for update"]);
         }
         break;
 
     case 'DELETE':
-        if ($projectId) {
-            deleteProjectCharter($projectId);
+        if ($project_id) {
+            deleteProjectCharter($project_id);
         } else {
             echo json_encode(["error" => "Project ID is required for deletion"]);
         }
@@ -75,11 +76,11 @@ function getAllProjectCharters() {
 }
 
 // Function to fetch a specific project charter by project_id
-function getProjectCharter($projectId) {
+function getProjectCharter($project_id) {
     global $conn;
     $sql = "SELECT * FROM project_charters WHERE project_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $projectId);
+    $stmt->bind_param("i", $project_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -124,7 +125,7 @@ function createProjectCharter() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true); // Get POST data
 
-    $projectId = $data['id'];
+    $project_id = $data['id'];
     $title = $data['title'];
     $desc = $data['desc'];
     $purpose = json_encode($data['purpose']);
@@ -137,7 +138,7 @@ function createProjectCharter() {
     $risks = json_encode($data['risks']);
 
     $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, acceptance, deadline, deliverables, assumptions, constraints, risks)
-            VALUES ('$projectId', '$title', '$desc', '$purpose', '$objective', '$acceptance', '$deadline', '$deliverables', '$assumptions', '$constraints', '$risks')";
+            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$acceptance', '$deadline', '$deliverables', '$assumptions', '$constraints', '$risks')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "New project charter created successfully"]);
@@ -147,7 +148,7 @@ function createProjectCharter() {
 }
 
 // Function to update an existing project charter
-function updateProjectCharter($projectId) {
+function updateProjectCharter($project_id) {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true); // Get PUT data
 
@@ -164,7 +165,7 @@ function updateProjectCharter($projectId) {
 
     $sql = "UPDATE project_charters SET title = '$title', description = '$desc', purpose = '$purpose', objective = '$objective',
             acceptance = '$acceptance', deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
-            constraints = '$constraints', risks = '$risks' WHERE project_id = $projectId";
+            constraints = '$constraints', risks = '$risks' WHERE project_id = $project_id";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "Project charter updated successfully"]);
@@ -174,9 +175,9 @@ function updateProjectCharter($projectId) {
 }
 
 // Function to delete a project charter by project_id
-function deleteProjectCharter($projectId) {
+function deleteProjectCharter($project_id) {
     global $conn;
-    $sql = "DELETE FROM project_charters WHERE project_id = $projectId";
+    $sql = "DELETE FROM project_charters WHERE project_id = $project_id";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "Project charter deleted successfully"]);
