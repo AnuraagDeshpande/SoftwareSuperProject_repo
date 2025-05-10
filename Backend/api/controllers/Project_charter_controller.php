@@ -3,14 +3,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
-// Database connection
-$servername = "localhost"; 
-$username = "root";        
-$password = "";           //ur own password 
-$dbname = "softwareproject"; //database name
+require_once(__DIR__ . '/../../../db_connection.php');
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
