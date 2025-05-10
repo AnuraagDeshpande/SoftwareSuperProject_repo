@@ -31,7 +31,7 @@ export class ProjectCharter{
     /** fetch data from a server based on id */
     fetchData(id){
         //starter code for integrating with the backend
-        const path = `${BASE_URL}/controllers/Project_charter_controller.php/${id}`;
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php/project_id=${id}`;
         //const path = `${BASE_URL}/users`;
         console.log(`the base url:${path}`);
         console.log(`id: ${id}`);

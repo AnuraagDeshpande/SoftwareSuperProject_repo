@@ -6,11 +6,11 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 // Database connection
 $servername = "localhost"; 
 $username = "root";        
-$password = "";           //ur own password 
-$dbname = "softwareproject"; //databse name
+$password = "hfgs23_78*gwed";           //ur own password 
+$dbname = "softwareproject"; //database name
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli('127.0.0.1', 'root', 'hfgs23_78*gwed', 'softwareproject');
 
 // Check connection
 if ($conn->connect_error) {
@@ -25,8 +25,8 @@ $projectId = isset($requestUri[1]) ? intval($requestUri[1]) : null; // Get proje
 // Handle the API request based on the method
 switch ($method) {
     case 'GET':
-        if ($projectId) {
-            getProjectCharter($projectId);
+        if ($project_id) {
+            getProjectCharter($project_id);
         } else {
             getAllProjectCharters();
         }
@@ -77,8 +77,11 @@ function getAllProjectCharters() {
 // Function to fetch a specific project charter by project_id
 function getProjectCharter($projectId) {
     global $conn;
-    $sql = "SELECT * FROM project_charters WHERE project_id = $projectId";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM project_charters WHERE project_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $projectId);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $charter = $result->fetch_assoc();
@@ -90,20 +93,31 @@ function getProjectCharter($projectId) {
 
 // Function to format the data into the structure expected by the frontend
 function formatCharter($row) {
+    // Decode JSON fields
+    $purpose = json_decode($row['purpose'], true);
+    $deliverables = json_decode($row['deliverables'], true);
+    $assumptions = json_decode($row['assumptions'], true);
+    $constraints = json_decode($row['constraints'], true);
+    $risks = json_decode($row['risks'], true);
+
+    // Extract purpose string if it's an object with 'main'
+    $purposeText = is_array($purpose) && isset($purpose['main']) ? $purpose['main'] : $row['purpose'];
+
     return [
-        'id' => $row['project_id'],
-        'title' => $row['title'],
-        'desc' => $row['description'],
-        'purpose' => json_decode($row['purpose']),
-        'objective' => $row['objective'],
-        'acceptance' => $row['acceptance'],
-        'deadline' => $row['deadline'],
-        'deliverables' => json_decode($row['deliverables'], true),
-        'assumptions' => json_decode($row['assumptions'], true),
-        'constraints' => json_decode($row['constraints'], true),
-        'risks' => json_decode($row['risks'], true),
+        'project_id' => $row['project_id'],
+        'project_title' => $row['title'],
+        'project_desc' => $row['description'],
+        'project_purpose' => $purposeText,
+        'project_objective' => $row['objective'],
+        'project_acceptance' => $row['acceptance'],
+        'project_deadline' => $row['deadline'],
+        'project_deliverables' => $deliverables,
+        'project_assumptions' => $assumptions,
+        'project_constraints' => $constraints,
+        'project_risks' => $risks,
     ];
 }
+
 
 // Function to create a new project charter
 function createProjectCharter() {
