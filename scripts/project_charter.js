@@ -13,44 +13,43 @@ export class ProjectCharter{
     risks=[];
 
     /** construct an instance based on id */
-    constructor(id){
-        const temp = this.fetchData(id);
-        this.id=temp.id;
-        this.title = temp.title||"";
-        this.desc = temp.desc||"";
-        this.purpose = temp.purpose||"";
-        this.objective = temp.objective||"";
-        this.acceptance = temp.acceptance||"";
-        this.deadline = temp.deadline||"2025-12-24";
-        this.deliverables = temp.deliverables||{};
-        this.assumptions = temp.assumptions||[];
-        this.constraints = temp.constraints||[];
-        this.risks = temp.risks||[];
+    static async create(id){
+        const instance = new ProjectCharter();
+        const temp = await instance.fetchData(id);
+
+        if (!temp) throw new Error("Failed to fetch project data");
+
+        instance.id=temp.project_id;
+        instance.title = temp.project_title||"";
+        instance.desc = temp.project_desc||"";
+        instance.purpose = temp.project_purpose||"";
+        instance.objective = temp.project_objective||"";
+        instance.acceptance = temp.acceptance||"";
+        instance.deadline = temp.project_deadline||"2025-12-24";
+        instance.deliverables = temp.project_deliverables ?? {};
+        instance.assumptions = temp.project_assumptions ?? [];
+        instance.constraints = temp.project_constraints ?? [];
+        instance.risks = temp.project_risks ?? [];
+
+        return instance;
     }
 
     /** fetch data from a server based on id */
-    fetchData(id){
+    async fetchData(id){
         //starter code for integrating with the backend
         const path = `${BASE_URL}/controllers/Project_charter_controller.php/project_id=${id}`;
-        //const path = `${BASE_URL}/users`;
-        console.log(`the base url:${path}`);
-        console.log(`id: ${id}`);
 
-        return fetch(path)
-        .then(response => {
+        try{
+            const response = await fetch(path);
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Received JSON:", data); //we log passed data
-            return data;
-        })
-        .catch(error => {
+            const data = await response.json();
+            return data[0];
+        } catch(error){
             console.error("Fetch error:", error);
             return null;
-        });
+        }
     }
 
     /** add a deliverable to the list */
@@ -112,12 +111,12 @@ export class ProjectCharter{
 }
 
 /** load the project from the database*/
-export function loadProjectCharter(){
-    return new ProjectCharter(1);
-}
+/*export function loadProjectCharter(){
+    return new ProjectCharter();
+}*/
 
 //we load the charter
-const charter=loadProjectCharter();
+const charter= await ProjectCharter.create(1);
 //this makes testing work easier kinda
 window.updateDelList = updateDelList;
 window.addDelListeners = addDelListeners;
@@ -183,7 +182,7 @@ export function displayCharter(){
                 return;
             }
             //each property is added to the string
-            Object.keys(window.charter[key]).forEach(elem =>{
+            (window.charter[key]).forEach(elem =>{
                 innerHTML+=`
                 <div class="blob cool-button list-${key}" data-${key}="${elem}">
                     ${elem}
@@ -191,6 +190,7 @@ export function displayCharter(){
                 </div>
                 `;
             });
+            field.innerHTML=innerHTML;
         }
     });
 }
