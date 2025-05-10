@@ -25,6 +25,10 @@ require_once(__DIR__ . '/Backend/init.php');
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <script>
+            const BASE_URL = <?= json_encode(BASE_URL) ?>;
+            console.log(BASE_URL);
+        </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
         <!--javaScript-->
