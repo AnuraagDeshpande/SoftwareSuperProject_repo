@@ -6,11 +6,11 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 // Database connection
 $servername = "localhost"; 
 $username = "root";        
-$password = "hfgs23_78*gwed";           //ur own password 
+$password = "";           //ur own password 
 $dbname = "softwareproject"; //database name
 
 // Create connection
-$conn = new mysqli('127.0.0.1', 'root', 'hfgs23_78*gwed', 'softwareproject');
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
