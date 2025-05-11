@@ -1,8 +1,8 @@
 const team=[
     {
-        name: "Birb",
-        desc: "SCREAM",
-        pic: "profile-picture-placeholder.png",
+        name: "Alen Kostov",
+        desc: "Backend Developer",
+        pic: "alen.jpeg",
         links: {
             github: "",
             star: "",
@@ -10,9 +10,9 @@ const team=[
         }
     },
     {
-        name: "Birb 2",
-        desc: "moral support",
-        pic: "profile-picture-placeholder.png",
+        name: "Anuraag Satej Deshpande",
+        desc: "Frontend Developer",
+        pic: "anuraag.jpeg",
         links: {
             github: "",
             star: "",
@@ -20,9 +20,9 @@ const team=[
         }
     },
     {
-        name: "Birb 3",
-        desc: "expert expert",
-        pic: "profile-picture-placeholder2.jpg",
+        name: "Dulguun Ulziibayar",
+        desc: "Backend Developer",
+        pic: "dulguun.jpeg",
         links: {
             github: "",
             star: "",
@@ -30,8 +30,8 @@ const team=[
         } 
     },
     {
-        name: "Birb 4",
-        desc: "expert expert on experts",
+        name: "Efrata Aynalem Bayle",
+        desc: "Frontend Developer",
         pic: "profile-picture-placeholder.png",
         links: {
             github: "",
@@ -40,9 +40,9 @@ const team=[
         } 
     },
     {
-        name: "Birb",
-        desc: "SCREAM",
-        pic: "profile-picture-placeholder.png",
+        name: "Fidan Yagubzade",
+        desc: "Frontend Developer",
+        pic: "fidan.jpeg",
         links: {
             github: "",
             star: "",
@@ -50,9 +50,9 @@ const team=[
         }
     },
     {
-        name: "Birb 2",
-        desc: "moral support",
-        pic: "profile-picture-placeholder.png",
+        name: "Hikmat Vuqar Oglu Vugarli",
+        desc: "Backend Developer",
+        pic: "hikmat.jpeg",
         links: {
             github: "",
             star: "",
@@ -60,9 +60,9 @@ const team=[
         }
     },
     {
-        name: "Birb 3",
-        desc: "expert expert",
-        pic: "profile-picture-placeholder2.jpg",
+        name: "Nafiba Yoseph Biru",
+        desc: "Frontend Developer",
+        pic: "nafiba.jpeg",
         links: {
             github: "",
             star: "",
@@ -70,9 +70,39 @@ const team=[
         } 
     },
     {
-        name: "Birb 4",
-        desc: "expert expert on experts",
-        pic: "profile-picture-placeholder.png",
+        name: "Nijusha Amgain",
+        desc: "Frontend Developer",
+        pic: "nijusha.jpeg",
+        links: {
+            github: "",
+            star: "",
+            mail: ""
+        } 
+    },
+    {
+        name: "Rashad Rahimzade",
+        desc: "Backend Developer",
+        pic: "clara.jpeg",
+        links: {
+            github: "",
+            star: "",
+            mail: ""
+        } 
+    },
+    {
+        name: "Timofei Podkorytov",
+        desc: "Frontend Developer",
+        pic: "timofei.jpeg",
+        links: {
+            github: "",
+            star: "",
+            mail: ""
+        } 
+    },
+    {
+        name: "Zaara Valladares",
+        desc: "Backend Developer",
+        pic: "zaara.jpeg",
         links: {
             github: "",
             star: "",

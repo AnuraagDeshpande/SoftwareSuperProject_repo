@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-// Database connection
-$host = "localhost";
-$db_user = "root";
-$db_pass = "";  // replace with your password
-$db_name = "softwareproject";
+require_once('db_connection.php');
 
 // Attempt limiter
 if (!isset($_SESSION['login_attempts'])) {
@@ -32,14 +28,6 @@ if ($_SESSION['login_attempts'] >= 5) {
         $_SESSION['login_attempts'] = 0;
         unset($_SESSION['lockout_time']);
     }
-}
-
-// Connect to DB
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
-if ($conn->connect_error) {
-    $_SESSION['login_error'] = "Database connection failed.";
-    header("Location: login.php");
-    exit();
 }
 
 // Handle login
