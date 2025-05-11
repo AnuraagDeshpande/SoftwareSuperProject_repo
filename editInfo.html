@@ -6,9 +6,16 @@
     <title>edit info</title>
     <link rel="stylesheet" href="styles/editInfo.css" />
     <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+
+    <!-- Navbar will be dynamically inserted here -->
+    <div class="navbar"></div>
+    <div class="sidebar"></div>
 
     <!-- profile banner at the top -->
     <div class="profile-container">
@@ -20,7 +27,6 @@
             <h2>john@gmail.com</h2>
         </div>
     </div>
-
 
     <div class="center-container">
 
@@ -84,6 +90,8 @@
                     Change password
                 </summary>
                 <div class="card-content">
+                    <label>Old password:</label>
+                    <input type="password" placeholder="old password">
                     <label>New password:</label>
                     <input type="password" placeholder="new password">
                     <label>Confirm password:</label>
@@ -94,6 +102,9 @@
         </div>
 
     </div>
+
+<script type="module" src="scripts/navigation.js"></script>
+  
 
 </body>
 

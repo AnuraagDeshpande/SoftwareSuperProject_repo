@@ -257,7 +257,7 @@ function goToProjectMembers() {
       return;
     }
   
-    window.location.href = `project_charter.php?projectId=${projectId}`;
+    window.location.href = `project_charter.php?project_id=${projectId}`;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
