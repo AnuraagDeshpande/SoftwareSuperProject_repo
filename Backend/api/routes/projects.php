@@ -1,7 +1,12 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 require_once(__DIR__ . '/../controllers/project_controller.php');
 
@@ -14,7 +19,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
-// /projects/u=?
+// /projects/user=?
 
 if ($method === 'GET') {
     if ($pathTail === '') {
@@ -54,6 +59,7 @@ if ($method === 'GET') {
     }
 
     $controller->updateProject((int)$pathTail, $data);
+    
 } elseif ($method === 'DELETE') {
     if (!is_numeric($pathTail)) {
         http_response_code(400);
