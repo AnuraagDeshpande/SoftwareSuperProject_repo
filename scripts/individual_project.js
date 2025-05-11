@@ -245,7 +245,7 @@ function goToProjectMembers() {
       return;
     }
   
-    window.location.href = `project_memb.html?projectId=${projectId}`;
+    window.location.href = `project_memb.html?project_id=${projectId}`;
   }
 
   function goToCharter() {
