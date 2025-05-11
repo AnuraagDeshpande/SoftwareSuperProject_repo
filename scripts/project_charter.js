@@ -14,7 +14,7 @@ export class ProjectCharter{
 
     /** construct an instance based on id */
     static async create(id){
-        console.log("create is being called");
+        console.log(`create is being called with id = ${id}`);
         const instance = new ProjectCharter();
         const temp = await instance.fetchData(id);
 
@@ -38,7 +38,7 @@ export class ProjectCharter{
     /** fetch data from a server based on id */
     async fetchData(id){
         //starter code for integrating with the backend
-        const path = `${BASE_URL}/controllers/Project_charter_controller.php/project_id=${id}`;
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${id}`;
 
         try{
             const response = await fetch(path);
