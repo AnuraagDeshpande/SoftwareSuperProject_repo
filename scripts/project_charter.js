@@ -18,9 +18,9 @@ export class ProjectCharter{
         const instance = new ProjectCharter();
         const temp = await instance.fetchData(id);
 
-        if (!temp) throw new Error("Failed to fetch project data");
+        if (!temp) throw new Error("Failed to fetch project charter data");
 
-        instance.id=temp.project_id;
+        instance.id=id;
         instance.title = temp.project_title||"";
         instance.desc = temp.project_desc||"";
         instance.purpose = temp.project_purpose||"";
@@ -39,14 +39,15 @@ export class ProjectCharter{
     async fetchData(id){
         //starter code for integrating with the backend
         const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${id}`;
-
+        console.log(path);
         try{
             const response = await fetch(path);
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
             const data = await response.json();
-            return data[0];
+            console.log(data);
+            return data;
         } catch(error){
             console.error("Fetch error:", error);
             return null;
