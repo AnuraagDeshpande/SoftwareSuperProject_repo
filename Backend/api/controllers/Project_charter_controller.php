@@ -5,7 +5,6 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
 require_once(__DIR__ . '/../../../db_connection.php');
 
-
 // Check connection
 if ($conn->connect_error) {
     die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
@@ -15,8 +14,6 @@ if ($conn->connect_error) {
 $method = $_SERVER['REQUEST_METHOD'];
 $project_id = isset($_GET['project_id']) ? intval($_GET['project_id']) : null;
 
-
-// Handle the API request based on the method
 switch ($method) {
     case 'GET':
         if ($project_id) {
@@ -25,11 +22,9 @@ switch ($method) {
             getAllProjectCharters();
         }
         break;
-
     case 'POST':
         createProjectCharter();
         break;
-
     case 'PUT':
         if ($project_id) {
             updateProjectCharter($project_id);
@@ -37,7 +32,6 @@ switch ($method) {
             echo json_encode(["error" => "Project ID is required for update"]);
         }
         break;
-
     case 'DELETE':
         if ($project_id) {
             deleteProjectCharter($project_id);
@@ -45,18 +39,16 @@ switch ($method) {
             echo json_encode(["error" => "Project ID is required for deletion"]);
         }
         break;
-
     default:
         echo json_encode(["error" => "Method not allowed"]);
         break;
 }
 
-// Function to fetch all project charters
 function getAllProjectCharters() {
     global $conn;
     $sql = "SELECT pc.*, p.title, p.description
-        FROM project_charters pc
-        JOIN projects p ON pc.project_id = p.id";
+            FROM project_charters pc
+            JOIN projects p ON pc.project_id = p.id";
 
     $result = $conn->query($sql);
 
@@ -71,13 +63,12 @@ function getAllProjectCharters() {
     }
 }
 
-// Function to fetch a specific project charter by project_id
 function getProjectCharter($project_id) {
     global $conn;
     $sql = "SELECT pc.*, p.title, p.description
-        FROM project_charters pc
-        JOIN projects p ON pc.project_id = p.id
-        WHERE pc.project_id = ?";
+            FROM project_charters pc
+            JOIN projects p ON pc.project_id = p.id
+            WHERE pc.project_id = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $project_id);
@@ -92,37 +83,25 @@ function getProjectCharter($project_id) {
     }
 }
 
-// Function to format the data into the structure expected by the frontend
 function formatCharter($row) {
-    // Decode JSON fields
-    $purpose = json_decode($row['purpose'], true);
-    $deliverables = json_decode($row['deliverables'], true);
-    $assumptions = json_decode($row['assumptions'], true);
-    $constraints = json_decode($row['constraints'], true);
-    $risks = json_decode($row['risks'], true);
-
-    // Extract purpose string if it's an object with 'main'
-    $purposeText = is_array($purpose) && isset($purpose['main']) ? $purpose['main'] : $row['purpose'];
-
     return [
         'project_id' => $row['project_id'],
         'project_title' => $row['title'],
         'project_desc' => $row['description'],
-        'project_purpose' => $purposeText,
+        'project_purpose' => json_decode($row['purpose'], true),
         'project_objective' => $row['objective'],
         'project_deadline' => $row['deadline'],
-        'project_deliverables' => $deliverables,
-        'project_assumptions' => $assumptions,
-        'project_constraints' => $constraints,
-        'project_risks' => $risks,
+        'project_deliverables' => json_decode($row['deliverables'], true),
+        'project_assumptions' => json_decode($row['assumptions'], true),
+        'project_acceptance' => $row['acceptance'],
+        'project_constraints' => json_decode($row['constraints'], true),
+        'project_risks' => json_decode($row['risks'], true),
     ];
 }
 
-
-// Function to create a new project charter
 function createProjectCharter() {
     global $conn;
-    $data = json_decode(file_get_contents('php://input'), true); // Get POST data
+    $data = json_decode(file_get_contents('php://input'), true);
 
     $project_id = $data['id'];
     $title = $data['title'];
@@ -132,11 +111,12 @@ function createProjectCharter() {
     $deadline = $data['deadline'];
     $deliverables = json_encode($data['deliverables']);
     $assumptions = json_encode($data['assumptions']);
+    $acceptance = ($data['acceptance']);
     $constraints = json_encode($data['constraints']);
     $risks = json_encode($data['risks']);
 
-    $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, deadline, deliverables, assumptions, constraints, risks)
-            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$constraints', '$risks')";
+    $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, deadline, deliverables, assumptions, acceptance, constraints, risks)
+            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$acceptance', '$constraints', '$risks')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "New project charter created successfully"]);
@@ -145,10 +125,9 @@ function createProjectCharter() {
     }
 }
 
-// Function to update an existing project charter
 function updateProjectCharter($project_id) {
     global $conn;
-    $data = json_decode(file_get_contents('php://input'), true); // Get PUT data
+    $data = json_decode(file_get_contents('php://input'), true);
 
     $title = $data['title'];
     $desc = $data['desc'];
@@ -157,12 +136,15 @@ function updateProjectCharter($project_id) {
     $deadline = $data['deadline'];
     $deliverables = json_encode($data['deliverables']);
     $assumptions = json_encode($data['assumptions']);
+    $acceptance = ($data['acceptance']);
     $constraints = json_encode($data['constraints']);
     $risks = json_encode($data['risks']);
 
-    $sql = "UPDATE project_charters SET title = '$title', description = '$desc', purpose = '$purpose', objective = '$objective',
-            deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
-            constraints = '$constraints', risks = '$risks' WHERE project_id = $project_id";
+    $sql = "UPDATE project_charters 
+            SET title = '$title', description = '$desc', purpose = '$purpose', objective = '$objective',
+                deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
+                acceptance = '$acceptance', constraints = '$constraints', risks = '$risks' 
+            WHERE project_id = $project_id";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "Project charter updated successfully"]);
@@ -171,7 +153,6 @@ function updateProjectCharter($project_id) {
     }
 }
 
-// Function to delete a project charter by project_id
 function deleteProjectCharter($project_id) {
     global $conn;
     $sql = "DELETE FROM project_charters WHERE project_id = $project_id";
@@ -183,6 +164,5 @@ function deleteProjectCharter($project_id) {
     }
 }
 
-// Close connection
 $conn->close();
 ?>
