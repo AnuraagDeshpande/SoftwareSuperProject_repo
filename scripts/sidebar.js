@@ -9,7 +9,7 @@ export function generateSidebar(){
     const sidebar = document.querySelector(".sidebar");
     if(sidebar){
         sidebar.innerHTML = `
-        <h1>NAME</h1>
+        <h1>SuperProject</h1>
         <div class="sidebar-links">
             <button class="dark-button sidebar-button"  onclick="document.location='index.php'">
                 Main page

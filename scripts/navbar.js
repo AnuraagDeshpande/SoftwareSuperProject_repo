@@ -26,7 +26,7 @@ function generateNavbar(passedIsLoggedIn, passedUsername) {
 
         navbar.innerHTML = `
             <div>
-                ${leftSection}
+                ${leftSection} <span class="project-title">SuperProject</span>
             </div>
         `;
 

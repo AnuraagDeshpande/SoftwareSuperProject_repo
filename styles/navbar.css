@@ -72,3 +72,9 @@ HAMBURGER MENU
     background-color: #555;
 }
 
+.project-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    color: #633637;
+    vertical-align: middle;
+}
