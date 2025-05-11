@@ -76,7 +76,7 @@ describe("PROJECT LIST PAGE:", ()=>{
 
 
         window.projects = projectList;
-        window.user = "current user";
+        window.user = "owner 234";
 
         window.projects.displayProjects();
         //we call functions to make the page active
@@ -327,7 +327,9 @@ describe("PROJECT LIST PAGE:", ()=>{
 
         it("should add listener for the delete button on project card",()=>{
             //we get our own projects
+            console.log("fetching my own project");
             const myOwn = document.querySelector(".projects-grid.js-project-list.js-owner-prjct div.project-card");
+            console.log(`the my own list:${myOwn.innerHTML}`);
             let button = myOwn.querySelector("button");
             spyOn(button, "addEventListener");
             //function is called
