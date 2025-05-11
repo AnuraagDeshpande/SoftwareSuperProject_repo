@@ -168,12 +168,13 @@ export class ProjectList{
                         <div class="card-bottom-row">
                             <button class="cool-button" id="delete-button" data-id="${element.id}">delete</button>
                             <div class="participants">
-                                ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
+                                
                             </div>
                         </div>
                     </div>
                 </a>
                 `;
+                //<!--${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}-->
                 generatedHTML+=card;
             });
             if(generatedHTML==""){
