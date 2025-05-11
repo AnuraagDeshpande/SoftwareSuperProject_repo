@@ -13,9 +13,8 @@ if ($conn->connect_error) {
 
 // Handle the HTTP request method
 $method = $_SERVER['REQUEST_METHOD'];
-$pathInfo = $_SERVER['PATH_INFO'] ?? '';
-$requestUri = explode('/', trim($pathInfo, '/'));
-$project_id = isset($requestUri[1]) ? intval($requestUri[1]) : null; // Get project_id from URL, if available
+$project_id = isset($_GET['project_id']) ? intval($_GET['project_id']) : null;
+
 
 // Handle the API request based on the method
 switch ($method) {

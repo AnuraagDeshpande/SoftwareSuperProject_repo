@@ -70,6 +70,7 @@ CREATE TABLE project_charters (
     deadline DATE,
     deliverables TEXT,      -- JSON
     assumptions TEXT,       -- JSON
+    acceptance TEXT,        -- JSON
     constraints TEXT,       -- JSON
     risks TEXT,             -- JSON
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
