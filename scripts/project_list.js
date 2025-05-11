@@ -252,11 +252,12 @@ export class ProjectList{
 }
 
 export async function setUpFun(id, username){
+    window.user =username;
     console.log(`username: ${username}, id: ${id}`);
     const projects =  await ProjectList.create(id);
     window.projects = projects;
     window.projects.displayProjects();
-    window.user =username;
+    
     //we call functions to make the page active
     addProject();
     makeClearButActive();
