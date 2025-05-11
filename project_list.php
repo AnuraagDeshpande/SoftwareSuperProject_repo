@@ -111,7 +111,7 @@ require_once(__DIR__ . '/Backend/init.php');
         <script type="module">
             import {setUpFun} from "./scripts/project_list.js";
 
-            setUpFun();
+            setUpFun(1);
         </script>
     </body>
 </hrml>

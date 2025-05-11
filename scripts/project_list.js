@@ -193,8 +193,8 @@ export class ProjectList{
     }
 }
 
-export async function setUpFun(){
-    const projects =  await ProjectList.create(1);
+export async function setUpFun(id){
+    const projects =  await ProjectList.create(id);
     window.projects = projects;
     window.projects.displayProjects();
     const user ="BIRB";

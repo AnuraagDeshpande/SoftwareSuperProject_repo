@@ -6,6 +6,9 @@ error_reporting(E_ALL);
 
 // Include init.php for DB connection, BASE_URL, and session
 require_once(__DIR__ . '/Backend/init.php');
+
+//we get the project if from the path
+$project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 ?>
 <!DOCTYPE html>
 <html>
@@ -113,11 +116,13 @@ require_once(__DIR__ . '/Backend/init.php');
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/project_charter.js"></script>
         <script type="module">
+            //we get the project id
+             const projectId = <?php echo json_encode($project_id); ?>;
             //The code is ran here to make the page interactive
             //this can be seen similar to a main function as it allows for
             //easier testing without weird js errors
             import { setUpFun  } from "./scripts/project_charter.js";
-            setUpFun();
+            setUpFun(projectId);
         </script>
     </body>
 </html>

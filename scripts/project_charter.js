@@ -116,9 +116,9 @@ export class ProjectCharter{
     return new ProjectCharter();
 }*/
 
-export async function setUpFun(){
+export async function setUpFun(id){
     //we load the charter
-    const charter= await ProjectCharter.create(1);
+    const charter= await ProjectCharter.create(id);
     //this makes testing work easier kinda
     window.updateDelList = updateDelList;
     window.addDelListeners = addDelListeners;
