@@ -26,17 +26,6 @@ export function generateSidebar(){
                 <div class="sidebar-status active">
                 </div>
             </button>
-            <button class="dark-button sidebar-button">
-                Error example
-                <div class="sidebar-status error">
-                </div>
-            </button>
-        </div>
-        <div class="sidebar-infocard">
-            There are some things that need to be done...
-            <div>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            </div>
         </div>
         `;
     } else {
