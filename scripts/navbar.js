@@ -14,16 +14,6 @@ function generateNavbar(passedIsLoggedIn, passedUsername) {
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
         `;
-
-        // Only show "Main Page" button on account.php
-        if (currentPage === "account.php") {
-            leftSection += `
-                <button class="dark-button" onclick="window.location.href='index.php'">
-                    Main Page
-                </button>
-            `;
-        }
-
         navbar.innerHTML = `
             <div>
                 ${leftSection} <span class="project-title">SuperProject</span>
@@ -34,7 +24,7 @@ function generateNavbar(passedIsLoggedIn, passedUsername) {
             navbar.innerHTML += `
                 <div class="navbar-user">
                     <span class="username">Welcome, ${username}</span>
-                    <button class="dark-button" onclick="window.location.href='account.php'" id="btn-account">
+                    <button class="dark-button" onclick="window.location.href='editInfo.php'" id="btn-account">
                         Account Details
                     </button>
                     <button class="dark-button" onclick="window.location.href='logout.php'" id="btn-logout">
