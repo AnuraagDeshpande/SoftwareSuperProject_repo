@@ -191,7 +191,13 @@ export function displayCharter(){
             field.innerHTML=innerHTML;
             //we set the values of the fields
             Object.keys(window.charter[key]).forEach(del =>{
-                document.querySelector(`#list-del-${del}`).value = window.charter[key][del];
+                const elem = document.getElementById(`list-del-${del}`);
+                if(elem){
+                    elem.value = window.charter[key][del];
+                } else {
+                    console.error("deliverable without a dom element");
+                }
+                
             });
         } else if(lists.includes(key)){
             //we need to add the list elements

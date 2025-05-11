@@ -52,6 +52,7 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <!--IMPORTANT INFO-->
                     <h2>Goals of the project:</h2>
                     <!--deadline-->
+                    <label for="project-deadline">Deadline:</label>
                     <input type="date" id="project-deadline" value="2069-12-12" required/>
                     <!--purpose-->
                     <label for="project-purpose">Purpose:</label>
@@ -68,7 +69,7 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <label for="deliverables">Deliverables:</label>
                     <div class="input-container add-deliverable">
                         <input type="text" id="deliverables" placeholder="New deliverable" pattern="[A-Za-z0-9 ,.]+" >
-                        <button id="add-deliverable"class="blob cool-button">
+                        <button id="add-deliverable"class="blob cool-button" type="button">
                             Add
                         </button>
                     </div>
@@ -79,7 +80,7 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <label for="assumptions">Assumptions:</label>
                     <div class="input-container add-deliverable">
                         <input type="text" id="assumptions" placeholder="New assumption" pattern="[A-Za-z0-9 ,.]+" >
-                        <button id="add-assumptions"class="blob cool-button">
+                        <button id="add-assumptions"class="blob cool-button" type="button">
                             Add
                         </button>
                     </div>
@@ -90,7 +91,7 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <label for="constraints">Constraints:</label>
                     <div class="input-container add-deliverable">
                         <input type="text" id="constraints" placeholder="New constraint" pattern="[A-Za-z0-9 ,.]+" >
-                        <button id="add-constraints"class="blob cool-button">
+                        <button id="add-constraints"class="blob cool-button" type="button">
                             Add
                         </button>
                     </div>
