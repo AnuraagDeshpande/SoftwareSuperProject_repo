@@ -125,6 +125,15 @@ PROJECT CARD
     transition: all 0.3s;
 }
 
+.project-link{
+    transition: all 0.3s;
+}
+
+.projects-grid:has(.project-link:hover) .project-link:not(:hover) {
+    opacity: 0.9;
+    filter: blur(3px);
+  }
+
 .project-card:hover{
     scale: 1.05;
 }
