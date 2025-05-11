@@ -52,16 +52,16 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <!--IMPORTANT INFO-->
                     <h2>Goals of the project:</h2>
                     <!--deadline-->
-                    <input type="date" id="project-deadline" value="2069-12-12" />
+                    <input type="date" id="project-deadline" value="2069-12-12" required/>
                     <!--purpose-->
                     <label for="project-purpose">Purpose:</label>
-                    <input type="text" id="project-purpose" placeholder="Project purpose" pattern="[A-Za-z0-9 ,.]+" >
+                    <input type="text" id="project-purpose" placeholder="Project purpose" pattern="[A-Za-z0-9 ,.]+" required>
                     <!--objective-->
                     <label for="project-objective">Objective:</label>
-                    <textarea type="text" id="project-objective" placeholder="Project objective" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea>
+                    <textarea type="text" id="project-objective" placeholder="Project objective" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" required></textarea>
                     <label for="project-accept-crt">Acceptance criteria:</label>
                     <!--acceptance-->
-                    <input type="text" id="project-acceptance" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" >
+                    <input type="text" id="project-acceptance" placeholder="Acceptance criteria" pattern="[A-Za-z0-9 ,.]+" required>
                     <!--adding a deliverable-->
                     <h2>Other info</h2>
                     <!--DELIVERABLES-->

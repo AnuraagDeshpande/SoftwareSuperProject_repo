@@ -25,7 +25,7 @@ export class ProjectCharter{
         instance.desc = temp.project_desc||"";
         instance.purpose = temp.project_purpose||"";
         instance.objective = temp.project_objective||"";
-        instance.acceptance = temp.acceptance||"";
+        instance.acceptance = temp.project_acceptance||"";
         instance.deadline = temp.project_deadline||"2025-12-24";
         instance.deliverables = temp.project_deliverables ?? {};
         instance.assumptions = temp.project_assumptions ?? [];
@@ -92,23 +92,39 @@ export class ProjectCharter{
         }
     }
 
-    /** submit the data to the database */
-    submit(){
-        /*
-        starter code for integrating with the backend
-        const path = `${baseurl}/projectcharter?id=${id}`
-
-        return fetch("")
-        .then(response => {
+    async submitChanges(){
+        //starter code for integrating with the backend
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${this.id}`;
+        console.log(path);
+        try{
+            const response = await fetch(path,{
+                method: "PUT",
+                body:JSON.stringify(this),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
-            return response.json();
-        })
-        .catch(error => {
+            console.log("request sent");
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } catch(error){
             console.error("Fetch error:", error);
             return null;
-        });*/
+        }
+    }
+
+    /** submit the data to the database */
+    submit(){
+        this.submitChanges().then(()=>{
+            console.log("going back");
+            history.back();
+        }).catch(err => {
+            console.error('Error:', err);
+        });
     }
 }
 
@@ -363,6 +379,7 @@ export function submitCharter(){
                 console.log("submitting");
                 console.log(charter);
                 //API call
+                window.charter.submit();
             } else {
                 console.log(`form: ${form.checkValidity()}, fields: ${littleSpecialFields}`);
                 msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";
