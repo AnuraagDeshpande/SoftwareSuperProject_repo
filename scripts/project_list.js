@@ -4,6 +4,7 @@ export class ProjectList{
     statusFilter="";
     descFilter="";
     viewedId=0;
+    id=-1;
 
     constructor(){
         this.projects=0;
@@ -20,6 +21,7 @@ export class ProjectList{
         if (!temp) throw new Error("Failed to fetch project list data");
 
         instance.projects=temp.data ?? [];
+        instance.id=id;
         return instance;
     }
 
@@ -40,6 +42,55 @@ export class ProjectList{
         }
     }
 
+    /** delete a project by id asynchronous function */
+    async deleteData(id){
+        console.log("deleting request sending");
+        const path = `${BASE_URL}/projects/${id}`;
+
+        try{
+            //delete request sent to the server
+            const response = await fetch(path,{
+                method: "DELETE",
+                headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            //error handling
+            console.error("Fetch error:", error);
+            return null;
+        }
+    }
+
+    /** asynchronous function to add a project, sends the request */
+    async addData(obj){
+        console.log("adding project requst");
+        //path  to the api
+        const path = `${BASE_URL}/projects/`;
+
+        try{
+            //we send the request
+            const response = await fetch(path,{
+                method: "POST",
+                body:JSON.stringify(obj),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            //error handlin
+            console.error("Fetch error:", error);
+            return null;
+        }
+    }
+
     /** turn a list of strings into a single string or - if empty */
     #displayList(a){
         if(a.length > 0 && Array.isArray(a)){
@@ -50,12 +101,12 @@ export class ProjectList{
 
     /** get the list containing the list of relations of a user to the project */
     #getRelation(project){
-        let relations =[];
-        if (project.owner.includes("user123")||project.manager.includes("user123")){
-            if(project.manager.includes("user123")){
+        let relations =[];//TODO replace user with actual user
+        if (project.owner.includes("USER1")||project.manager.includes("USER1")){
+            if(project.manager.includes("USER1")){
                 relations.push("m");
             }
-            if(project.owner.includes("user123")){
+            if(project.owner.includes("USER1")){
                 relations.push("o");
             }           
         } else {
@@ -147,11 +198,18 @@ export class ProjectList{
         addDeleteListener();
     }
 
-    /** refresh the data on a page TODO */
-    /*refresh(){
-        this.fetchData();
-        this.displayProjects();
-    }*/
+    /** refresh the data on a page*/
+    refresh(){
+        this.fetchData(this.id).then((obj)=>{
+            //we store the result
+            this.projects=obj.data ?? [];
+            //the display is updated
+            this.displayProjects();
+        }).catch(err => {
+            console.error('Error:', err);
+        });
+        
+    }
 
     /** save the changes */
     save(){
@@ -160,21 +218,21 @@ export class ProjectList{
 
     /** add project to list of projects*/
     addProject(newProject){
-        //API call TODO
-        newProject.id = crypto.randomUUID();
-        this.projects.push(newProject);
-        this.save();
-        //refresh call needed
-        this.displayProjects();
+        this.addData(newProject).then(()=>{
+            this.refresh()
+        }).catch(err => {
+            console.error('Error adding a new project:', err);
+        });
     }
 
     /** remove project by ID */
     removeByID(id){
-        //API call TODO
-        this.projects=this.projects.filter((el)=>{return el.id!=id;});
-        this.save();
-        //refresh call
-        this.displayProjects();
+        console.log(`project id: ${id}`);
+        this.deleteData(id).then(()=>{
+            this.refresh()
+        }).catch(err => {
+            console.error('Error deleting project:', err);
+        });
     }
 
     setViewId(id){
@@ -197,7 +255,7 @@ export async function setUpFun(id){
     const projects =  await ProjectList.create(id);
     window.projects = projects;
     window.projects.displayProjects();
-    const user ="BIRB";
+    window.user ="USER1";
     //we call functions to make the page active
     addProject();
     makeClearButActive();
@@ -291,11 +349,10 @@ export function addProject(){
             }
             //create a new project
             const newProject = {
-                id:Math.floor(Math.random()*1000),
                 projectName: name,
-                projectIcon:"profile-picture-placeholder.png",
+                projectIcon:"/media/profile-picture-placeholder2.png",
                 manager:[],
-                owner:[user],
+                owner:[window.user],//TODO
                 desc:desc,
                 participants:[],
                 status: "active"
@@ -396,7 +453,9 @@ export function addDeleteListener(){
     //we add event listener to the projects
     myOwn.forEach((card)=>{
         const button = card.querySelector("button");
-        button.addEventListener("click",()=>{
+        button.addEventListener("click",(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
             const id = button.dataset.id;
             window.projects.setViewId(id);
             popUpToggleDelete();
