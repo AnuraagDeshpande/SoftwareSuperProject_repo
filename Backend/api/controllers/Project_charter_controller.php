@@ -3,6 +3,10 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once(__DIR__ . '/../../../db_connection.php');
 
 // Check connection
@@ -103,17 +107,18 @@ function createProjectCharter() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $project_id = $data['id'];
-    $title = $data['title'];
-    $desc = $data['desc'];
-    $purpose = json_encode($data['purpose']);
-    $objective = $data['objective'];
-    $deadline = $data['deadline'];
-    $deliverables = json_encode($data['deliverables']);
-    $assumptions = json_encode($data['assumptions']);
-    $acceptance = ($data['acceptance']);
-    $constraints = json_encode($data['constraints']);
-    $risks = json_encode($data['risks']);
+    // Sanitize incoming data
+    $project_id = $conn->real_escape_string($data['id']);
+    $title = $conn->real_escape_string($data['title']);
+    $desc = $conn->real_escape_string($data['desc']);
+    $purpose = $conn->real_escape_string(json_encode($data['purpose']));
+    $objective = $conn->real_escape_string($data['objective']);
+    $deadline = $conn->real_escape_string($data['deadline']);
+    $deliverables = $conn->real_escape_string(json_encode($data['deliverables']));
+    $assumptions = $conn->real_escape_string(json_encode($data['assumptions']));
+    $acceptance = $conn->real_escape_string($data['acceptance']);
+    $constraints = $conn->real_escape_string(json_encode($data['constraints']));
+    $risks = $conn->real_escape_string(json_encode($data['risks']));
 
     $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, deadline, deliverables, assumptions, acceptance, constraints, risks)
             VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$acceptance', '$constraints', '$risks')";
@@ -129,29 +134,42 @@ function updateProjectCharter($project_id) {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $title = $data['title'];
-    $desc = $data['desc'];
-    $purpose = json_encode($data['purpose']);
-    $objective = $data['objective'];
-    $deadline = $data['deadline'];
-    $deliverables = json_encode($data['deliverables']);
-    $assumptions = json_encode($data['assumptions']);
-    $acceptance = ($data['acceptance']);
-    $constraints = json_encode($data['constraints']);
-    $risks = json_encode($data['risks']);
+    // Sanitize incoming data
+    $title = $conn->real_escape_string($data['title']);
+    $desc = $conn->real_escape_string($data['desc']);
+    $purpose = $conn->real_escape_string(json_encode($data['purpose']));
+    $objective = $conn->real_escape_string($data['objective']);
+    $deadline = $conn->real_escape_string($data['deadline']);
+    $deliverables = $conn->real_escape_string(json_encode($data['deliverables']));
+    $assumptions = $conn->real_escape_string(json_encode($data['assumptions']));
+    $acceptance = $conn->real_escape_string($data['acceptance']);
+    $constraints = $conn->real_escape_string(json_encode($data['constraints']));
+    $risks = $conn->real_escape_string(json_encode($data['risks']));
 
-    $sql = "UPDATE project_charters 
-            SET title = '$title', description = '$desc', purpose = '$purpose', objective = '$objective',
-                deadline = '$deadline', deliverables = '$deliverables', assumptions = '$assumptions',
-                acceptance = '$acceptance', constraints = '$constraints', risks = '$risks' 
-            WHERE project_id = $project_id";
+    // Update the projects table for title and description
+    $sql_projects = "UPDATE projects 
+                     SET title = '$title', description = '$desc' 
+                     WHERE id = $project_id";
+    
+    if ($conn->query($sql_projects) === FALSE) {
+        echo json_encode(["error" => "Error updating project: " . $conn->error]);
+        return;
+    }
 
-    if ($conn->query($sql) === TRUE) {
+    // Update the project_charters table for other project details
+    $sql_charters = "UPDATE project_charters 
+                     SET objective = '$objective', purpose = '$purpose', deadline = '$deadline',
+                         deliverables = '$deliverables', assumptions = '$assumptions',
+                         acceptance = '$acceptance', constraints = '$constraints', risks = '$risks'
+                     WHERE project_id = $project_id";
+
+    if ($conn->query($sql_charters) === TRUE) {
         echo json_encode(["message" => "Project charter updated successfully"]);
     } else {
         echo json_encode(["error" => "Error: " . $conn->error]);
     }
 }
+
 
 function deleteProjectCharter($project_id) {
     global $conn;
