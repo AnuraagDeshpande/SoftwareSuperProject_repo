@@ -1,66 +1,43 @@
 export class ProjectList{
-    projects;
+    projects=[];
     nameFilter="";
     statusFilter="";
     descFilter="";
     viewedId=0;
 
-
     constructor(){
-        this.fetchData();
-        this.displayProjects();
+        this.projects=0;
+        this.nameFilter="";
+        this.statusFilter="";
+        this.descFilter="";
+        this.viewedId=0;
+    }
+
+    static async create(id){
+        const instance = new ProjectList();
+        const temp = await instance.fetchData(id);
+
+        if (!temp) throw new Error("Failed to fetch project list data");
+
+        instance.projects=temp.data ?? [];
+        return instance;
     }
 
     /** get projects data*/
-    fetchData(){
-        this.projects=JSON.parse(localStorage.getItem("project_list"))||[
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:[],
-            owner:["user123"],
-            desc:"This project aims at projecting project projects at project. It is of high imprtance and is believed to be very cool. This text doens't fit",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-            ],
-            status:"error"
-        },
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects 2",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:["manager 1"],
-            owner:["some usr","some other user","another person"],
-            desc:"This project aims at projecting project projects at project. This text fully fits",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-            ],
-            status: "active"
-        },
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects 3",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:["manager 1","user123"],
-            owner:["some usr","some other user","another person"],
-            desc:"This project aims at projecting project projects at project. This text fully fits",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-            ],
-            status: "active"
+    async fetchData(id){
+        const path = `${BASE_URL}/projects/user=${id}`;
+
+        try{
+            const response = await fetch(path);
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            console.error("Fetch error:", error);
+            return null;
         }
-        ];
     }
 
     /** turn a list of strings into a single string or - if empty */
@@ -101,7 +78,6 @@ export class ProjectList{
     }
 
     #getVisibleProjects(){
-        this.fetchData();
         return this.projects.filter((pr)=>{
             return pr.projectName.includes(this.nameFilter);
         }).filter((pr)=>{
@@ -171,11 +147,11 @@ export class ProjectList{
         addDeleteListener();
     }
 
-    /** refresh the data on a page */
-    refresh(){
+    /** refresh the data on a page TODO */
+    /*refresh(){
         this.fetchData();
         this.displayProjects();
-    }
+    }*/
 
     /** save the changes */
     save(){
@@ -184,16 +160,20 @@ export class ProjectList{
 
     /** add project to list of projects*/
     addProject(newProject){
+        //API call TODO
         newProject.id = crypto.randomUUID();
         this.projects.push(newProject);
         this.save();
+        //refresh call needed
         this.displayProjects();
     }
 
     /** remove project by ID */
     removeByID(id){
+        //API call TODO
         this.projects=this.projects.filter((el)=>{return el.id!=id;});
         this.save();
+        //refresh call
         this.displayProjects();
     }
 
@@ -213,8 +193,22 @@ export class ProjectList{
     }
 }
 
-const projects = new ProjectList();
-const user ="user123";
+export async function setUpFun(){
+    const projects =  await ProjectList.create(1);
+    window.projects = projects;
+    window.projects.displayProjects();
+    const user ="BIRB";
+    //we call functions to make the page active
+    addProject();
+    makeClearButActive();
+    addPopUpToggle();
+    //search functionality
+    search();
+    addClearFilterListener();
+    //delete menu functionality
+    addDeleteMenuConfirmListener();
+    addDeleteMenuRevokeListener();
+}
 
 /*
 =================================================
@@ -307,7 +301,7 @@ export function addProject(){
                 status: "active"
             }
             //add the project to projects
-            projects.addProject(newProject);
+            window.projects.addProject(newProject);
             
             //close pop up and clear
             //popUpToggle();
@@ -341,11 +335,6 @@ export function addPopUpToggle(){
     }
 }
 
-//we call functions to make the page active
-addProject();
-makeClearButActive();
-addPopUpToggle();
-
 /**
 =================================================
 FILTERING
@@ -357,8 +346,8 @@ export function applyFilter(){
     const name = document.querySelector("#filter-project-name").value || "";
     const desc = document.querySelector("#filter-description").value || "";
     const status = document.querySelector("#filter-status").value || "";
-    projects.setFilter(name,desc,status);
-    projects.displayProjects();
+    window.projects.setFilter(name,desc,status);
+    window.projects.displayProjects();
 }
 
 /** clear the filter and set it to default */
@@ -366,8 +355,8 @@ export function clearFilter(){
     document.querySelector("#filter-project-name").value = "";
     document.querySelector("#filter-description").value = "";
     document.querySelector("#filter-status").value = "none";
-    projects.setFilter();
-    projects.displayProjects();
+    window.projects.setFilter();
+    window.projects.displayProjects();
 }
 
 /** add event listener for clear filter button*/
@@ -394,9 +383,6 @@ export function search(){
     }
 }
 
-search();
-addClearFilterListener();
-
 /**
 =================================================
 DELETING
@@ -412,7 +398,7 @@ export function addDeleteListener(){
         const button = card.querySelector("button");
         button.addEventListener("click",()=>{
             const id = button.dataset.id;
-            projects.setViewId(id);
+            window.projects.setViewId(id);
             popUpToggleDelete();
         });
     });
@@ -449,12 +435,9 @@ export function addDeleteMenuConfirmListener(){
     if(confirm){
         confirm.addEventListener("click",()=>{
             popUpToggleDelete();
-            projects.removeViewed();
+            window.projects.removeViewed();
         });
     } else {
         console.error("no confirm delte button found");
     }
 }
-
-addDeleteMenuConfirmListener();
-addDeleteMenuRevokeListener();

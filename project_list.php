@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 // Include init.php for DB connection, BASE_URL, and session
 require_once(__DIR__ . '/Backend/init.php');
 
-// Show the API base URL (debugging)
-//var_dump(BASE_URL);
+//the user id
+//$user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,6 +28,7 @@ require_once(__DIR__ . '/Backend/init.php');
         <script>
             const BASE_URL = <?= json_encode(BASE_URL) ?>;
             console.log(BASE_URL);
+            const userId = <?= json_encode(1) ?>;
         </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
@@ -107,5 +108,10 @@ require_once(__DIR__ . '/Backend/init.php');
         </div>
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/project_list.js"></script>
+        <script type="module">
+            import {setUpFun} from "./scripts/project_list.js";
+
+            setUpFun();
+        </script>
     </body>
 </hrml>
