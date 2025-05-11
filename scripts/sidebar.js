@@ -21,7 +21,7 @@ export function generateSidebar(){
                 <div class="sidebar-status active">
                 </div>
             </button>        
-            <button class="dark-button sidebar-button"  onclick="document.location='Task-view.html'">
+            <button class="dark-button sidebar-button"  onclick="document.location='kanban_board.html'">
                 Tasks
                 <div class="sidebar-status active">
                 </div>
