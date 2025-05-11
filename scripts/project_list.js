@@ -102,11 +102,11 @@ export class ProjectList{
     /** get the list containing the list of relations of a user to the project */
     #getRelation(project){
         let relations =[];//TODO replace user with actual user
-        if (project.owner.includes("USER1")||project.manager.includes("USER1")){
-            if(project.manager.includes("USER1")){
+        if (project.owner.includes(window.user)||project.manager.includes(window.user)){
+            if(project.manager.includes(window.user)){
                 relations.push("m");
             }
-            if(project.owner.includes("USER1")){
+            if(project.owner.includes(window.user)){
                 relations.push("o");
             }           
         } else {
@@ -251,11 +251,12 @@ export class ProjectList{
     }
 }
 
-export async function setUpFun(id){
+export async function setUpFun(id, username){
+    console.log(`username: ${username}, id: ${id}`);
     const projects =  await ProjectList.create(id);
     window.projects = projects;
     window.projects.displayProjects();
-    window.user ="USER1";
+    window.user =username;
     //we call functions to make the page active
     addProject();
     makeClearButActive();
@@ -352,7 +353,7 @@ export function addProject(){
                 projectName: name,
                 projectIcon:"/media/profile-picture-placeholder2.png",
                 manager:[],
-                owner:[window.user],//TODO
+                owner:[window.user],
                 desc:desc,
                 participants:[],
                 status: "active"

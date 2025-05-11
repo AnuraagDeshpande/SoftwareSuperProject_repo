@@ -7,8 +7,9 @@ error_reporting(E_ALL);
 // Include init.php for DB connection, BASE_URL, and session
 require_once(__DIR__ . '/Backend/init.php');
 
-//the user id
-//$user_id = $_SESSION['user_id'];
+//we get the user info
+$userId = $_SESSION['user_id'] ?? -1;
+$username = $_SESSION['user_name'] ?? '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,9 @@ require_once(__DIR__ . '/Backend/init.php');
         <script>
             const BASE_URL = <?= json_encode(BASE_URL) ?>;
             console.log(BASE_URL);
-            const userId = <?= json_encode(1) ?>;
+            //the username and the user id are saved
+            const userId = <?= json_encode($userId) ?>;
+            const username = <?= json_encode($username)?>;
         </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
@@ -111,7 +114,7 @@ require_once(__DIR__ . '/Backend/init.php');
         <script type="module">
             import {setUpFun} from "./scripts/project_list.js";
 
-            setUpFun(1);
+            setUpFun(userId, username);
         </script>
     </body>
 </hrml>
