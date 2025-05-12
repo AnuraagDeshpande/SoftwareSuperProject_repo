@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header('Content-Type: application/json');
 
 require_once(__DIR__ . '/../controllers/task_controller.php');
@@ -9,7 +12,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Adjust the base path to match your project structure
-$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/tasks';
+$basePath = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
 if ($method === 'GET') {

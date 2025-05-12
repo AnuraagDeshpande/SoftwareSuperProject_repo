@@ -1,15 +1,19 @@
+const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
+
 document.addEventListener('DOMContentLoaded', function () {
-    let tasks = [
-        { id: 1, title: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", deadline: "May 18, 2025", status: "In Progress" },
-        { id: 2, title: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", deadline: "May 25, 2025", status: "Pending" },
-        { id: 3, title: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", deadline: "May 4, 2025", status: "Completed" }
-    ];
+    // let tasks = [
+    //     { id: 1, title: "Implement SEO Strategy", description: "Optimize the website for SEO by implementing keywords, meta descriptions, and alt text.", project: "Website Redesign", deadline: "May 18, 2025", status: "In Progress" },
+    //     { id: 2, title: "Deploy Website to Production", description: "Deploy the website to the live production server and monitor for issues.", project: "Website Redesign", deadline: "May 25, 2025", status: "Pending" },
+    //     { id: 3, title: "Review and Approve Final Design", description: "Review the final design with the team and get approval before proceeding with development.", project: "Website Redesign", deadline: "May 4, 2025", status: "Completed" }
+    // ];
+
+    let tasks = [];
 
     const body = document.body;
 
     //Fetch the tasks 
     function fetch_tasks() {
-        fetch('/api/tasks')
+        fetch(API_BASE_URL)
             .then(response => response.json())
             .then(data => {
                 tasks = data.data;
@@ -19,26 +23,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // sending a POST request to add task
+    // function AddTasks(task_card) {
+    //     fetch(API_BASE_URL, {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify(task_card),
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.success) {
+    //                 // tasks.push(data.data);
+    //                 // render_tasks();
+    //                 fetch_tasks();
+    //             }
+    //         })
+    //         .catch(error => console.error('Error adding task:', error));
+    // }
     function AddTasks(task_card) {
-        fetch('/api/tasks', {
+        console.log("Sending task data:", task_card);  // Log the task data before sending the request
+    
+        fetch(API_BASE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(task_card),
         })
             .then(response => response.json())
             .then(data => {
+                console.log("Response from API:", data);  // Log the API response
                 if (data.success) {
-                    // tasks.push(data.data);
-                    // render_tasks();
-                    fetch_tasks();
+                    console.log("Task added successfully.");
+                    fetch_tasks();  // Fetch tasks again after adding
+                } else {
+                    console.log("Error: Task addition was not successful");
                 }
             })
-            .catch(error => console.error('Error adding task:', error));
-    }
+            .catch(error => {
+                console.error('Error adding task:', error);  // Log the error if something goes wrong
+            });
+    }    
 
     //Removes task
     function remove_task(taskID) {
-        fetch(`/api/tasks/${taskID}`, {
+        fetch(`${API_BASE_URL}/${taskID}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -248,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("taskDescription").value = data.description;
             document.getElementById("projectName").value = data.project;
             document.getElementById("deadline").value = data.deadline;
-            add_button.addEventListener('click', () => update_task());
+            add_button.addEventListener('click', () => update_task(data.id)); //*
         } else {
             add_button.addEventListener('click', add_task);
         }
@@ -259,6 +285,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function close_modal() {
         document.getElementById("task_dialog").close();
+        if (task_dialog) {
+            if (task_dialog.open) {
+            task_dialog.close();
+            }
+            task_dialog.remove();  // Cleanly remove from DOM so fresh dialog gets created next time
+        }
     }
 
 
@@ -311,6 +343,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // creates task and places them in the column 
         tasks.forEach(task => {
+
+            task.id = Number(task.id); //making sure the id is number not string
+
             const task_div = create_task_element(task);
             const column_belong = kanban_status[task.status];
             const column = document.getElementById(column_belong);
@@ -340,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
         options_link.appendChild(options_icon);
         task_header.appendChild(options_link);
 
-        options_link.addEventListener("click", () => remove_task(tasks.id));
+        options_link.addEventListener("click", () => remove_task(task.id));
         task_div.appendChild(task_header);
 
         const task_body = document.createElement("div");
@@ -376,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task_div.appendChild(task_meta);
 
 
-        task_div.addEventListener('click', () => {
+        task_div.addEventListener('dblclick', () => {
             create_task_modal(task);
         });
 
@@ -414,12 +449,12 @@ document.addEventListener('DOMContentLoaded', function () {
             project: project,
             deadline: deadline,
             status: "Pending",
-            startDate: today
-
+            startDate: today,
         };
 
         tasks.push(task_card);
         render_tasks();
+
 
         AddTasks(task_card);
 
@@ -504,13 +539,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // Update task status when dropped
     function update_task_status(taskId, new_status) {
         taskId = Number(taskId);
+
+        console.log("update_task_status called with:", taskId, new_status);
+
+        console.log("Current tasks array:", tasks.map(t => ({ id: t.id, title: t.title })));
+
         const task = tasks.find(t => t.id === taskId);
-        if (!task) console.log("Not found");
+        console.log("Matched task:", task);
+
+        if (!task) //console.log("Not found");
+        {
+            console.warn(`Task with id ${taskId} not found`);
+            return;
+        }
 
         task.status = new_status;
         render_tasks();
 
-        fetch(`/api/tasks/${taskId}`, {
+        fetch(`${API_BASE_URL}/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -518,14 +564,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }),
         })
             .then(response => response.json())
-            .then(updatedTask => {
-                task.status = updatedTask.status;
+            .then(result => {
+                if (result.success) {
+                    task.status = result.data.status;
+
+            // .then(updatedTask => {
+            //     task.status = updatedTask.status;
                 render_tasks();
+            }
+            else {
+                console.error('Failed to update task status:', result.error);
+            }
             })
-            .catch(error => console.error('Error updating task:', error));
+            .catch(error => console.error('Error updating task status:', error));
     }
 
-    function update_task() {
+    function update_task(taskId) {
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
@@ -536,22 +590,33 @@ document.addEventListener('DOMContentLoaded', function () {
             description: description,
             project: project,
             deadline: deadline,
-            status: "Pending",
+            status: "Pending"
         };
 
+        console.log("Updating task:", taskId, task_card);
 
-        fetch(`/api/tasks/${updated_task.id}`, {
+        fetch(`${API_BASE_URL}/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updated_task),
+            // body: JSON.stringify(updated_task),
+            body: JSON.stringify(task_card),
         })
             .then(response => response.json())
-            .then(task => {
-                const index = tasks.findIndex(t => t.id === task.id);
+            // .then(updatedtask =>{
+                .then(result => {
+                    if (result.success) {
+                        const updatedtask = result.data;  // extract from .data
+            
+                const index = tasks.findIndex(t => t.id === updatedtask.id);
                 if (index !== -1) {
-                    tasks[index] = task;
+                    tasks[index] = updatedtask;
                     render_tasks();
+                    console.log('Task updated successfully');
                 }
+            }
+            fetch_tasks();
+                close_modal();
+
             })
             .catch(error => console.error('Error updating task:', error));
     }
@@ -626,6 +691,6 @@ document.addEventListener('DOMContentLoaded', function () {
     create_task_overview();
     create_kanban_board();
     render_tasks();
-    //fetch_tasks();
+    fetch_tasks();
 
 });

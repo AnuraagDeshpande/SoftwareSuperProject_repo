@@ -1,10 +1,17 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// require_once('db_connection.php');
+require_once('/Applications/XAMPP/xamppfiles/htdocs/SoftwareSuperProject_repo/db_connection.php');
+
 class TaskController {
     // GET /tasks
     public function getAllTasks() {
         global $conn;
 
-        $query = "SELECT id, project_id, title, description, status, deadline, created_at FROM tasks";
+        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.created_at FROM tasks
+        JOIN projects ON tasks.project_id = projects.id";
         $result = $conn->query($query);
 
         if (!$result) {
@@ -43,7 +50,7 @@ class TaskController {
   
       // Validate required fields
       if (
-          !isset($data['project_id']) ||
+          !isset($data['project']) ||
           !isset($data['title']) ||
           !isset($data['description']) ||
           !isset($data['status']) ||
@@ -54,23 +61,26 @@ class TaskController {
           return;
       }
   
-      $project_id = $data['project_id'];
+      $project_name = $data['project'];
       $title = $data['title'];
       $description = $data['description'];
       $status = $data['status'];
       $deadline = $data['deadline'];
   
-      $stmt = $conn->prepare("SELECT id FROM projects WHERE id = ?");
-      $stmt->bind_param("i", $project_id);
+      $stmt = $conn->prepare("SELECT id FROM projects WHERE title = ?");
+      $stmt->bind_param("s", $project_name);
       $stmt->execute();
       $result = $stmt->get_result();
   
       if ($result->num_rows === 0) {
           http_response_code(400);
-          echo json_encode(['success' => false, 'error' => 'Invalid project_id: Project does not exist']);
+          echo json_encode(['success' => false, 'error' => 'Invalid project_name: Project does not exist']);
           return;
       }
-  
+
+      $row = $result->fetch_assoc();
+      $project_id = $row['id'];
+
       $stmt->close();
   
       // Insert the new task
@@ -94,16 +104,48 @@ class TaskController {
     public function updateTask($id, $data) {
         global $conn;
 
-        $allowedFields = ['project_id', 'title', 'description', 'status', 'deadline'];
+        $allowedFields = ['project_id' => 'project', 'title' => 'title', 'description' => 'description', 'status' => 'status', 'deadline' => 'deadline'];
         $fieldsToUpdate = [];
         $values = [];
 
-        foreach ($allowedFields as $field) {
-            if (isset($data[$field])) {
-                $fieldsToUpdate[] = "$field = ?";
-                $values[] = $data[$field];
+        // foreach ($allowedFields as $field) {
+        //     if (isset($data[$field])) {
+        //         $fieldsToUpdate[] = "$field = ?";
+        //         $values[] = $data[$field];
+        //     }
+        // }
+
+        foreach ($allowedFields as $column => $inputKey) {
+            if (isset($data[$inputKey])) {
+                // Special handling for project name → get project_id
+                if ($inputKey === 'project') {
+                    $projectName = $data[$inputKey];
+        
+                    $stmtProject = $conn->prepare("SELECT id FROM projects WHERE title = ?");
+                    $stmtProject->bind_param("s", $projectName);
+                    $stmtProject->execute();
+                    $resultProject = $stmtProject->get_result();
+        
+                    if ($resultProject && $resultProject->num_rows > 0) {
+                        $projectRow = $resultProject->fetch_assoc();
+                        $projectId = $projectRow['id'];
+        
+                        $fieldsToUpdate[] = "project_id = ?";
+                        $values[] = $projectId;
+                    } else {
+                        http_response_code(400);
+                        echo json_encode(['success' => false, 'error' => 'Project name not found']);
+                        return;
+                    }
+        
+                    $stmtProject->close();
+                } else {
+                    $fieldsToUpdate[] = "$column = ?";
+                    $values[] = $data[$inputKey];
+                }
             }
         }
+        
 
         if (empty($fieldsToUpdate)) {
             http_response_code(400);
@@ -114,13 +156,31 @@ class TaskController {
         $query = "UPDATE tasks SET " . implode(", ", $fieldsToUpdate) . " WHERE id = ?";
         $stmt = $conn->prepare($query);
 
+        if (!$stmt) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Prepare failed: ' . $conn->error]);
+            return;
+        }
+
         $values[] = $id;
         $types = str_repeat("s", count($values) - 1) . "i";
 
         $stmt->bind_param($types, ...$values);
 
         if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Task updated successfully']);
+            // Fetch updated task
+            $result = $conn->query("SELECT * FROM tasks WHERE id = " . intval($id));
+
+            if (!$result) {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'error' => 'Select failed: ' . $conn->error]);
+                return;
+            }
+
+            $updatedTask = $result->fetch_assoc();
+
+            echo json_encode(['success' => true, 'data' => $updatedTask, 'message' => 'Task updated successfully']);
+            //echo json_encode(['success' => true, 'message' => 'Task updated successfully']);
         } else {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => 'Failed to update task']);
