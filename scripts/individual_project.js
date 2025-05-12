@@ -1,3 +1,5 @@
+import { ProjectCharter } from "../../../scripts/project_charter.js";
+
 console.log("JS is working");
 
 const params = new URLSearchParams(window.location.search);
@@ -134,33 +136,7 @@ function loadTeam() {
     });
 }
 
-// Fetch and display project details (this part added)
-function loadProjectData(projectId) {
-    fetch(`/api/projects?action=get`) // Adjust API URL based on backend (you might need `/projects/get` or something else)
-        .then(response => response.json())
-        .then(projects => {
-            // Find the project with the specified projectId
-            const project = projects.find(p => p.id === parseInt(projectId));
-            if (project) {
-                // Populate the project title, description, and manager(s)
-                document.querySelector(".project-title").innerText = `Activities for: ${project.projectName}`;
-                document.querySelector(".project-desc").innerText = project.desc;
-                document.querySelector(".project-manager").innerText = `Manager(s): ${project.manager.join(", ")}`;
-                document.querySelector(".project-owner").innerText = `Owner(s): ${project.owner.join(", ")}`;
-                document.querySelector(".project-status").innerText = `Status: ${project.status}`;
-
-                // You can also add more fields for participants or anything else as needed
-            } else {
-                alert("Project not found.");
-            }
-        })
-        .catch(err => {
-            console.error("Error fetching project data:", err);
-            alert("Failed to load project data.");
-        });
-}
-
-document.addEventListener('DOMContentLoaded', async function () {
+async function loadProjectDetails() {
   const urlParams = new URLSearchParams(window.location.search);
   const projectId = urlParams.get('project_id');
 
@@ -169,16 +145,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
-  // Set the correct base path to reach your PHP controller
-  const BASE_URL = '/iteration-2/Backend/api';
-  const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${projectId}`;
-
   try {
-    const response = await fetch(path);
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-    const data = await response.json();
+    const data = await create(projectId); // Assuming create() returns a Promise with project data
 
     document.getElementById('project-name').textContent = data.project_name || 'N/A';
     document.getElementById('project-desc').textContent = data.description || 'N/A';
@@ -188,8 +156,10 @@ document.addEventListener('DOMContentLoaded', async function () {
   } catch (error) {
     console.error("Fetch error:", error);
   }
-});
+}
 
+// You can now call this function manually wherever needed
+loadProjectDetails();
 
 // Call the function with the projectId from the URL
 document.addEventListener('DOMContentLoaded', function () {
