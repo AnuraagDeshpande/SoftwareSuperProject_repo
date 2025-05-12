@@ -144,23 +144,33 @@ function loadTeam() {
     }
 }
 
+import { ProjectList } from './project_list.js'; // adjust path if needed
+
 async function loadProjectDetails() {
   const urlParams = new URLSearchParams(window.location.search);
-  const projectId = urlParams.get('projectId');
+  const projectId = urlParams.get('projectId'); // Ensure this matches the param in your URL
+  const userId = window.userId; // Make sure this is set somewhere earlier (from login or session)
 
-  if (!projectId) {
-    console.error("No project ID found in URL.");
+  if (!projectId || !userId) {
+    console.error("Missing project ID or user ID.");
     return;
   }
 
   try {
-    const data = await ProjectCharter.create(projectId); // Assuming create() returns a Promise with project data
+    const projectList = await ProjectList.create(userId);
+    const project = projectList.projects.find(p => String(p.id) === String(projectId));
 
-    document.getElementById('project-name').textContent = data.project_name || 'N/A';
-    document.getElementById('project-desc').textContent = data.description || 'N/A';
-    document.getElementById('project-manager').textContent = data.managers || 'N/A';
-    document.getElementById('project-owner').textContent = data.owners || 'N/A';
-    document.getElementById('project-status').textContent = data.status || 'N/A';
+    if (!project) {
+      console.error("Project not found.");
+      return;
+    }
+
+    document.getElementById('project-name').textContent = project.projectName || 'N/A';
+    document.getElementById('project-desc').textContent = project.desc || 'N/A';
+    document.getElementById('project-manager').textContent = (project.manager || []).join(', ') || 'N/A';
+    document.getElementById('project-owner').textContent = (project.owner || []).join(', ') || 'N/A';
+    document.getElementById('project-status').textContent = project.status || 'N/A';
+
   } catch (error) {
     console.error("Fetch error:", error);
   }
