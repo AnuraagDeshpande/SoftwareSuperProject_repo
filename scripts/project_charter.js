@@ -13,52 +13,45 @@ export class ProjectCharter{
     risks=[];
 
     /** construct an instance based on id */
-    constructor(id){
-        const temp = this.fetchData(id);
-        this.id=temp.id;
-        this.title = temp.title;
-        this.desc = temp.desc;
-        this.purpose = temp.purpose;
-        this.objective = temp.objective;
-        this.acceptance = temp.acceptance;
-        this.deadline = temp.deadline;
-        this.deliverables = temp.deliverables;
-        this.assumptions = temp.assumptions;
-        this.constraints = temp.constraints;
-        this.risks = temp.risks;
+    static async create(id){
+        console.log(`create is being called with id = ${id}`);
+        const instance = new ProjectCharter();
+        const temp = await instance.fetchData(id);
+
+        if (!temp) throw new Error("Failed to fetch project charter data");
+
+        instance.id=id;
+        instance.title = temp.project_title||"";
+        instance.desc = temp.project_desc||"";
+        instance.purpose = temp.project_purpose||"";
+        instance.objective = temp.project_objective||"";
+        instance.acceptance = temp.project_acceptance||"";
+        instance.deadline = temp.project_deadline||"2025-12-24";
+        instance.deliverables = temp.project_deliverables ?? {};
+        instance.assumptions = temp.project_assumptions ?? [];
+        instance.constraints = temp.project_constraints ?? [];
+        instance.risks = temp.project_risks ?? [];
+
+        return instance;
     }
 
     /** fetch data from a server based on id */
-    fetchData(id){
-        /*
-        starter code for integrating with the backend
-        const path = `${baseurl}/projectcharter?id=${id}`
-
-        return fetch("")
-        .then(response => {
+    async fetchData(id){
+        //starter code for integrating with the backend
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${id}`;
+        console.log(path);
+        try{
+            const response = await fetch(path);
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
-            return response.json();
-        })
-        .catch(error => {
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } catch(error){
             console.error("Fetch error:", error);
             return null;
-        });*/
-        return {
-            id: 1,
-            deadline:"2025-12-12",
-            status: "",
-            title:"",
-            desc:"",
-            purpose:"",
-            objective:"",
-            acceptance:"",
-            deliverables:{},
-            assumptions:[],
-            constraints:[],
-            risks:[]
-        };
+        }
     }
 
     /** add a deliverable to the list */
@@ -99,45 +92,63 @@ export class ProjectCharter{
         }
     }
 
-    /** submit the data to the database */
-    submit(){
-        /*
-        starter code for integrating with the backend
-        const path = `${baseurl}/projectcharter?id=${id}`
-
-        return fetch("")
-        .then(response => {
+    async submitChanges(){
+        //starter code for integrating with the backend
+        const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${this.id}`;
+        console.log(path);
+        try{
+            const response = await fetch(path,{
+                method: "PUT",
+                body:JSON.stringify(this),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
-            return response.json();
-        })
-        .catch(error => {
+            console.log("request sent");
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } catch(error){
             console.error("Fetch error:", error);
             return null;
-        });*/
+        }
+    }
+
+    /** submit the data to the database */
+    submit(){
+        this.submitChanges().then(()=>{
+            console.log("going back");
+            history.back();
+        }).catch(err => {
+            console.error('Error:', err);
+        });
     }
 }
 
 /** load the project from the database*/
-export function loadProjectCharter(){
-    return new ProjectCharter(1);
-}
+/*export function loadProjectCharter(){
+    return new ProjectCharter();
+}*/
 
-//we load the charter
-const charter=loadProjectCharter();
-//this makes testing work easier kinda
-window.updateDelList = updateDelList;
-window.addDelListeners = addDelListeners;
-window.updateLists = updateLists;
-window.addListListeners = addListListeners;
-window.charter= charter;
-//display loaded data
-displayCharter();
-//add listeners to the data
-addListeners();
-//submit button listener
-submitCharter();
+export async function setUpFun(id){
+    //we load the charter
+    const charter= await ProjectCharter.create(id);
+    //this makes testing work easier kinda
+    window.updateDelList = updateDelList;
+    window.addDelListeners = addDelListeners;
+    window.updateLists = updateLists;
+    window.addListListeners = addListListeners;
+    window.charter= charter;
+    //display loaded data
+    displayCharter();
+    //add listeners to the data
+    addListeners();
+    //submit button listener
+    submitCharter();
+}
 
 /** display the initial project charter information */
 export function displayCharter(){
@@ -180,7 +191,13 @@ export function displayCharter(){
             field.innerHTML=innerHTML;
             //we set the values of the fields
             Object.keys(window.charter[key]).forEach(del =>{
-                document.querySelector(`#list-del-${del}`).value = window.charter[key][del];
+                const elem = document.getElementById(`list-del-${del}`);
+                if(elem){
+                    elem.value = window.charter[key][del];
+                } else {
+                    console.error("deliverable without a dom element");
+                }
+                
             });
         } else if(lists.includes(key)){
             //we need to add the list elements
@@ -191,7 +208,7 @@ export function displayCharter(){
                 return;
             }
             //each property is added to the string
-            Object.keys(window.charter[key]).forEach(elem =>{
+            (window.charter[key]).forEach(elem =>{
                 innerHTML+=`
                 <div class="blob cool-button list-${key}" data-${key}="${elem}">
                     ${elem}
@@ -199,6 +216,7 @@ export function displayCharter(){
                 </div>
                 `;
             });
+            field.innerHTML=innerHTML;
         }
     });
 }
@@ -211,14 +229,14 @@ export function addListeners(){
     //get the add deliverable field
     let addButton=document.querySelector(`#add-deliverable`);
     if(!addButton) {
-        console.error(`no add deliverable button found found`);
+        console.error(`no add deliverable button found`);
         return;
     }
     addButton.addEventListener("click",(event)=>{
         event.preventDefault();
         const newDel = document.querySelector("#deliverables");
         if(newDel && newDel.value!="" && validPattern.test(newDel.value)){
-            charter.addDeliverable(newDel.value);
+            window.charter.addDeliverable(newDel.value);
             msg.innerHTML="";
         } else{
             console.error("deliverables field not found or empty");
@@ -238,7 +256,7 @@ export function addListeners(){
             event.preventDefault();
             const newList = document.querySelector(`#${key}`);
             if(newList && newList.value!="" && validPattern.test(newList.value)){
-                charter.addToList(newList.value, key);
+                window.charter.addToList(newList.value, key);
                 msg.innerHTML="";
             } else{
                 console.error(`${key} field not found or empty`);
@@ -246,8 +264,8 @@ export function addListeners(){
             }
         });
     });
-    addDelListeners();
-    addListListeners();
+    window.addDelListeners();
+    window.addListListeners();
 }
 
 /** add event listeners for the blobs for each deliverable */
@@ -287,7 +305,7 @@ export function updateDelList(){
         return;
     }
     //each property is added to the string
-    Object.keys(charter["deliverables"]).forEach(del =>{
+    Object.keys(window.charter["deliverables"]).forEach(del =>{
         innerHTML+=`
         <div class="blob cool-button list-del" data-del="${del}">
             ${del}
@@ -298,8 +316,8 @@ export function updateDelList(){
     });
     field.innerHTML=innerHTML;
     //we set the values of the fields
-    Object.keys(charter.deliverables).forEach(del =>{
-        document.querySelector(`#list-del-${del}`).value = charter.deliverables[del];
+    Object.keys(window.charter.deliverables).forEach(del =>{
+        document.querySelector(`#list-del-${del}`).value = window.charter.deliverables[del];
     });
 }
 
@@ -315,7 +333,7 @@ export function addListListeners(){
             el.querySelector(".delete").addEventListener("click",(event)=>{
                 event.preventDefault();
                 console.log(`want to delete ${name} from ${key}`)
-                charter.removeFromList(name, key);
+                window.charter.removeFromList(name, key);
             });
         });
     });
@@ -334,7 +352,7 @@ export function updateLists(){
             return;
         }
         //each property is added to the string
-        (charter[key]).forEach(elem =>{
+        (window.charter[key]).forEach(elem =>{
             innerHTML+=`
             <div class="blob cool-button list-${key}" data-${key}="${elem}">
                 ${elem}
@@ -367,6 +385,7 @@ export function submitCharter(){
                 console.log("submitting");
                 console.log(charter);
                 //API call
+                window.charter.submit();
             } else {
                 console.log(`form: ${form.checkValidity()}, fields: ${littleSpecialFields}`);
                 msg.innerHTML="INVALID INPUT! MAKE BETTER CHOICES";

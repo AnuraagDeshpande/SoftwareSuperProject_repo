@@ -1,5 +1,16 @@
 <?php
+  header("Access-Control-Allow-Origin: *");
+  header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
+  header("Access-Control-Allow-Headers: Content-Type, Authorization");
+  
+  // For preflight requests
+  if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+      http_response_code(200);
+      exit();
+  }
+  
   require_once('../init.php');
+
 
   // Capture request info
 

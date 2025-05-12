@@ -24,7 +24,7 @@ var_dump(BASE_URL);
      * and display them in a list
      */
     function fetchUsers() {
-      fetch(`${baseurl}/users`)
+      fetch(`${baseurl}/projects`)
         .then(response => response.json())
         .then(responseData => {
           console.log('Fetched data:', responseData);

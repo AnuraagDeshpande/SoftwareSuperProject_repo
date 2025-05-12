@@ -68,6 +68,86 @@ class ProjectController {
         echo json_encode(['success' => true, 'data' => $projects]);
     }
 
+    public function getAllRelatedProjects($userId) {
+        global $conn;
+    
+        // Prepare SQL query to fetch projects where the user is a member
+        $query = "
+            SELECT p.id, p.title, p.description, p.status
+            FROM projects p
+            INNER JOIN project_members pm ON p.id = pm.project_id
+            WHERE pm.user_id = ?
+            GROUP BY p.id
+        ";
+    
+        if ($stmt = $conn->prepare($query)) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            $projects = [];
+    
+            while ($project = $result->fetch_assoc()) {
+                $project_id = $project['id'];
+    
+                // Prepare statement to fetch project members
+                $membersStmt = $conn->prepare("
+                    SELECT u.username, pm.role 
+                    FROM project_members pm
+                    JOIN users u ON pm.user_id = u.id
+                    WHERE pm.project_id = ?
+                ");
+                if (!$membersStmt) {
+                    continue;
+                }
+    
+                $membersStmt->bind_param("i", $project_id);
+                $membersStmt->execute();
+                $members = $membersStmt->get_result();
+    
+                $owners = [];
+                $managers = [];
+                $participants = [];
+    
+                while ($member = $members->fetch_assoc()) {
+                    switch ($member['role']) {
+                        case 'Owner':
+                            $owners[] = $member['username'];
+                            break;
+                        case 'Manager':
+                            $managers[] = $member['username'];
+                            break;
+                        case 'Participant':
+                            $participants[] = $member['username'];
+                            break;
+                    }
+                }
+    
+                $formattedProject = [
+                    'id' => (int)$project['id'],
+                    'projectName' => $project['title'],
+                    'projectIcon' => 'profile-picture-placeholder.png',
+                    'manager' => $managers,
+                    'owner' => $owners,
+                    'desc' => $project['description'],
+                    'participants' => $participants,
+                    'status' => strtolower($project['status']) ?? 'active'
+                ];
+    
+                $projects[] = $formattedProject;
+                $membersStmt->close();
+            }
+    
+            $stmt->close();
+            echo json_encode(['success' => true, 'data' => $projects]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Database query failed.']);
+        }
+    }
+    
+    
+
     public function getProjectById($id) {
         global $conn;
 

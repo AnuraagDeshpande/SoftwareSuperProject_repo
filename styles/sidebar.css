@@ -59,6 +59,10 @@ This styles the sidebar on the left
 SIDEBAR TEXT BUTTONS
 -------------------------------------------------
 */
+.sidebar h1{
+    font-size: 24px; 
+}
+
 .sidebar-button{
     padding: var(--tinyGap);
     padding-left: var(--smallGap);

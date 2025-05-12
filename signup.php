@@ -20,14 +20,7 @@ require __DIR__ . '/PHPMailer/src/Exception.php';
 require __DIR__ . '/PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/PHPMailer/src/SMTP.php';
 
-// Database connection details (Modify these for your system)
-$servername = "localhost";
-$username = "root";
-$password = ""; //your details
-$dbname = "softwareproject";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once('db_connection.php');
 
 // Check connection
 if ($conn->connect_error) {

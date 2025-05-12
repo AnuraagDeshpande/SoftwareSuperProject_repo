@@ -1,66 +1,94 @@
 export class ProjectList{
-    projects;
+    projects=[];
     nameFilter="";
     statusFilter="";
     descFilter="";
     viewedId=0;
-
+    id=-1;
 
     constructor(){
-        this.fetchData();
-        this.displayProjects();
+        this.projects=0;
+        this.nameFilter="";
+        this.statusFilter="";
+        this.descFilter="";
+        this.viewedId=0;
+    }
+
+    static async create(id){
+        const instance = new ProjectList();
+        const temp = await instance.fetchData(id);
+
+        if (!temp) throw new Error("Failed to fetch project list data");
+
+        instance.projects=temp.data ?? [];
+        instance.id=id;
+        return instance;
     }
 
     /** get projects data*/
-    fetchData(){
-        this.projects=JSON.parse(localStorage.getItem("project_list"))||[
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:[],
-            owner:["user123"],
-            desc:"This project aims at projecting project projects at project. It is of high imprtance and is believed to be very cool. This text doens't fit",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-            ],
-            status:"error"
-        },
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects 2",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:["manager 1"],
-            owner:["some usr","some other user","another person"],
-            desc:"This project aims at projecting project projects at project. This text fully fits",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-            ],
-            status: "active"
-        },
-        {
-            id: crypto.randomUUID(),
-            projectName:"Project on projects 3",
-            projectIcon:"profile-picture-placeholder.png",
-            manager:["manager 1","user123"],
-            owner:["some usr","some other user","another person"],
-            desc:"This project aims at projecting project projects at project. This text fully fits",
-            participants:[
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder2.jpg",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-                "profile-picture-placeholder.png",
-            ],
-            status: "active"
+    async fetchData(id){
+        const path = `${BASE_URL}/projects/user=${id}`;
+
+        try{
+            const response = await fetch(path);
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            console.error("Fetch error:", error);
+            return null;
         }
-        ];
+    }
+
+    /** delete a project by id asynchronous function */
+    async deleteData(id){
+        console.log("deleting request sending");
+        const path = `${BASE_URL}/projects/${id}`;
+
+        try{
+            //delete request sent to the server
+            const response = await fetch(path,{
+                method: "DELETE",
+                headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            //error handling
+            console.error("Fetch error:", error);
+            return null;
+        }
+    }
+
+    /** asynchronous function to add a project, sends the request */
+    async addData(obj){
+        console.log("adding project requst");
+        //path  to the api
+        const path = `${BASE_URL}/projects/`;
+
+        try{
+            //we send the request
+            const response = await fetch(path,{
+                method: "POST",
+                body:JSON.stringify(obj),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch(error){
+            //error handlin
+            console.error("Fetch error:", error);
+            return null;
+        }
     }
 
     /** turn a list of strings into a single string or - if empty */
@@ -73,12 +101,12 @@ export class ProjectList{
 
     /** get the list containing the list of relations of a user to the project */
     #getRelation(project){
-        let relations =[];
-        if (project.owner.includes("user123")||project.manager.includes("user123")){
-            if(project.manager.includes("user123")){
+        let relations =[];//TODO replace user with actual user
+        if (project.owner.includes(window.user)||project.manager.includes(window.user)){
+            if(project.manager.includes(window.user)){
                 relations.push("m");
             }
-            if(project.owner.includes("user123")){
+            if(project.owner.includes(window.user)){
                 relations.push("o");
             }           
         } else {
@@ -101,7 +129,6 @@ export class ProjectList{
     }
 
     #getVisibleProjects(){
-        this.fetchData();
         return this.projects.filter((pr)=>{
             return pr.projectName.includes(this.nameFilter);
         }).filter((pr)=>{
@@ -141,12 +168,13 @@ export class ProjectList{
                         <div class="card-bottom-row">
                             <button class="cool-button" id="delete-button" data-id="${element.id}">delete</button>
                             <div class="participants">
-                                ${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}
+                                
                             </div>
                         </div>
                     </div>
                 </a>
                 `;
+                //<!--${element.participants.slice(0,4).map(part=>{return `<img src="media/${part}">`}).join()}-->
                 generatedHTML+=card;
             });
             if(generatedHTML==""){
@@ -171,10 +199,17 @@ export class ProjectList{
         addDeleteListener();
     }
 
-    /** refresh the data on a page */
+    /** refresh the data on a page*/
     refresh(){
-        this.fetchData();
-        this.displayProjects();
+        this.fetchData(this.id).then((obj)=>{
+            //we store the result
+            this.projects=obj.data ?? [];
+            //the display is updated
+            this.displayProjects();
+        }).catch(err => {
+            console.error('Error:', err);
+        });
+        
     }
 
     /** save the changes */
@@ -184,17 +219,21 @@ export class ProjectList{
 
     /** add project to list of projects*/
     addProject(newProject){
-        newProject.id = crypto.randomUUID();
-        this.projects.push(newProject);
-        this.save();
-        this.displayProjects();
+        this.addData(newProject).then(()=>{
+            this.refresh()
+        }).catch(err => {
+            console.error('Error adding a new project:', err);
+        });
     }
 
     /** remove project by ID */
     removeByID(id){
-        this.projects=this.projects.filter((el)=>{return el.id!=id;});
-        this.save();
-        this.displayProjects();
+        console.log(`project id: ${id}`);
+        this.deleteData(id).then(()=>{
+            this.refresh()
+        }).catch(err => {
+            console.error('Error deleting project:', err);
+        });
     }
 
     setViewId(id){
@@ -213,8 +252,24 @@ export class ProjectList{
     }
 }
 
-const projects = new ProjectList();
-const user ="user123";
+export async function setUpFun(id, username){
+    window.user =username;
+    console.log(`username: ${username}, id: ${id}`);
+    const projects =  await ProjectList.create(id);
+    window.projects = projects;
+    window.projects.displayProjects();
+    
+    //we call functions to make the page active
+    addProject();
+    makeClearButActive();
+    addPopUpToggle();
+    //search functionality
+    search();
+    addClearFilterListener();
+    //delete menu functionality
+    addDeleteMenuConfirmListener();
+    addDeleteMenuRevokeListener();
+}
 
 /*
 =================================================
@@ -297,17 +352,16 @@ export function addProject(){
             }
             //create a new project
             const newProject = {
-                id:Math.floor(Math.random()*1000),
                 projectName: name,
-                projectIcon:"profile-picture-placeholder.png",
+                projectIcon:"/media/profile-picture-placeholder2.png",
                 manager:[],
-                owner:[user],
+                owner:[window.user],
                 desc:desc,
                 participants:[],
                 status: "active"
             }
             //add the project to projects
-            projects.addProject(newProject);
+            window.projects.addProject(newProject);
             
             //close pop up and clear
             //popUpToggle();
@@ -341,11 +395,6 @@ export function addPopUpToggle(){
     }
 }
 
-//we call functions to make the page active
-addProject();
-makeClearButActive();
-addPopUpToggle();
-
 /**
 =================================================
 FILTERING
@@ -357,8 +406,8 @@ export function applyFilter(){
     const name = document.querySelector("#filter-project-name").value || "";
     const desc = document.querySelector("#filter-description").value || "";
     const status = document.querySelector("#filter-status").value || "";
-    projects.setFilter(name,desc,status);
-    projects.displayProjects();
+    window.projects.setFilter(name,desc,status);
+    window.projects.displayProjects();
 }
 
 /** clear the filter and set it to default */
@@ -366,8 +415,8 @@ export function clearFilter(){
     document.querySelector("#filter-project-name").value = "";
     document.querySelector("#filter-description").value = "";
     document.querySelector("#filter-status").value = "none";
-    projects.setFilter();
-    projects.displayProjects();
+    window.projects.setFilter();
+    window.projects.displayProjects();
 }
 
 /** add event listener for clear filter button*/
@@ -394,9 +443,6 @@ export function search(){
     }
 }
 
-search();
-addClearFilterListener();
-
 /**
 =================================================
 DELETING
@@ -410,9 +456,11 @@ export function addDeleteListener(){
     //we add event listener to the projects
     myOwn.forEach((card)=>{
         const button = card.querySelector("button");
-        button.addEventListener("click",()=>{
+        button.addEventListener("click",(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
             const id = button.dataset.id;
-            projects.setViewId(id);
+            window.projects.setViewId(id);
             popUpToggleDelete();
         });
     });
@@ -449,12 +497,9 @@ export function addDeleteMenuConfirmListener(){
     if(confirm){
         confirm.addEventListener("click",()=>{
             popUpToggleDelete();
-            projects.removeViewed();
+            window.projects.removeViewed();
         });
     } else {
         console.error("no confirm delte button found");
     }
 }
-
-addDeleteMenuConfirmListener();
-addDeleteMenuRevokeListener();

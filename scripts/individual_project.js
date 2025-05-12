@@ -245,7 +245,7 @@ function goToProjectMembers() {
       return;
     }
   
-    window.location.href = `project_memb.html?projectId=${projectId}`;
+    window.location.href = `project_memb.html?project_id=${projectId}`;
   }
 
   function goToCharter() {
@@ -257,7 +257,7 @@ function goToProjectMembers() {
       return;
     }
   
-    window.location.href = `project_charter.html?projectId=${projectId}`;
+    window.location.href = `project_charter.php?project_id=${projectId}`;
   }
 
   document.addEventListener('DOMContentLoaded', function () {

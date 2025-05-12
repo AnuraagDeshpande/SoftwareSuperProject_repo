@@ -7,8 +7,9 @@ error_reporting(E_ALL);
 // Include init.php for DB connection, BASE_URL, and session
 require_once(__DIR__ . '/Backend/init.php');
 
-// Show the API base URL (debugging)
-//var_dump(BASE_URL);
+//we get the user info
+$userId = $_SESSION['user_id'] ?? -1;
+$username = $_SESSION['user_name'] ?? '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,6 +26,13 @@ require_once(__DIR__ . '/Backend/init.php');
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <script>
+            const BASE_URL = <?= json_encode(BASE_URL) ?>;
+            console.log(BASE_URL);
+            //the username and the user id are saved
+            const userId = <?= json_encode($userId) ?>;
+            const username = <?= json_encode($username)?>;
+        </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
         <!--javaScript-->
@@ -103,5 +111,10 @@ require_once(__DIR__ . '/Backend/init.php');
         </div>
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/project_list.js"></script>
+        <script type="module">
+            import {setUpFun} from "./scripts/project_list.js";
+
+            setUpFun(userId, username);
+        </script>
     </body>
 </hrml>

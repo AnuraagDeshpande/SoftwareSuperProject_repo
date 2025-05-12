@@ -6,7 +6,7 @@ class UserController {
     public function getAllUsers() {
         global $conn;
 
-        $query = "SELECT id, username, email, system_role, first_name, last_name FROM users";
+        $query = "SELECT id, username, email, system_role, fullname FROM users";
         $result = $conn->query($query);
 
         if (!$result) {
@@ -28,7 +28,7 @@ class UserController {
         global $conn;
     
         // Define allowed search columns
-        $allowed = ['id', 'username', 'email', 'first_name', 'last_name'];
+        $allowed = ['id', 'username', 'email', 'fullname'];
         if (!in_array($column, $allowed)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Invalid column']);
@@ -57,9 +57,9 @@ class UserController {
         $search = '%' . $conn->real_escape_string($query) . '%';
     
         $stmt = $conn->prepare("
-            SELECT id, username, email, system_role, first_name ? OR last_name ?
+            SELECT id, username, email, system_role, OR fullname ?
             FROM users 
-            WHERE username LIKE ? OR email LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR system_role ?
+            WHERE username LIKE ? OR email LIKE ? OR fullname LIKE ? OR system_role ?
         ");
     
         //bind the search value to the four placeholders in the SQL
@@ -78,7 +78,7 @@ class UserController {
     public function updateUser($id, $data) {
         global $conn;
     
-        $allowedFields = ['first_name', 'last_name', 'username', 'email'];
+        $allowedFields = ['fullname', 'username', 'email'];
         $fieldsToUpdate = [];
         $values = [];
     
@@ -138,8 +138,7 @@ class UserController {
             !isset($data['email']) ||
             !isset($data['password']) ||
             !isset($data['system_role']) ||
-            !isset($data['first_name']) ||
-            !isset($data['last_name'])
+            !isset($data['fullname'])
         ) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Missing required fields']);
@@ -150,14 +149,13 @@ class UserController {
         $email = $data['email'];
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
         $system_role = $data['system_role'];
-        $first_name = $data['first_name'];
-        $last_name = $data['last_name'];
+        $fullname = $data['fullname'];
     
         $stmt = $conn->prepare("
-            INSERT INTO users (username, email, password, system_role, first_name, last_name)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO users (username, email, LoginPasscode, system_role, fullname)
+            VALUES (?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("ssssss", $username, $email, $password, $system_role, $first_name, $last_name);
+        $stmt->bind_param("sssss", $username, $email, $password, $system_role, $fullname);
     
         if ($stmt->execute()) {
             http_response_code(201);
@@ -169,6 +167,8 @@ class UserController {
     
         $stmt->close();
     }
+    
+    
     
     
     

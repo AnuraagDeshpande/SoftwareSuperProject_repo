@@ -1,36 +1,25 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+require_once(__DIR__ . '/../controllers/project_charter_controller.php');
 
-require_once(__DIR__ . '/../controllers/project_controller.php');
-
-$controller = new ProjectController();
+$controller = new ProjectCharterController();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Adjust the base path to match your project structure
-$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects';
+$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/project_charter';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
-// /projects/user=?
+// /projects/u=?
 
 if ($method === 'GET') {
     if ($pathTail === '') {
-        $controller->getAllProjects();
+        $controller->getAllProjectCharters();
     } elseif (is_numeric($pathTail)) {
-        $controller->getProjectById((int)$pathTail);
-    } elseif (preg_match('/^user=(\d+)$/', $pathTail, $matches)) {
-        $userId = (int)$matches[1];
-        $controller->getAllRelatedProjects($userId);
-    } else {
+        $controller->getProjectCharterById((int)$pathTail);
+    }  else {
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Invalid project request']);
     }
@@ -43,7 +32,7 @@ if ($method === 'GET') {
         return;
     }
 
-    $controller->createProject($data);
+    $controller->createProjectCharter($data);
 } elseif ($method === 'PUT') {
     if (!is_numeric($pathTail)) {
         http_response_code(400);
@@ -59,8 +48,7 @@ if ($method === 'GET') {
         return;
     }
 
-    $controller->updateProject((int)$pathTail, $data);
-    
+    $controller->updateProjectCharter((int)$pathTail, $data);
 } elseif ($method === 'DELETE') {
     if (!is_numeric($pathTail)) {
         http_response_code(400);
@@ -68,7 +56,7 @@ if ($method === 'GET') {
         return;
     }
 
-    $controller->deleteProject((int)$pathTail);
+    $controller->deleteProjectCharter((int)$pathTail);
 } else {
     http_response_code(405);
     echo json_encode(['success' => false, 'error' => 'Method not allowed']);

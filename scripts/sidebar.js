@@ -9,7 +9,7 @@ export function generateSidebar(){
     const sidebar = document.querySelector(".sidebar");
     if(sidebar){
         sidebar.innerHTML = `
-        <h1>NAME</h1>
+        <h1>SuperProject</h1>
         <div class="sidebar-links">
             <button class="dark-button sidebar-button"  onclick="document.location='index.php'">
                 Main page
@@ -21,22 +21,11 @@ export function generateSidebar(){
                 <div class="sidebar-status active">
                 </div>
             </button>        
-            <button class="dark-button sidebar-button"  onclick="document.location='Task-view.html'">
+            <button class="dark-button sidebar-button"  onclick="document.location='kanban_board.html'">
                 Tasks
                 <div class="sidebar-status active">
                 </div>
             </button>
-            <button class="dark-button sidebar-button">
-                Error example
-                <div class="sidebar-status error">
-                </div>
-            </button>
-        </div>
-        <div class="sidebar-infocard">
-            There are some things that need to be done...
-            <div>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            </div>
         </div>
         `;
     } else {
