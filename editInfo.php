@@ -10,10 +10,10 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch current user info
-$stmt = $conn->prepare("SELECT fullname, email FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT fullname, email, profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($user_fullname, $user_email);
+$stmt->bind_result($user_fullname, $user_email, $user_avatar);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -39,7 +39,7 @@ $stmt->close();
     <!-- profile banner at the top -->
     <div class="profile-container">
         <div class="image-container">
-            <img id="profile-avatar" src="media/avatar3.png" alt="current profile avatar">
+            <img id="profile-avatar" src="<?php echo htmlspecialchars($user_avatar); ?>" alt="current profile avatar">
         </div>
         <div class="name-container"> <!-- Added functionality that gets session logged in user's name and email-->
             <h1><?php echo htmlspecialchars($user_fullname); ?></h1>
@@ -74,12 +74,17 @@ $stmt->close();
                     Update avatar
                 </summary>
                 <form action="update_avatar.php" method="POST" class="card-content avatar-grid">
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                    <?php
+                    $avatarFiles = glob('avatars/*.png');
+                    foreach ($avatarFiles as $avatarPath):
+                        $filename = basename($avatarPath);
+                        $checked = ($filename === basename($user_avatar)) ? 'checked' : '';
+                    ?>
                         <label>
-                            <input type="radio" name="avatar" value="avatar<?php echo $i; ?>.png">
-                            <img src="media/avatar<?php echo $i; ?>.png" alt="avatar <?php echo $i; ?>">
+                            <input type="radio" name="avatar" value="<?php echo $avatarPath; ?>" <?php echo $checked; ?>>
+                            <img src="<?php echo $avatarPath; ?>" alt="<?php echo $filename; ?>">
                         </label>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
                     <button class="user-button" type="submit">Save changes</button>
                 </form>
             </details>
