@@ -160,26 +160,36 @@ function loadProjectData(projectId) {
         });
 }
 
-// Function to load project details using projectId
-function loadProjectData(projectId) {
-    fetch(`/path/to/backend.php?action=getById&projectId=${projectId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success === false) {
-                alert(data.error); // Handle error if project is not found
-            } else {
-                // Update the HTML with the project details
-                document.getElementById('project-name').innerText = data.projectName;
-                document.getElementById('project-desc').innerText = data.desc;
-                document.getElementById('project-manager').innerText = data.manager.join(", ");
-                document.getElementById('project-owner').innerText = data.owner.join(", ");
-                document.getElementById('project-status').innerText = data.status;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching project data:', error);
-        });
-}
+document.addEventListener('DOMContentLoaded', async function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectId = urlParams.get('project_id');
+
+  if (!projectId) {
+    console.error("No project ID found in URL.");
+    return;
+  }
+
+  // Set the correct base path to reach your PHP controller
+  const BASE_URL = '/iteration-2/Backend/api';
+  const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${projectId}`;
+
+  try {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
+
+    document.getElementById('project-name').textContent = data.project_name || 'N/A';
+    document.getElementById('project-desc').textContent = data.description || 'N/A';
+    document.getElementById('project-manager').textContent = data.managers || 'N/A';
+    document.getElementById('project-owner').textContent = data.owners || 'N/A';
+    document.getElementById('project-status').textContent = data.status || 'N/A';
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+});
+
 
 // Call the function with the projectId from the URL
 document.addEventListener('DOMContentLoaded', function () {
