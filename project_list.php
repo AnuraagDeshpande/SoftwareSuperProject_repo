@@ -9,7 +9,7 @@ require_once(__DIR__ . '/Backend/init.php');
 
 //we get the user info
 $userId = $_SESSION['user_id'] ?? -1;
-$username = $_SESSION['user_name'] ?? '';
+$username = $_SESSION['login'] ?? '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,7 +90,6 @@ $username = $_SESSION['user_name'] ?? '';
                 <div class="task-management-panel">
                         <button id="btn-add-project">New project</button>
                         <button id="btn-sort" class="js-clear-filter">Clear filter</button>
-                        <button id="btn-print">Print</button>
                 </div>
             </div>
             <div class="projects-list-body">
@@ -113,6 +112,7 @@ $username = $_SESSION['user_name'] ?? '';
         <script type="module" src="scripts/project_list.js"></script>
         <script type="module">
             import {setUpFun} from "./scripts/project_list.js";
+            console.log(`username: ${username}`);
 
             setUpFun(userId, username);
         </script>
