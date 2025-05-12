@@ -50,14 +50,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error: Username or email already exists.");
     }
     $checkUser->close();
+// Insert new user into database
+    $avatarDir = 'avatars/';
+    $avatarFiles = glob($avatarDir . '*.png');
 
-    // Insert new user into database
-    $stmt = $conn->prepare("INSERT INTO users (fullname, username, email, LoginPasscode) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $fullname, $username, $email, $LoginPasscode);
+    $randomAvatar = null;
+    if (!empty($avatarFiles)) {
+        $randomAvatar = $avatarFiles[array_rand($avatarFiles)];
+    }
+
+    // Insert new user with profile picture
+    $stmt = $conn->prepare("INSERT INTO users (fullname, username, email, LoginPasscode, profile_picture) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $fullname, $username, $email, $LoginPasscode, $randomAvatar);
 
     if ($stmt->execute()) {
         sendWelcomeEmail($email, $fullname);
-        header("Location: login.php"); // Redirect to login page
+        header("Location: login.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -65,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 }
-
 $conn->close();
 
 function sendWelcomeEmail($to, $fullname) {
