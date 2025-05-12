@@ -72,12 +72,16 @@ function saveActivities() {
 function loadActivities() {
     const data = JSON.parse(localStorage.getItem("activities") || "[]");
     const activityList = document.getElementById("activity-list");
-    activityList.innerHTML = "";
-    data.forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `${item} <button class="delete-btn" onclick="removeActivity(this)">X</button>`;
-        activityList.appendChild(li);
-    });
+    if(activityList){
+      activityList.innerHTML = "";
+      data.forEach(item => {
+          const li = document.createElement("li");
+          li.innerHTML = `${item} <button class="delete-btn" onclick="removeActivity(this)">X</button>`;
+          activityList.appendChild(li);
+      });
+    } else {
+      console.log("no activity list was found =(");
+    }
 }
 
 function manageSchedule() {
@@ -128,12 +132,16 @@ function saveTeam() {
 function loadTeam() {
     const data = JSON.parse(localStorage.getItem("team") || "[]");
     const teamList = document.getElementById("team-list");
-    teamList.innerHTML = "";
-    data.forEach(name => {
-        const li = document.createElement("li");
-        li.innerHTML = `${name} <button class="delete-btn" onclick="removeMember(this)">X</button>`;
-        teamList.appendChild(li);
-    });
+    if(teamList){
+      teamList.innerHTML = "";
+      data.forEach(name => {
+          const li = document.createElement("li");
+          li.innerHTML = `${name} <button class="delete-btn" onclick="removeMember(this)">X</button>`;
+          teamList.appendChild(li);
+      });
+    } else {
+      console.log("not team list found whateber");
+    }
 }
 
 async function loadProjectDetails() {
@@ -165,17 +173,20 @@ loadProjectDetails();
 document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get("projectId");
-
+    try{
     if (projectId) {
         loadProjectData(projectId);  // Load the project data if projectId is available
     } else {
         alert("No project selected.");
     }
+  } catch (error){
+      console.log("error caught");
+  }
 });
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
+    /*const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 500,
@@ -200,14 +211,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     });
-    calendar.render();
+    calendar.render();*/
 
     loadActivities();
     loadTeam();
 
     // Call loadProjectData to fetch and display the project data once the page loads
     if (projectId) {
-        loadProjectData(projectId);
+        //loadProjectData(projectId);
     }
 });
 
@@ -228,7 +239,7 @@ function goToProjectMembers() {
     window.location.href = `project_memb.html?project_id=${projectId}`;
   }
 
-  export function goToCharter() {
+  function goToCharter() {
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get("projectId");
   
@@ -260,3 +271,6 @@ function goToProjectMembers() {
     // Initialize on load
     updateProgress();
   });
+
+window.goToCharter = goToCharter;
+window.goToProjectMembers = goToProjectMembers;
