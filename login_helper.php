@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $_SESSION['login_username'] = $username; // Save the username for repopulating the form
 
     if ($username && $password) {
-        $sql = "SELECT id, fullname, LoginPasscode FROM users WHERE username = ?";
+        $sql = "SELECT id, username, fullname, LoginPasscode FROM users WHERE username = ?";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $username);
             $stmt->execute();
