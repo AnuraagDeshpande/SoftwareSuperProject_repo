@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const modal_content = [
             { label: "Title:", id: "taskTitle", type: "text", placeholder: "Enter task title" },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
+            { label: "User Id:", id: "userId", type: "text", placeholder: "Enter User Id" },
             { label: "Project Name:", id: "projectName", type: "text", placeholder: "Enter project name" },
             { label: "Deadline:", id: "deadline", type: "date" }
         ];
@@ -273,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("taskTitle").value = data.title;
             document.getElementById("taskDescription").value = data.description;
             document.getElementById("projectName").value = data.project;
+            document.getElementById("userId").value = data.user_id;
             document.getElementById("deadline").value = data.deadline;
             add_button.addEventListener('click', () => update_task(data.id)); //*
         } else {
@@ -375,7 +377,12 @@ document.addEventListener('DOMContentLoaded', function () {
         options_link.appendChild(options_icon);
         task_header.appendChild(options_link);
 
-        options_link.addEventListener("click", () => remove_task(task.id));
+        //options_link.addEventListener("click", () => remove_task(task.id));
+        options_link.addEventListener("click", (e) => {
+            e.stopPropagation();  // Prevent triggering parent click
+            delete_popup(task.id);
+        });
+        
         task_div.appendChild(task_header);
 
         const task_body = document.createElement("div");
@@ -411,11 +418,68 @@ document.addEventListener('DOMContentLoaded', function () {
         task_div.appendChild(task_meta);
 
 
-        task_div.addEventListener('dblclick', () => {
+        // task_div.addEventListener('dblclick', () => {
+        //     create_task_modal(task);
+        // });
+
+        // return task_div;
+        task_div.addEventListener('click', () => {
             create_task_modal(task);
         });
 
+        task_div.title = "Click to view details and update this task.";
         return task_div;
+    }
+
+    // Opens the Confirm delete popup
+    function delete_popup(taskID){
+        const delete_dialog = document.createElement("dialog");
+        delete_dialog.classList.add("delete_dialog");
+
+        const icon = document.createElement("i");
+        icon.classList.add("fa-solid", "fa-x");
+
+        const header_text = document.createElement("h2");
+        header_text.textContent = "Confirm Delete";
+
+        const text = document.createElement("p");
+        text.textContent = "This task will be deleted immediately. Are you sure you want to delete the task?";
+
+        const button_div = document.createElement("div");
+        button_div.classList.add("button_div");
+
+        const button_yes = document.createElement("button");
+        button_yes.innerText = "Delete";
+        button_yes.classList.add("yes_button");
+
+        const button_no = document.createElement("button");
+        button_no.innerText = "Cancel";
+        button_no.classList.add("primary_button");
+
+        button_div.append(button_no, button_yes);
+
+        delete_dialog.append(icon,header_text, text, button_div);
+        document.body.appendChild(delete_dialog);
+        delete_dialog.showModal();
+
+        button_yes.addEventListener("click", async () => {
+            remove_task(taskID);
+            delete_dialog.close();
+            delete_dialog.remove();
+        });
+
+        button_no.addEventListener("click", () => {
+            delete_dialog.close();
+            delete_dialog.remove();
+
+        });
+
+        icon.addEventListener("click", () => {
+            delete_dialog.close();
+            delete_dialog.remove();
+
+        });
+
     }
 
 
@@ -590,7 +654,8 @@ document.addEventListener('DOMContentLoaded', function () {
             description: description,
             project: project,
             deadline: deadline,
-            status: "Pending"
+            //status: "Pending"
+            status: tasks.status,
         };
 
         console.log("Updating task:", taskId, task_card);
@@ -621,16 +686,51 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error updating task:', error));
     }
 
-    function search_tasks() {
-        const searchValue = document.getElementById("filter-project-name").value.toLowerCase();
-        const filter_task = [];
-        const filter_tasks = tasks.filter(task => {
-            const project_name_compare = task.project.toLowerCase().includes(searchValue);
+    // Render filtered task on Kanban board
+    function render_filtered_tasks(filtered_tasks) {
+        console.log("Rendering tasks:", tasks);
+        const kanban_classes = document.querySelectorAll(".kanban-class");
 
+        //removing all existing tasks
+        kanban_classes.forEach(column => {
+            column.querySelectorAll('.task').forEach(task => task.remove());
         });
 
+        const kanban_status = {
+            "Pending": "Pending",
+            "In Progress": "In_progress",
+            "Completed": "Completed",
+        };
 
-        render_tasks();
+        // creates task and places them in the column 
+        filtered_tasks.forEach(task => {
+
+            //task.id = Number(task.id); //making sure the id is number not string
+
+            const task_div = create_task_element(task);
+            const column_belong = kanban_status[task.status];
+            const column = document.getElementById(column_belong);
+            if (column) {
+                column.appendChild(task_div);
+            }
+        });
+
+        drag_drop();
+    }
+
+    function search_tasks() {
+        const searchValue = document.getElementById("filter-project-name").value.toLowerCase();
+        //const filtered_tasks = [];
+        const filtered_tasks = tasks.filter(task => {
+            const projectMatch = task.project.toLowerCase().includes(searchValue);
+
+            const projectOk = searchValue === "" || projectMatch;
+            return projectOk;
+        });
+
+        console.log("Filtered tasks:", filtered_tasks);
+
+        render_filtered_tasks(filtered_tasks);
     }
 
     function sort_tasks() {
