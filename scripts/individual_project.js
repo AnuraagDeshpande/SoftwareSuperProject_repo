@@ -1,4 +1,4 @@
-import { ProjectCharter } from "../../../scripts/project_charter.js";
+import { ProjectCharter } from "./project_charter.js";
 
 console.log("JS is working");
 
@@ -138,7 +138,7 @@ function loadTeam() {
 
 async function loadProjectDetails() {
   const urlParams = new URLSearchParams(window.location.search);
-  const projectId = urlParams.get('project_id');
+  const projectId = urlParams.get('projectId');
 
   if (!projectId) {
     console.error("No project ID found in URL.");
@@ -146,7 +146,7 @@ async function loadProjectDetails() {
   }
 
   try {
-    const data = await create(projectId); // Assuming create() returns a Promise with project data
+    const data = await ProjectCharter.create(projectId); // Assuming create() returns a Promise with project data
 
     document.getElementById('project-name').textContent = data.project_name || 'N/A';
     document.getElementById('project-desc').textContent = data.description || 'N/A';
@@ -228,7 +228,7 @@ function goToProjectMembers() {
     window.location.href = `project_memb.html?project_id=${projectId}`;
   }
 
-  function goToCharter() {
+  export function goToCharter() {
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get("projectId");
   

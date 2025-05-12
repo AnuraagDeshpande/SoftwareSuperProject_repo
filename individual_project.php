@@ -141,7 +141,7 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
     </div>
   </div>
 
-  <script src="scripts/individual_project.js"></script>
+  <script src="scripts/individual_project.js" type="module"></script>
   <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
   <script type="module" src="scripts/navigation.js"></script>
