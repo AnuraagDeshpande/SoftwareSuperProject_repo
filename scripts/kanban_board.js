@@ -1,4 +1,4 @@
-const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
+//const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
 
 document.addEventListener('DOMContentLoaded', function () {
     // let tasks = [
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Fetch the tasks 
     function fetch_tasks() {
-        fetch(API_BASE_URL)
+        fetch(`${BASE_URL}/routes/tasks.php`)
             .then(response => response.json())
             .then(data => {
                 tasks = data.data;
@@ -22,27 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching tasks:', error));
     }
 
-    // sending a POST request to add task
-    // function AddTasks(task_card) {
-    //     fetch(API_BASE_URL, {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(task_card),
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.success) {
-    //                 // tasks.push(data.data);
-    //                 // render_tasks();
-    //                 fetch_tasks();
-    //             }
-    //         })
-    //         .catch(error => console.error('Error adding task:', error));
-    // }
     function AddTasks(task_card) {
         console.log("Sending task data:", task_card);  // Log the task data before sending the request
     
-        fetch(API_BASE_URL, {
+        fetch(`${BASE_URL}/routes/tasks.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(task_card),
@@ -64,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Removes task
     function remove_task(taskID) {
-        fetch(`${API_BASE_URL}/${taskID}`, {
+        fetch(`${BASE_URL}/routes/tasks.php/${taskID}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -620,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function () {
         task.status = new_status;
         render_tasks();
 
-        fetch(`${API_BASE_URL}/${taskId}`, {
+        fetch(`${BASE_URL}/routes/tasks.php/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -660,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log("Updating task:", taskId, task_card);
 
-        fetch(`${API_BASE_URL}/${taskId}`, {
+        fetch(`${BASE_URL}/routes/tasks.php/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             // body: JSON.stringify(updated_task),

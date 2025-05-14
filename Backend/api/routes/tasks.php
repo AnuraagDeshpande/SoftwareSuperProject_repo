@@ -20,14 +20,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Adjust the base path to match your project structure
-$basePath = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
+$basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
 if ($method === 'GET') {
-    if (isset($_GET['project'])) {
-        $projectName = $_GET['project'];
-        $controller->getTasksByProject($projectName);
-    } elseif ($pathTail === '') {
+    // if (isset($_GET['project'])) {
+    //     $projectName = $_GET['project'];
+    //     $controller->getTasksByProject($projectName);
+    // } 
+    if ($pathTail === '') {
         $controller->getAllTasks();
     } elseif (is_numeric($pathTail)) {
         $controller->getTaskById((int)$pathTail);

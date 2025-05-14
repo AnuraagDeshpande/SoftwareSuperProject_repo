@@ -1,9 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-// require_once('db_connection.php');
-require_once('/Applications/XAMPP/xamppfiles/htdocs/SoftwareSuperProject_repo/db_connection.php');
+// Enable PHP error reporting (development only)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include init.php for DB connection, BASE_URL, and session
+require_once(__DIR__ . '/../../init.php');
 
 class TaskController {
     // GET /tasks
