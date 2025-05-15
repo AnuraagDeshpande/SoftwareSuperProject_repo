@@ -13,7 +13,7 @@ class TaskController {
     public function getAllTasks() {
         global $conn;
 
-        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline tasks.startdate FROM tasks
+        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.startdate FROM tasks
         JOIN projects ON tasks.project_id = projects.id";
         $result = $conn->query($query);
 
