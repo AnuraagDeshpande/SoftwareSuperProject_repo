@@ -1,4 +1,18 @@
 //const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
+import {ProjectList} from "./project_list.js"
+
+function getProjects(){
+    return (async ()=>{
+        const data =  await ProjectList.create(userId)
+        const transformed = data.projects.map((project)=>({
+                name: project.projectName,
+                id: project.id
+            })
+        );
+        console.log(transformed);
+        return transformed;
+    })();
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     // let tasks = [
@@ -230,26 +244,27 @@ document.addEventListener('DOMContentLoaded', function () {
             if(input_val.type === "textarea"){
                 input = document.createElement("textarea");
             } else if(input_val.type === "select"){
+                //this is a select case
                 input = document.createElement("select");
-                //fetch relevant data from the database:
-                const options =[{
-                    name:"name",
-                    id: 123
-                },{
-                    name:"name2",
-                    id: 124
-                }];
-                //we display the options
-                options.forEach(optionCont =>{
-                    const option = document.createElement("option");
-                    option.value = optionCont["id"];
-                    option.textContent = optionCont["name"];
-                    input.appendChild(option);
-                });
+
+                //if it is a project we need to fetch
+                if(input_val.id ==="projectName"){
+                    getProjects().then((options)=>{
+                        options.forEach((optionCont)=>{
+                            //we display all options
+                            console.log(`option: ${optionCont}`);
+                            const option = document.createElement("option");
+                            option.value = optionCont.name;
+                            option.textContent = optionCont.name;
+                            input.appendChild(option);
+                        });
+                    });
+                }
             } else {
+                //other case for input element
                 input = document.createElement("input");
+                input.type = input_val.type;
             }
-            input.type = input_val.type;
             input.id = input_val.id;
             input.placeholder = input_val.placeholder;
             input_container.appendChild(input);

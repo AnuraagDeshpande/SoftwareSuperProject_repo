@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 
 // Include init.php for DB connection, BASE_URL, and session
 require_once(__DIR__ . '/Backend/init.php');
+$userId = $_SESSION['user_id'] ?? -1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +25,7 @@ require_once(__DIR__ . '/Backend/init.php');
 <body>
       <script>
             const BASE_URL = <?= json_encode(BASE_URL) ?>;
+            const userId = <?= json_encode($userId) ?>;
         </script>
       <!--NAVIGATION BAR CODE-->
       <div class="navbar">
@@ -35,7 +37,7 @@ require_once(__DIR__ . '/Backend/init.php');
         <!--javaScript-->
         </div>
 
-        <script src="scripts/kanban_board.js"></script>
+        <script type="module" src="scripts/kanban_board.js" ></script>
         <script type="module" src="scripts/navigation.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
 
