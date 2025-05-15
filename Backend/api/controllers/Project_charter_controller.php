@@ -69,7 +69,7 @@ function getAllProjectCharters() {
 
 function getProjectCharter($project_id) {
     global $conn;
-    $sql = "SELECT pc.*, p.title, p.description
+    $sql = "SELECT pc.*, p.title, p.description, p.status
             FROM project_charters pc
             JOIN projects p ON pc.project_id = p.id
             WHERE pc.project_id = ?";
@@ -92,6 +92,7 @@ function formatCharter($row) {
         'project_id' => $row['project_id'],
         'project_title' => $row['title'],
         'project_desc' => $row['description'],
+        'project_status' => $row['status'],
         'project_purpose' => json_decode($row['purpose'], true),
         'project_objective' => $row['objective'],
         'project_deadline' => $row['deadline'],

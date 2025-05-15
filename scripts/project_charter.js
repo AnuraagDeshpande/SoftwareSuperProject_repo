@@ -3,6 +3,7 @@ export class ProjectCharter{
     id=1;
     title="";
     desc="";
+    status="Active";
     purpose="";
     objective="";
     acceptance="";
@@ -23,6 +24,7 @@ export class ProjectCharter{
         instance.id=id;
         instance.title = temp.project_title||"";
         instance.desc = temp.project_desc||"";
+        instance.status = temp.project_status ||"Active";
         instance.purpose = temp.project_purpose||"";
         instance.objective = temp.project_objective||"";
         instance.acceptance = temp.project_acceptance||"";
@@ -93,21 +95,30 @@ export class ProjectCharter{
     }
 
     async submitChanges(){
-        //starter code for integrating with the backend
+        //we have a path for sending update charter and one for updating status
         const path = `${BASE_URL}/controllers/Project_charter_controller.php?project_id=${this.id}`;
+        const path2 =`${BASE_URL}/projects/${this.id}/status=${this.status}`
         console.log(path);
         try{
-            const response = await fetch(path,{
+            const request1 = fetch(path,{
                 method: "PUT",
                 body:JSON.stringify(this),
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
+            const request2 = fetch(path2,{
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+            //we await the changes to be submitted
+            const [response, response2] = await Promise.all([request1, request2]);
+            //the result is checked for correct execution
+            if (!response.ok || !response2.ok) {
+                throw new Error(`HTTP error: ${response.status} or ${response2.status}`);
             }
-            console.log("request sent");
             const data = await response.json();
             console.log(data);
             return data;
