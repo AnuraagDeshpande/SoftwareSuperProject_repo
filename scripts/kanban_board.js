@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: "Title:", id: "taskTitle", type: "text", placeholder: "Enter task title" },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
             { label: "User Id:", id: "userId", type: "text", placeholder: "Enter User Id" },
-            { label: "Project Name:", id: "projectName", type: "text", placeholder: "Enter project name" },
+            { label: "Project Name:", id: "projectName", type: "select", placeholder: "Select project name" },
             { label: "Deadline:", id: "deadline", type: "date" }
         ];
 
@@ -225,7 +225,27 @@ document.addEventListener('DOMContentLoaded', function () {
             label.innerText = input_val.label;
             input_container.appendChild(label);
 
-            const input = document.createElement(input_val.type === "textarea" ? "textarea" : "input");
+            let input;
+            if(input_val.type === "textarea"){
+                input = document.createElement("textarea");
+            } else if(input_val.type === "select"){
+                input = document.createElement("select");
+                const options =[{
+                    name:"name",
+                    id: 123
+                },{
+                    name:"name2",
+                    id: 124
+                }];
+                options.forEach(optionCont =>{
+                    const option = document.createElement("option");
+                    option.value = optionCont["id"];
+                    option.textContent = optionCont["name"];
+                    input.appendChild(option);
+                });
+            } else {
+                input = document.createElement("input");
+            }
             input.type = input_val.type;
             input.id = input_val.id;
             input.placeholder = input_val.placeholder;
