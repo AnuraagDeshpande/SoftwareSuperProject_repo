@@ -167,6 +167,18 @@ PROJECT CARD
     border-radius: 50%;
 }
 
+.status.active{
+    background-color: var(--tertiary);
+}
+
+.status.failed{
+    background-color: var(--error);
+}
+
+.status.finished{
+    background-color: #4281a4;
+}
+
 .card-bottom-row{
     justify-self: flex-end;
     margin-top: auto;
