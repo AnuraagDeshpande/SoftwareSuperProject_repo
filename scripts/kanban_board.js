@@ -226,10 +226,12 @@ document.addEventListener('DOMContentLoaded', function () {
             input_container.appendChild(label);
 
             let input;
+            //input can depend on type, which has 3 cases:
             if(input_val.type === "textarea"){
                 input = document.createElement("textarea");
             } else if(input_val.type === "select"){
                 input = document.createElement("select");
+                //fetch relevant data from the database:
                 const options =[{
                     name:"name",
                     id: 123
@@ -237,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     name:"name2",
                     id: 124
                 }];
+                //we display the options
                 options.forEach(optionCont =>{
                     const option = document.createElement("option");
                     option.value = optionCont["id"];
