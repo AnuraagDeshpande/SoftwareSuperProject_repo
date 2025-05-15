@@ -13,7 +13,7 @@ class TaskController {
     public function getAllTasks() {
         global $conn;
 
-        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.created_at FROM tasks
+        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline tasks.startdate FROM tasks
         JOIN projects ON tasks.project_id = projects.id";
         $result = $conn->query($query);
 
@@ -34,7 +34,7 @@ class TaskController {
     public function getTaskById($id) {
         global $conn;
 
-        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, deadline, created_at FROM tasks WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, deadline, startdate FROM tasks WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
