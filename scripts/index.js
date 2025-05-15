@@ -32,7 +32,7 @@ const team=[
     {
         name: "Efrata Aynalem Bayle",
         desc: "Frontend Developer",
-        pic: "profile-picture-placeholder.png",
+        pic: "pfp2.jpeg",
         links: {
             github: "",
             star: "",

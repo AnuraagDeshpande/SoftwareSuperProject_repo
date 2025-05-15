@@ -1,9 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-// require_once('db_connection.php');
-require_once('/Applications/XAMPP/xamppfiles/htdocs/SoftwareSuperProject_repo/db_connection.php');
+// Enable PHP error reporting (development only)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include init.php for DB connection, BASE_URL, and session
+require_once(__DIR__ . '/../../init.php');
 
 class TaskController {
     // GET /tasks
@@ -44,6 +47,30 @@ class TaskController {
             echo json_encode(['success' => false, 'error' => 'Task not found']);
         }
     }
+
+    // public function getTasksByProject($projectName) {
+    //     global $conn;
+
+    //     $stmt = $conn->prepare("SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.created_at FROM tasks
+    //     JOIN projects ON tasks.project_id = projects.id
+    //     WHERE projects.title =?"
+    //     );
+    //     $stmt->bind_param("s", $projectName);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+
+    //     $task = $result->fetch_assoc();
+
+    //     if ($task) {
+    //         echo json_encode(['success' => true, 'data' => $task]);
+    //     } else {
+    //         http_response_code(404);
+    //         echo json_encode(['success' => false, 'error' => 'Task not found']);
+    //     }
+
+    //     $stmt->close();
+
+    // }
 
     public function createTask($data) {
       global $conn;
@@ -203,6 +230,64 @@ class TaskController {
             echo json_encode(['success' => false, 'error' => 'Task not found']);
         }
 
+        $stmt->close();
+    }
+
+    //assigning tasks to users
+    public function assignTask($taskId, $userId) {
+        global $conn;
+    
+        // Check if task exists
+        $stmtTask = $conn->prepare("SELECT id FROM tasks WHERE id = ?");
+        $stmtTask->bind_param("i", $taskId);
+        $stmtTask->execute();
+        $resultTask = $stmtTask->get_result();
+    
+        if ($resultTask->num_rows === 0) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Task does not exist']);
+            return;
+        }
+        $stmtTask->close();
+    
+        // Check if user exists
+        $stmtUser = $conn->prepare("SELECT id FROM users WHERE id = ?");
+        $stmtUser->bind_param("i", $userId);
+        $stmtUser->execute();
+        $resultUser = $stmtUser->get_result();
+    
+        if ($resultUser->num_rows === 0) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'User does not exist']);
+            return;
+        }
+        $stmtUser->close();
+    
+        // Check if assignment already exists
+        $stmtCheck = $conn->prepare("SELECT * FROM task_assignments WHERE task_id = ? AND user_id = ?");
+        $stmtCheck->bind_param("ii", $taskId, $userId);
+        $stmtCheck->execute();
+        $resultCheck = $stmtCheck->get_result();
+    
+        if ($resultCheck->num_rows > 0) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Task already assigned to user']);
+            return;
+        }
+        $stmtCheck->close();
+    
+        // Assign task to user
+        $stmt = $conn->prepare("INSERT INTO task_assignments (task_id, user_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $taskId, $userId);
+    
+        if ($stmt->execute()) {
+            http_response_code(201);
+            echo json_encode(['success' => true, 'message' => 'Task assigned to user successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Failed to assign task']);
+        }
+    
         $stmt->close();
     }
 }

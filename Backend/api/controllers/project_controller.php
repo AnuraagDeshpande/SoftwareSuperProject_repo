@@ -265,6 +265,38 @@ class ProjectController {
         $stmt->close();
     }
 
+    public function updateProjectStatus($id, $status) {
+    global $conn;
+
+    // Validate the status
+    $validStatuses = ['Active', 'Finished', 'Failed'];
+    if (!in_array($status, $validStatuses)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Invalid status value']);
+        return;
+    }
+
+    // Prepare and execute the update statement
+    $stmt = $conn->prepare("UPDATE projects SET status = ? WHERE id = ?");
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Failed to prepare statement']);
+        return;
+    }
+
+    $stmt->bind_param("si", $status, $id);
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Project status updated successfully']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Failed to update project status']);
+    }
+
+    $stmt->close();
+}
+
+
+
     public function deleteProject($id) {
         global $conn;
 

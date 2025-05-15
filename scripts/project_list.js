@@ -72,6 +72,7 @@ export class ProjectList{
         console.log("adding project requst");
         //path  to the api
         const path = `${BASE_URL}/projects/`;
+        const path2 = `${BASE_URL}/controllers/Project_charter_controller.php`
 
         try{
             //we send the request
@@ -83,6 +84,34 @@ export class ProjectList{
                 throw new Error(`HTTP error: ${response.status}`);
             }
             const data = await response.json();
+            //we need to add the project charter now
+            const new_id= data["project_id"];
+            //we send the request2 that adds the charter with default data
+            const response2 = await fetch(path2,{
+                method: "POST",
+                body:JSON.stringify({
+                    id: new_id,
+                    purpose: "purpose",
+                    objective:"objective",
+                    deadline:"2024-12-12",
+                    deliverables:{
+                        deliverable:"cirteria"
+                    },
+                    assumptions:["assumption"],
+                    acceptance: "acceptance criteria",
+                    constraints: ["constraint"],
+                    risks: ["risk"]
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                  }
+            });
+            //we check the response
+            if (!response2.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data2 = await response2.json();
+
             return data;
         } catch(error){
             //error handlin

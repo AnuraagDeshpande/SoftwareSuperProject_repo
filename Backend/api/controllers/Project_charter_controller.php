@@ -109,9 +109,9 @@ function createProjectCharter() {
 
     // Sanitize incoming data
     $project_id = $conn->real_escape_string($data['id']);
-    $title = $conn->real_escape_string($data['title']);
-    $desc = $conn->real_escape_string($data['desc']);
-    $purpose = $conn->real_escape_string(json_encode($data['purpose']));
+    //$title = $conn->real_escape_string($data['title']);
+    //$desc = $conn->real_escape_string($data['desc']);
+    $purpose = $conn->real_escape_string(($data['purpose']));
     $objective = $conn->real_escape_string($data['objective']);
     $deadline = $conn->real_escape_string($data['deadline']);
     $deliverables = $conn->real_escape_string(json_encode($data['deliverables']));
@@ -120,8 +120,8 @@ function createProjectCharter() {
     $constraints = $conn->real_escape_string(json_encode($data['constraints']));
     $risks = $conn->real_escape_string(json_encode($data['risks']));
 
-    $sql = "INSERT INTO project_charters (project_id, title, description, purpose, objective, deadline, deliverables, assumptions, acceptance, constraints, risks)
-            VALUES ('$project_id', '$title', '$desc', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$acceptance', '$constraints', '$risks')";
+    $sql = "INSERT INTO project_charters (project_id, purpose, objective, deadline, deliverables, assumptions, acceptance, constraints, risks)
+            VALUES ('$project_id', '$purpose', '$objective', '$deadline', '$deliverables', '$assumptions', '$acceptance', '$constraints', '$risks')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["message" => "New project charter created successfully"]);
