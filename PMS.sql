@@ -38,7 +38,9 @@ CREATE TABLE tasks (
     description TEXT,
     status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
     deadline DATE,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    startdate DATE,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    CHECK(startdate <= deadline)
 );
 
 -- Task Assignment table: Links users to tasks
