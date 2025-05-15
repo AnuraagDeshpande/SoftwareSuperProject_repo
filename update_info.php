@@ -1,25 +1,33 @@
 <?php
 session_start();
-require 'db_connection.php';
+include "db_connection.php";
 
-$user_id = $_SESSION['user_id']; // Or replace with $_POST['user_id'] if using hidden input
-$fullname = $_POST['fullname'];
-$email = $_POST['email'];
-
-if (empty($fullname) || empty($email)) {
-    echo "Please fill in all fields.";
-    exit;
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
-$stmt = $conn->prepare("UPDATE users SET fullname = ?, email = ? WHERE id = ?");
-$stmt->bind_param("ssi", $fullname, $email, $user_id);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_SESSION['user_id'];
+    $fullname = trim($_POST['fullname']);
+    $email = trim($_POST['email']);
 
-if ($stmt->execute()) {
-    echo "Information updated successfully.";
-} else {
-    echo "Error: " . $stmt->error;
+    if (!empty($fullname) && !empty($email)) {
+        $stmt = $conn->prepare("UPDATE users SET fullname = ?, email = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $fullname, $email, $user_id);
+
+        if ($stmt->execute()) {
+            $_SESSION['update_message'] = "Account info updated successfully!";
+        } else {
+            $_SESSION['update_message'] = "Something went wrong while updating your info.";
+        }
+
+        $stmt->close();
+    } else {
+        $_SESSION['update_message'] = "Please fill in all fields.";
+    }
+
+    header("Location: editInfo.php");
+    exit();
 }
-
-$stmt->close();
-$conn->close();
 ?>

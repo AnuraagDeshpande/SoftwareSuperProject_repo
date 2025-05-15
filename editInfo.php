@@ -1,5 +1,11 @@
 <?php
 session_start();
+$update_message = '';
+if (isset($_SESSION['update_message'])) {
+    $update_message = $_SESSION['update_message'];
+    unset($_SESSION['update_message']); // Clear after displaying once
+}
+
 include "db_connection.php";
 
 if (!isset($_SESSION['user_id'])) {
@@ -35,6 +41,21 @@ $stmt->close();
     <!-- Navbar will be dynamically inserted here -->
     <div class="navbar"></div>
     <div class="sidebar"></div>
+    <?php if (!empty($update_message)): ?>
+    <div id="popup-alert" class="popup-alert">
+        <?php echo htmlspecialchars($update_message); ?>
+    </div>
+    <script>
+        // Auto-hide the popup after 4 seconds
+        setTimeout(() => {
+            const alert = document.getElementById("popup-alert");
+            if (alert) {
+                alert.classList.add("fade-out");
+            }
+        }, 3000);
+    </script>
+<?php endif; ?>
+
 
     <!-- profile banner at the top -->
     <div class="profile-container">
@@ -57,12 +78,15 @@ $stmt->close();
                     Edit account info
                 </summary>
                 <form action="update_info.php" method="POST" class="card-content">
-                    <label>Full name:</label>
-                    <input type="text" name="fullname" placeholder="full name" required>
-                    <label>Email:</label>
-                    <input type="email" name="email" placeholder="email" required>
-                    <button class="user-button" type="submit">Save changes</button>
-                </form>
+    <label>Full name:</label>
+    <input type="text" name="fullname" placeholder="full name" value="<?php echo htmlspecialchars($user_fullname); ?>">
+
+    <label>Email:</label>
+    <input type="email" name="email" placeholder="email" value="<?php echo htmlspecialchars($user_email); ?>">
+
+    <button class="user-button" type="submit">Save changes</button>
+</form>
+
             </details>
         </div>
 
