@@ -2,6 +2,13 @@ body{
     background-color: var(--source);
 }
 
+ select {
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
+}
+
 form{
     padding: var(--mediumGap);
     display: grid;

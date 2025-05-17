@@ -13,8 +13,9 @@ class TaskController {
     public function getAllTasks() {
         global $conn;
 
-        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.created_at FROM tasks
-        JOIN projects ON tasks.project_id = projects.id";
+        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.startdate FROM tasks
+        JOIN projects ON tasks.project_id = projects.id
+        LEFT JOIN task_assignments ON tasks.id = task_assignments.task_id";
         $result = $conn->query($query);
 
         if (!$result) {
@@ -34,7 +35,7 @@ class TaskController {
     public function getTaskById($id) {
         global $conn;
 
-        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, deadline, created_at FROM tasks WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, deadline, startdate FROM tasks WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -48,30 +49,6 @@ class TaskController {
         }
     }
 
-    // public function getTasksByProject($projectName) {
-    //     global $conn;
-
-    //     $stmt = $conn->prepare("SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.created_at FROM tasks
-    //     JOIN projects ON tasks.project_id = projects.id
-    //     WHERE projects.title =?"
-    //     );
-    //     $stmt->bind_param("s", $projectName);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-
-    //     $task = $result->fetch_assoc();
-
-    //     if ($task) {
-    //         echo json_encode(['success' => true, 'data' => $task]);
-    //     } else {
-    //         http_response_code(404);
-    //         echo json_encode(['success' => false, 'error' => 'Task not found']);
-    //     }
-
-    //     $stmt->close();
-
-    // }
-
     public function createTask($data) {
       global $conn;
   
@@ -81,6 +58,7 @@ class TaskController {
           !isset($data['title']) ||
           !isset($data['description']) ||
           !isset($data['status']) ||
+          !isset($data['startdate']) ||
           !isset($data['deadline'])
       ) {
           http_response_code(400);
@@ -92,6 +70,7 @@ class TaskController {
       $title = $data['title'];
       $description = $data['description'];
       $status = $data['status'];
+      $startdate = $data['startdate'];
       $deadline = $data['deadline'];
   
       $stmt = $conn->prepare("SELECT id FROM projects WHERE title = ?");
@@ -112,10 +91,10 @@ class TaskController {
   
       // Insert the new task
       $stmt = $conn->prepare("
-          INSERT INTO tasks (project_id, title, description, status, deadline)
-          VALUES (?, ?, ?, ?, ?)
+          INSERT INTO tasks (project_id, title, description, status, startdate, deadline)
+          VALUES (?, ?, ?, ?, ?, ?)
       ");
-      $stmt->bind_param("issss", $project_id, $title, $description, $status, $deadline);
+      $stmt->bind_param("issss", $project_id, $title, $description, $status, $startdate, $deadline);
   
       if ($stmt->execute()) {
           http_response_code(201);
@@ -131,7 +110,7 @@ class TaskController {
     public function updateTask($id, $data) {
         global $conn;
 
-        $allowedFields = ['project_id' => 'project', 'title' => 'title', 'description' => 'description', 'status' => 'status', 'deadline' => 'deadline'];
+        $allowedFields = ['project_id' => 'project', 'title' => 'title', 'description' => 'description', 'status' => 'status', 'startdate' => 'startdate', 'deadline' => 'deadline'];
         $fieldsToUpdate = [];
         $values = [];
 

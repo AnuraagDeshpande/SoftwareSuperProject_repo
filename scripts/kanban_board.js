@@ -1,4 +1,18 @@
 //const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
+import {ProjectList} from "./project_list.js"
+
+function getProjects(){
+    return (async ()=>{
+        const data =  await ProjectList.create(userId)
+        const transformed = data.projects.map((project)=>({
+                name: project.projectName,
+                id: project.id
+            })
+        );
+        console.log(transformed);
+        return transformed;
+    })();
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     // let tasks = [
@@ -211,7 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: "Title:", id: "taskTitle", type: "text", placeholder: "Enter task title" },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
             { label: "User Id:", id: "userId", type: "text", placeholder: "Enter User Id" },
-            { label: "Project Name:", id: "projectName", type: "text", placeholder: "Enter project name" },
+            { label: "Project Name:", id: "projectName", type: "select", placeholder: "Select project name" },
+            { label: "Startdate:", id: "startdate", type: "date" },
             { label: "Deadline:", id: "deadline", type: "date" }
         ];
 
@@ -225,8 +240,32 @@ document.addEventListener('DOMContentLoaded', function () {
             label.innerText = input_val.label;
             input_container.appendChild(label);
 
-            const input = document.createElement(input_val.type === "textarea" ? "textarea" : "input");
-            input.type = input_val.type;
+            let input;
+            //input can depend on type, which has 3 cases:
+            if(input_val.type === "textarea"){
+                input = document.createElement("textarea");
+            } else if(input_val.type === "select"){
+                //this is a select case
+                input = document.createElement("select");
+
+                //if it is a project we need to fetch
+                if(input_val.id ==="projectName"){
+                    getProjects().then((options)=>{
+                        options.forEach((optionCont)=>{
+                            //we display all options
+                            console.log(`option: ${optionCont}`);
+                            const option = document.createElement("option");
+                            option.value = optionCont.name;
+                            option.textContent = optionCont.name;
+                            input.appendChild(option);
+                        });
+                    });
+                }
+            } else {
+                //other case for input element
+                input = document.createElement("input");
+                input.type = input_val.type;
+            }
             input.id = input_val.id;
             input.placeholder = input_val.placeholder;
             input_container.appendChild(input);
@@ -259,6 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("projectName").value = data.project;
             document.getElementById("userId").value = data.user_id;
             document.getElementById("deadline").value = data.deadline;
+            document.getElementById("startdate").value = data.startdate || "2024-12-12";
             add_button.addEventListener('click', () => update_task(data.id)); //*
         } else {
             add_button.addEventListener('click', add_task);
@@ -474,8 +514,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
         const deadline = document.getElementById("deadline").value.trim();
+        const startdate = document.getElementById("startdate").value.trim();
 
-        if (!title || !project || !description || !deadline) {
+        if (!title || !project || !description || !deadline || !startdate) {
             alert("Please fill in all the fields.");
             return;
         }
@@ -496,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
             project: project,
             deadline: deadline,
             status: "Pending",
-            startDate: today,
+            startdate: startdate,
         };
 
         tasks.push(task_card);
@@ -510,6 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("taskDescription").value = "";
         document.getElementById("projectName").value = "";
         document.getElementById("deadline").value = "";
+        document.getElementById("startdate").value = "";
 
         close_modal();
     }
@@ -631,12 +673,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
         const deadline = document.getElementById("deadline").value.trim();
+        const startdate = document.getElementById("startdate").value.trim();
 
         const task_card = {
             title: title,
             description: description,
             project: project,
             deadline: deadline,
+            startdate: startdate,
             //status: "Pending"
             status: tasks.status,
         };

@@ -47,6 +47,13 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
                     <h2>Essential information:</h2>
                     <label for="project-title">Project title/name:</label>
                     <input type="text" id="project-title" placeholder="Project name" pattern="[A-Za-z0-9 ,.]+" required>
+                    <label for="project-status">Project status:</label>
+                    <select id="project-status">
+                        <option value="Active">Active</option>
+                        <option value="Finished">Finished</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+
                     <label for="project-desc">Description:</label>
                     <textarea type="text" id="project-desc" placeholder="Project description" cols="50" rows="5" class="js-pop-up-field" pattern="[A-Za-z0-9 ,.]+" ></textarea required>
                     <!--IMPORTANT INFO-->
