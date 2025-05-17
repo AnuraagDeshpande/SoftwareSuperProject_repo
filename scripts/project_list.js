@@ -120,6 +120,7 @@ export class ProjectList{
         }
     }
 
+
     /** turn a list of strings into a single string or - if empty */
     #displayList(a){
         if(a.length > 0 && Array.isArray(a)){
