@@ -94,7 +94,7 @@ class TaskController {
           INSERT INTO tasks (project_id, title, description, status, startdate, deadline)
           VALUES (?, ?, ?, ?, ?, ?)
       ");
-      $stmt->bind_param("issss", $project_id, $title, $description, $status, $startdate, $deadline);
+      $stmt->bind_param("isssss", $project_id, $title, $description, $status, $startdate, $deadline);
   
       if ($stmt->execute()) {
           http_response_code(201);

@@ -521,6 +521,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        const start = new Date(startdate);
+        const end = new Date(deadline);
+        if( start >= end){
+            alert("The end cannot be before the start");
+            return;
+        }
+
         const format_date = new Date(deadline);
         const formatted_date = format_date.toLocaleDateString("en-US", {
             month: 'long',
