@@ -14,7 +14,7 @@ class Ganttchartcontroller{
     public function getTaskByProjectId($id) {
         global $conn;
 
-        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, deadline, created_at FROM tasks WHERE project_id = ?");
+        $stmt = $conn->prepare("SELECT id, project_id, title, description, status, startdate, deadline FROM tasks WHERE project_id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
