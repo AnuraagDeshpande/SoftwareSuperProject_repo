@@ -18,7 +18,7 @@ async function getTasks(id){
     }
     const data = await response.json();
     console.log(data);
-    return data;
+    return data.data;
   } catch(error){
       console.error("Fetch error:", error);
       return null;
@@ -26,7 +26,47 @@ async function getTasks(id){
 }
 
 const tasks = await getTasks(projectId);
-console.log(tasks);
+
+/** we fetch the data for the table and dispaly it here whatever */
+function displayTable(){
+  getTasks(projectId).then((tasks)=>{
+    const table = document.querySelector(".activity-table tbody");
+    if(table){
+      let newInerts ="";
+      tasks.forEach(task =>{
+        let statusClass="";
+        switch(task.status){
+          case "Completed":
+            statusClass="completed";
+            break;
+          case "Pending":
+            statusClass ="not-started";
+            break;
+          case "In Progress":
+            statusClass = "in-progress";
+            break;
+        }
+        
+        //hehehe
+        newInerts+=`
+        <tr>
+          <td><input type="checkbox" class="activity-checkbox" /></td>
+          <td>${task.title}</td>
+          <td class="status ${statusClass}">${task.status}</td>
+          <td>${task.startdate}</td>
+          <td>${task.deadline}</td>
+        </tr>
+        `;
+      });
+
+      table.innerHTML=newInerts;
+    } else {
+      console.error("NO FUCKING TABLE FOUND CRYING STARTS");
+    }
+  });
+}
+
+displayTable();
 
 
 function addActivity() {

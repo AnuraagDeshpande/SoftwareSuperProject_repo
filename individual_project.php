@@ -61,6 +61,7 @@ $username = $_SESSION['login'] ?? '';
                 <th>Done</th> <!-- New column -->
                 <th>Activity</th>
                 <th>Status</th>
+                <th>Startdate</th>
                 <th>Deadline</th>
               </tr>
             </thead>
