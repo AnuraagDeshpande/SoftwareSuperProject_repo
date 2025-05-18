@@ -9,6 +9,7 @@ This project was completed as part of the software engineering course at Constru
 - "./media" contains the visuals of the website that are used as .png or .jpg files
 - "./avatars" contains possible user profile pictures
 - "./test" contains the Jasmine code that is used for unit testing
+- "./Backend" contains the backend code that is essential for the system to work
 
 ## How to deploy:
 
