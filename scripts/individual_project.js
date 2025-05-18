@@ -25,8 +25,6 @@ async function getTasks(id){
   }
 }
 
-const tasks = await getTasks(projectId);
-
 function displayTable(){
   getTasks(projectId).then((tasks)=>{
     const table = document.querySelector(".activity-table tbody");
