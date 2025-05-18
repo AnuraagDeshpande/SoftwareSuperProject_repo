@@ -49,6 +49,32 @@ class TaskController {
         }
     }
 
+    public function getTaskByUserId($userId) {
+        global $conn;
+
+        $query = "SELECT tasks.id, tasks.project_id, projects.title AS project, tasks.title, tasks.description, tasks.status, tasks.deadline, tasks.startdate FROM tasks
+        JOIN projects ON tasks.project_id = projects.id
+        JOIN project_members ON projects.id = project_members.project_id
+        WHERE project_members.user_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if (!$result) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Database query failed.']);
+            return;
+        }
+
+        $task = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            'success' => true,
+            'data' => $task
+        ]);
+    }
+
     public function createTask($data) {
       global $conn;
   

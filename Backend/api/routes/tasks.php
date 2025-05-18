@@ -24,11 +24,10 @@ $basePath = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
 $pathTail = trim(str_replace($basePath, '', $uri), '/'); // Could be empty or an ID
 
 if ($method === 'GET') {
-    // if (isset($_GET['project'])) {
-    //     $projectName = $_GET['project'];
-    //     $controller->getTasksByProject($projectName);
-    // } 
-    if ($pathTail === '') {
+    if (isset($_GET['user_id'])) {
+        $userId = (int)$_GET['user_id'];
+        $controller->getTaskByUserId($userId);
+    }elseif ($pathTail === '') {
         $controller->getAllTasks();
     } elseif (is_numeric($pathTail)) {
         $controller->getTaskById((int)$pathTail);
