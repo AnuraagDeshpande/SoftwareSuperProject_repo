@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Fetch the tasks 
     function fetch_tasks() {
-        fetch(`${BASE_URL}/routes/tasks.php`)
+        fetch(`${BASE_URL}/routes/tasks.php?user_id=${userId}`)
             .then(response => response.json())
             .then(data => {
                 tasks = data.data;
