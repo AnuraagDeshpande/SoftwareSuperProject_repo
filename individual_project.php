@@ -45,7 +45,6 @@ $username = $_SESSION['login'] ?? '';
 
   <div class="content-box">
     <div class="top-buttons">
-      <button class="primary-button" onclick="addActivity()">Add Activity</button>
       <button class="primary-button" onclick="manageSchedule()">View Gantt Chart</button>
       <button class="secondary-button" onclick="goToProjectMembers()">Manage Team</button>
       <button class="tertiary-button" onclick="goToCharter()">View project charter</button>
