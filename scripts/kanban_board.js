@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
             { label: "User Id:", id: "userId", type: "text", placeholder: "Enter User Id" },
             { label: "Project Name:", id: "projectName", type: "select", placeholder: "Select project name" },
+            { label: "Startdate:", id: "startdate", type: "date" },
             { label: "Deadline:", id: "deadline", type: "date" }
         ];
 
@@ -297,6 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("projectName").value = data.project;
             document.getElementById("userId").value = data.user_id;
             document.getElementById("deadline").value = data.deadline;
+            document.getElementById("startdate").value = data.startdate || "2024-12-12";
             add_button.addEventListener('click', () => update_task(data.id)); //*
         } else {
             add_button.addEventListener('click', add_task);
@@ -512,9 +514,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
         const deadline = document.getElementById("deadline").value.trim();
+        const startdate = document.getElementById("startdate").value.trim();
 
-        if (!title || !project || !description || !deadline) {
+        if (!title || !project || !description || !deadline || !startdate) {
             alert("Please fill in all the fields.");
+            return;
+        }
+
+        const start = new Date(startdate);
+        const end = new Date(deadline);
+        if( start >= end){
+            alert("The end cannot be before the start");
             return;
         }
 
@@ -534,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
             project: project,
             deadline: deadline,
             status: "Pending",
-            startDate: today,
+            startdate: startdate,
         };
 
         tasks.push(task_card);
@@ -548,6 +558,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("taskDescription").value = "";
         document.getElementById("projectName").value = "";
         document.getElementById("deadline").value = "";
+        document.getElementById("startdate").value = "";
 
         close_modal();
     }
@@ -669,12 +680,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const description = document.getElementById("taskDescription").value.trim();
         const project = document.getElementById("projectName").value.trim();
         const deadline = document.getElementById("deadline").value.trim();
+        const startdate = document.getElementById("startdate").value.trim();
 
         const task_card = {
             title: title,
             description: description,
             project: project,
             deadline: deadline,
+            startdate: startdate,
             //status: "Pending"
             status: tasks.status,
         };

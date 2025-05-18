@@ -9,6 +9,9 @@ require_once(__DIR__ . '/Backend/init.php');
 
 //we get the project if from the path
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
+//we get the user info
+$userId = $_SESSION['user_id'] ?? -1;
+$username = $_SESSION['login'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,8 +24,9 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
   <link href="styles/sidebar.css" rel="stylesheet"/>
   <link href="styles/navbar.css" rel="stylesheet"/>
   <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+  <!--link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet" -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script>window.user_id = <?php echo json_encode($_SESSION['user_id']); ?>;</script>
 </head>
 <body>
   <script>
@@ -140,9 +144,10 @@ $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
       </div>
     </div>
   </div>
-
+  <script>
+    window.user_id = <?php echo json_encode($_SESSION['user_id']); ?>;
+  </script>
   <script src="scripts/individual_project.js" type="module"></script>
-  <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
   <script type="module" src="scripts/navigation.js"></script>
 </body>

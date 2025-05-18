@@ -1,5 +1,3 @@
-import { ProjectCharter } from "./project_charter.js";
-
 console.log("JS is working");
 
 const params = new URLSearchParams(window.location.search);
@@ -10,40 +8,6 @@ if (!projectId) {
   // Optional: redirect to main page
   // window.location.href = "index.html";
 }
-
-// Temporary mock database — replace with real fetch logic later (backend work)
-const mockProjects = [
-    {
-      id: "abc123", // replace with actual ID from project_list.js if hardcoded
-      projectName: "Project on projects",
-      desc: "This project aims at projecting project projects at project.",
-      manager: "User321",
-      owner: "User123",
-      status: "active"
-    },
-    {
-      id: "def456",
-      projectName: "Another Project",
-      desc: "Different project goals and scope.",
-      manager: "User555",
-      owner: "User666",
-      status: "finished"
-    }
-  ];
-  
-  // Find the matching project
-  const project = mockProjects.find(p => p.id === projectId);
-  
-  if (project) {
-    // Populate the UI
-    document.getElementById("project-name").innerText = project.projectName;
-    document.getElementById("project-desc").innerText = project.desc;
-    document.getElementById("project-manager").innerText = project.manager;
-    document.getElementById("project-owner").innerText = project.owner;
-    document.getElementById("project-status").innerText = project.status;
-  } else {
-    console.error("Project not found for ID:", projectId);
-  }
 
 function addActivity() {
     const activityList = document.getElementById("activity-list");
@@ -144,43 +108,76 @@ function loadTeam() {
     }
 }
 
+import { ProjectCharter } from './project_charter.js'; // adjust path if needed
+
 async function loadProjectDetails() {
   const urlParams = new URLSearchParams(window.location.search);
   const projectId = urlParams.get('projectId');
+  const userId = window.user_id;
+
+  console.log("Debug: projectId =", projectId);
+  console.log("Debug: userId =", userId);
+
+  if (!userId) {
+    console.error("Missing user ID.");
+    return;
+  }
 
   if (!projectId) {
-    console.error("No project ID found in URL.");
+    console.error("Missing project ID.");
     return;
   }
 
   try {
-    const data = await ProjectCharter.create(projectId); // Assuming create() returns a Promise with project data
+    // Fetch project data (owner, manager) via GET request
+    const response = await fetch(`http://localhost/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects/${projectId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-    document.getElementById('project-name').textContent = data.project_name || 'N/A';
-    document.getElementById('project-desc').textContent = data.description || 'N/A';
-    document.getElementById('project-manager').textContent = data.managers || 'N/A';
-    document.getElementById('project-owner').textContent = data.owners || 'N/A';
-    document.getElementById('project-status').textContent = data.status || 'N/A';
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to fetch project');
+    }
+
+    const project = data.data;
+
+    if (!project.manager) {
+      console.error("Can't find project manager.")
+    }
+
+    if (!project.owner) {
+      console.error("Can't find project owner.")
+    }
+
+    // Fetch charter data (name, desc, status)
+    const charter = await ProjectCharter.create(projectId);
+
+    // Update DOM with charter info
+    document.getElementById('project-name').textContent = charter.title || 'N/A';
+    document.getElementById('project-desc').textContent = charter.desc || 'N/A';
+    document.getElementById('project-status').textContent = charter.status || 'N/A';
+
+    // Update DOM with owner and manager info from GET response
+    document.getElementById('project-manager').textContent = (project.manager || []).join(', ') || 'N/A';
+    document.getElementById('project-owner').textContent = (project.owner || []).join(', ') || 'N/A';
+
   } catch (error) {
     console.error("Fetch error:", error);
   }
 }
 
-// You can now call this function manually wherever needed
-loadProjectDetails();
-
-// Call the function with the projectId from the URL
-document.addEventListener('DOMContentLoaded', function () {
-    const params = new URLSearchParams(window.location.search);
-    const projectId = params.get("projectId");
-    try{
-    if (projectId) {
-        loadProjectData(projectId);  // Load the project data if projectId is available
-    } else {
-        alert("No project selected.");
-    }
-  } catch (error){
-      console.log("error caught");
+document.addEventListener('DOMContentLoaded', () => {
+  const projectId = new URLSearchParams(window.location.search).get('projectId');
+  if (projectId) {
+    loadProjectDetails();
+  } else {
+    console.error('No project ID provided in URL');
   }
 });
 
