@@ -27,7 +27,6 @@ async function getTasks(id){
 
 const tasks = await getTasks(projectId);
 
-/** we fetch the data for the table and dispaly it here whatever */
 function displayTable(){
   getTasks(projectId).then((tasks)=>{
     const table = document.querySelector(".activity-table tbody");
@@ -46,11 +45,12 @@ function displayTable(){
             statusClass = "in-progress";
             break;
         }
-        
-        //hehehe
+
+        const checked = task.status === "Completed" ? "checked" : "";
+
         newInerts+=`
         <tr>
-          <td><input type="checkbox" class="activity-checkbox" /></td>
+          <td><input type="checkbox" class="activity-checkbox" ${checked} /></td>
           <td>${task.title}</td>
           <td class="status ${statusClass}">${task.status}</td>
           <td>${task.startdate}</td>
@@ -59,7 +59,28 @@ function displayTable(){
         `;
       });
 
-      table.innerHTML=newInerts;
+      table.innerHTML = newInerts;
+
+      // Re-select and re-bind checkbox listeners
+      const checkboxes = table.querySelectorAll('.activity-checkbox');
+      const progressBar = document.getElementById('custom-progress-bar');
+
+      function updateProgress() {
+        const total = checkboxes.length;
+        const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        if (progressBar) {
+          progressBar.style.width = `${percent}%`;
+          progressBar.textContent = `${percent}%`;
+        }
+      }
+
+      checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+
+      // Initial progress update after loading tasks
+      updateProgress();
+
     } else {
       console.error("NO FUCKING TABLE FOUND CRYING STARTS");
     }
@@ -119,6 +140,8 @@ function manageSchedule() {
   
     window.location.href = `gantt_chart.html?projectId=${projectId}`;
 }
+
+//manageSchedule();
 
 function projectSettings() {
     alert("Project Settings button clicked!");
