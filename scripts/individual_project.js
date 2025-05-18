@@ -331,3 +331,4 @@ function goToProjectMembers() {
 
 window.goToCharter = goToCharter;
 window.goToProjectMembers = goToProjectMembers;
+window.manageSchedule = manageSchedule;
