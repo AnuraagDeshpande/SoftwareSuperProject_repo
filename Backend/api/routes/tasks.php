@@ -27,7 +27,10 @@ if ($method === 'GET') {
     if (isset($_GET['user_id'])) {
         $userId = (int)$_GET['user_id'];
         $controller->getTaskByUserId($userId);
-    }elseif ($pathTail === '') {
+    } elseif (isset($_GET['project_id'])) {
+        $projectId = (int)$_GET['project_id'];
+        $controller->getTaskByProjectId($projectId);
+    } elseif ($pathTail === '') {
         $controller->getAllTasks();
     } elseif (is_numeric($pathTail)) {
         $controller->getTaskById((int)$pathTail);
