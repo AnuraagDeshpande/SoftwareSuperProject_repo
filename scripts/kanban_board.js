@@ -1,13 +1,14 @@
 //const API_BASE_URL = '/SoftwareSuperProject_repo/Backend/api/routes/tasks.php';
-import {ProjectList} from "./project_list.js"
+const User_API_BASE_URL = '/SE_REPO/SoftwareSuperProject_repo/Backend/api/users';
+import { ProjectList } from "./project_list.js"
 
-function getProjects(){
-    return (async ()=>{
-        const data =  await ProjectList.create(userId)
-        const transformed = data.projects.map((project)=>({
-                name: project.projectName,
-                id: project.id
-            })
+function getProjects() {
+    return (async () => {
+        const data = await ProjectList.create(userId)
+        const transformed = data.projects.map((project) => ({
+            name: project.projectName,
+            id: project.id
+        })
         );
         console.log(transformed);
         return transformed;
@@ -22,6 +23,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // ];
 
     let tasks = [];
+
+    function fetchAllUsers() {
+        fetch(`${User_API_BASE_URL}`)
+            .then(response => response.json())
+            .then(data => {
+                const user_Select = document.getElementById("userId");
+                user_Select.innerHTML = `<option value="">-- Select a User --</option>`;
+
+                data.data.forEach(user => {
+                    const option = document.createElement("option");
+                    option.value = user.id;
+                    option.textContent = `${user.fullname} (${user.id})`;
+                    user_Select.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching users:", error);
+            });
+    };
+
 
     const body = document.body;
 
@@ -38,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function AddTasks(task_card) {
         console.log("Sending task data:", task_card);  // Log the task data before sending the request
-    
+
         fetch(`${BASE_URL}/routes/tasks.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -57,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error adding task:', error);  // Log the error if something goes wrong
             });
-    }    
+    }
 
     //Removes task
     function remove_task(taskID) {
@@ -88,18 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
         page_title.innerText = "Kanban-Board";
         nav_left.appendChild(page_title);
 
-        // Create the right side of the navbar
-        const nav_right = document.createElement("div");
-        nav_right.classList.add("nav-right");
-        const icons = ["fa-gear", "fa-magnifying-glass", "fa-circle-user"];
-        icons.forEach(icon_symbol => {
-            const icon = document.createElement("i");
-            icon.classList.add("fa-solid", icon_symbol);
-            nav_right.appendChild(icon);
-        });
-
         navbar.appendChild(nav_left);
-        navbar.appendChild(nav_right);
         body.appendChild(navbar);
     }
 
@@ -224,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const modal_content = [
             { label: "Title:", id: "taskTitle", type: "text", placeholder: "Enter task title" },
             { label: "Description:", id: "taskDescription", type: "textarea", placeholder: "Enter task description" },
-            { label: "User Id:", id: "userId", type: "text", placeholder: "Enter User Id" },
+            { label: "User Id:", id: "userId", type: "select",  placeholder: "Select a user", options: []},
             { label: "Project Name:", id: "projectName", type: "select", placeholder: "Select project name" },
             { label: "Startdate:", id: "startdate", type: "date" },
             { label: "Deadline:", id: "deadline", type: "date" }
@@ -242,16 +252,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let input;
             //input can depend on type, which has 3 cases:
-            if(input_val.type === "textarea"){
+            if (input_val.type === "textarea") {
                 input = document.createElement("textarea");
-            } else if(input_val.type === "select"){
+            } else if (input_val.type === "select") {
                 //this is a select case
                 input = document.createElement("select");
 
                 //if it is a project we need to fetch
-                if(input_val.id ==="projectName"){
-                    getProjects().then((options)=>{
-                        options.forEach((optionCont)=>{
+                if (input_val.id === "projectName") {
+                    getProjects().then((options) => {
+                        options.forEach((optionCont) => {
                             //we display all options
                             console.log(`option: ${optionCont}`);
                             const option = document.createElement("option");
@@ -260,6 +270,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             input.appendChild(option);
                         });
                     });
+                } else if (input_val.id === "userId") {
+                    input = document.createElement("select");
+                    input.innerHTML = `<option value="">Loading users...</option>`;
                 }
             } else {
                 //other case for input element
@@ -305,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         task_dialog.showModal();
+        fetchAllUsers();
 
     }
 
@@ -312,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("task_dialog").close();
         if (task_dialog) {
             if (task_dialog.open) {
-            task_dialog.close();
+                task_dialog.close();
             }
             task_dialog.remove();  // Cleanly remove from DOM so fresh dialog gets created next time
         }
@@ -352,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Render task on Kanban board
     function render_tasks() {
-        console.log("Rendering tasks:", tasks);
+        //console.log("Rendering tasks:", tasks);
         const kanban_classes = document.querySelectorAll(".kanban-class");
 
         //removing all existing tasks
@@ -405,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.stopPropagation();  // Prevent triggering parent click
             delete_popup(task.id);
         });
-        
+
         task_div.appendChild(task_header);
 
         const task_body = document.createElement("div");
@@ -455,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Opens the Confirm delete popup
-    function delete_popup(taskID){
+    function delete_popup(taskID) {
         const delete_dialog = document.createElement("dialog");
         delete_dialog.classList.add("delete_dialog");
 
@@ -481,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         button_div.append(button_no, button_yes);
 
-        delete_dialog.append(icon,header_text, text, button_div);
+        delete_dialog.append(icon, header_text, text, button_div);
         document.body.appendChild(delete_dialog);
         delete_dialog.showModal();
 
@@ -523,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const start = new Date(startdate);
         const end = new Date(deadline);
-        if( start >= end){
+        if (start >= end) {
             alert("The end cannot be before the start");
             return;
         }
@@ -664,13 +678,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (result.success) {
                     task.status = result.data.status;
 
-            // .then(updatedTask => {
-            //     task.status = updatedTask.status;
-                render_tasks();
-            }
-            else {
-                console.error('Failed to update task status:', result.error);
-            }
+                    // .then(updatedTask => {
+                    //     task.status = updatedTask.status;
+                    render_tasks();
+                }
+                else {
+                    console.error('Failed to update task status:', result.error);
+                }
             })
             .catch(error => console.error('Error updating task status:', error));
     }
@@ -702,18 +716,18 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             // .then(updatedtask =>{
-                .then(result => {
-                    if (result.success) {
-                        const updatedtask = result.data;  // extract from .data
-            
-                const index = tasks.findIndex(t => t.id === updatedtask.id);
-                if (index !== -1) {
-                    tasks[index] = updatedtask;
-                    render_tasks();
-                    console.log('Task updated successfully');
+            .then(result => {
+                if (result.success) {
+                    const updatedtask = result.data;  // extract from .data
+
+                    const index = tasks.findIndex(t => t.id === updatedtask.id);
+                    if (index !== -1) {
+                        tasks[index] = updatedtask;
+                        render_tasks();
+                        console.log('Task updated successfully');
+                    }
                 }
-            }
-            fetch_tasks();
+                fetch_tasks();
                 close_modal();
 
             })

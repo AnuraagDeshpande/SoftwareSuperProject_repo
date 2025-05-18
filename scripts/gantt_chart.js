@@ -26,19 +26,18 @@ document.addEventListener('DOMContentLoaded', function () {
     //             .catch(error => console.error('Error fetching tasks:', error));
     //     })
     //     .catch(error => console.error('Error fetching project data:', error));
-        
+
 
     const project_data = {
         name: "Website Redesign",
         pm: "Jane Doe",
         start_date: "2025-04-01",
         due_date: "2025-06-01",
-        progress: "45%",
     };
 
 
     const tasks = [
-        { name: "Research", startDate: "2025-04-01", dueDate: "2025-05-10", status: "In Progress" },
+        { name: "Research", startDate: "2025-04-01", dueDate: "2025-05-20", status: "In Progress" },
         { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "Pending" },
         { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "Completed" },
         { name: "Design", startDate: "2025-04-11", dueDate: "2025-05-19", status: "In Progress" },
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
 
-    function generate_gantt_chart(tasks, project_data)  {
+    function generate_gantt_chart(tasks, project_data) {
         const pixel_width_perday = 60;
         const microsecond_perday = 86400000;
 
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         gantt_chart_container.appendChild(date_header);
 
-        
+
         const task_list = document.createElement("div");
         task_list.classList.add("gantt_task_list");
 
@@ -113,17 +112,11 @@ document.addEventListener('DOMContentLoaded', function () {
             gantt_span.style.left = `${offset * pixel_width_perday}px`;
             gantt_span.style.width = `${duration * pixel_width_perday}px`;
             gantt_span.style.height = "12px";
-    
-            const today = new Date();
-            if (new Date(task.dueDate) < today && task.status !== "In Progress") {
-                gantt_span.style.backgroundColor = "rgba(255, 0, 0, 0.6)";
-                gantt_span.id = "overdue";
-            }
-
 
             const status_icon = document.createElement("i");
             status_icon.classList.add("fa-solid");
             status_icon.style.marginRight = "6px";
+            
 
             switch (task.status) {
                 case "Pending":
@@ -138,12 +131,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     status_icon.classList.add("fa-check-circle");
                     gantt_span.id = "completed";
                     break;
-                case "overdue":
-                    status_icon.classList.add("fa-exclamation-triangle");
-                    break;
                 default:
                     status_icon.classList.add("fa-question-circle");
             }
+
+            
+            const today = new Date();
+            if ((new Date(task.dueDate)< today) && ((task.status === "In Progress") || (task.status === "Pending"))) {
+                gantt_span.style.backgroundColor = "rgba(255, 0, 0, 0.6)";
+                gantt_span.id = "overdue";
+                //console.log(task.name);
+                status_icon.classList.add("fa-exclamation-triangle");
+            }
+
 
             const span_text = document.createElement("span");
             span_text.innerText = task.name;
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return gantt_container;
     }
 
-    const gantt_chart = generate_gantt_chart(tasks, project_data); 
+    const gantt_chart = generate_gantt_chart(tasks, project_data);
     body.appendChild(gantt_chart);
 
     const gantt_legend = document.createElement("div");

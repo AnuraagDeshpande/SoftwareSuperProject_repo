@@ -1,4 +1,19 @@
 /* -------------------------------------------------
+   Navigation Section
+------------------------------------------------- */
+.navbar_kb {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--surfaceDim);
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    justify-content: left;
+    padding: var(--smallGap) var(--largeGap);
+}
+/* -------------------------------------------------
    Task Section
 ------------------------------------------------- */
 .task-overview {
