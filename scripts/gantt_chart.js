@@ -1,4 +1,55 @@
-document.addEventListener('DOMContentLoaded', function () {
+/** this function fetches data from the db of tasks for a project */
+async function getTasks(id){
+    const path = `${BASE_URL}/routes/tasks.php?project_id=${id}`;
+    try{
+      const response = await fetch(path);
+      if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      return data.data;
+    } catch(error){
+        console.error("Fetch error:", error);
+        return null;
+    }
+}
+
+/** this function formats the dates to expected format */
+async function getFormattedTasks(id){
+    const tasks = await getTasks(id);
+    const newTasks = tasks.map((task)=>{
+        const newTask = {
+            name: task.title,
+            startDate: task.startdate,
+            dueDate: task.deadline,
+            status: task.status
+        }
+        return newTask;
+    });
+    console.log(newTasks);
+    return newTasks;
+}
+
+/** get Project start date */
+function getEndDate(tasks){
+    const ends = tasks.map((task)=>{
+        return new Date(task.dueDate).getTime();
+    });
+    const maxTime= Math.max(...ends);
+    return new Date(maxTime).toISOString().slice(0, 10);
+}
+
+/** get Project end date */
+function getStartDate(tasks){
+    const ends = tasks.map((task)=>{
+        return new Date(task.startDate).getTime();
+    });
+    const minTime= Math.min(...ends);
+    return new Date(minTime).toISOString().slice(0, 10);
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
 
     const body = document.body;
 
@@ -27,16 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //     })
     //     .catch(error => console.error('Error fetching project data:', error));
 
-
-    const project_data = {
-        name: "Website Redesign",
-        pm: "Jane Doe",
-        start_date: "2025-04-01",
-        due_date: "2025-06-01",
-    };
-
-
-    const tasks = [
+    /*const tasks = [
         { name: "Research", startDate: "2025-04-01", dueDate: "2025-05-20", status: "In Progress" },
         { name: "Wireframes", startDate: "2025-04-11", dueDate: "2025-04-25", status: "Pending" },
         { name: "Prototype", startDate: "2025-04-26", dueDate: "2025-05-10", status: "Completed" },
@@ -47,7 +89,17 @@ document.addEventListener('DOMContentLoaded', function () {
         { name: "Final Design", startDate: "2025-04-21", dueDate: "2025-05-10", status: "In Progress" },
         { name: "User Testing", startDate: "2025-05-11", dueDate: "2025-05-20", status: "In Progress" },
         { name: "Release", startDate: "2025-05-21", dueDate: "2025-06-01", status: "Pending" }
-    ];
+    ];*/
+    const tasks = await getFormattedTasks(projectId);
+
+    console.log(getEndDate(tasks));
+
+    const project_data = {
+        name: "Website Redesign",
+        pm: "Jane Doe",
+        start_date: getStartDate(tasks),
+        due_date: getEndDate(tasks),
+    };
 
 
     function generate_gantt_chart(tasks, project_data) {

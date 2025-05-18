@@ -136,7 +136,7 @@ function manageSchedule() {
       return;
     }
   
-    window.location.href = `gantt_chart.html?projectId=${projectId}`;
+    window.location.href = `gantt_chart.php?projectId=${projectId}`;
 }
 
 //manageSchedule();
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const ganttFrame = document.getElementById("gantt-frame");
 if (ganttFrame && projectId) {
-  ganttFrame.src = `gantt_chart.html?projectId=${projectId}`;
+  ganttFrame.src = `gantt_chart.php?projectId=${projectId}`;
 }
 
 function goToProjectMembers() {
@@ -314,7 +314,7 @@ function goToProjectMembers() {
       return;
     }
   
-    window.location.href = `project_memb.html?project_id=${projectId}`;
+    window.location.href = `project_memb.php?project_id=${projectId}`;
   }
 
   function goToCharter() {
