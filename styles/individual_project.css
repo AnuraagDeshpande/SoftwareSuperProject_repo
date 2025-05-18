@@ -164,3 +164,7 @@ ul li {
   background-color:  rgba(231, 19, 40, 60%); 
   color: var(--onSurface);
 }
+
+iframe{
+  border-radius: var(--smallRadius);
+}
