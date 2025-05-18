@@ -53,7 +53,7 @@ $username = $_SESSION['login'] ?? '';
 
     <div class="grid-layout">
       <div class="secondary-card section">
-        <h2>Recent Activities</h2>
+        <h2>Recent Tasks</h2>
         <div class="activity-table-container">
           <table class="activity-table">
             <thead>

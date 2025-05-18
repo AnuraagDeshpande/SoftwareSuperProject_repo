@@ -9,6 +9,26 @@ if (!projectId) {
   // window.location.href = "index.html";
 }
 
+async function getTasks(id){
+  const path = `${BASE_URL}/routes/tasks.php?project_id=${projectId}`;
+  try{
+    const response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch(error){
+      console.error("Fetch error:", error);
+      return null;
+  }
+}
+
+const tasks = await getTasks(projectId);
+console.log(tasks);
+
+
 function addActivity() {
     const activityList = document.getElementById("activity-list");
     const newActivity = prompt("Enter a new activity:");
