@@ -1,34 +1,4 @@
 /* -------------------------------------------------
-   Navigation Section
-------------------------------------------------- */
-
-.navbar_kb {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--surfaceDim);
-    align-items: center;
-    margin-top: var(--tinyGap);
-}
-
-.nav-left,
-.nav-right {
-    display: flex;
-    justify-content: right;
-    gap: var(--smallGap);
-    padding: var(--tinyGap) var(--smallGap);
-}
-
-.nav-left h2 {
-    margin-left: var(--bigGap);
-}
-
-.nav-right i {
-    cursor: pointer;
-    padding: var(--smallGap);
-    transition: color 0.3s;
-}
-
-/* -------------------------------------------------
    Task Section
 ------------------------------------------------- */
 .task-overview {
@@ -94,20 +64,48 @@
     border-top: 5px solid var(--surfaceDim);
 }
 
-#open { background-color: rgb(40, 167, 69, 40%); }
-#development { background-color: rgb(119, 221, 119, 40%); }
-#in-test { background-color: rgb(244, 197, 66, 40%); }
-#closed { background-color: rgb(65, 116, 212, 40%); }
-#aborted { background-color: hsla(271, 76%, 53%, 40%); }
+#open {
+    background-color: rgb(40, 167, 69, 40%);
+}
+
+#development {
+    background-color: rgb(119, 221, 119, 40%);
+}
+
+#in-test {
+    background-color: rgb(244, 197, 66, 40%);
+}
+
+#closed {
+    background-color: rgb(65, 116, 212, 40%);
+}
+
+#aborted {
+    background-color: hsla(271, 76%, 53%, 40%);
+}
 
 /* -------------------------------------------------
    Task-styles
 ------------------------------------------------- */
-.urgent { color: rgba(231, 19, 40, 60%); }
-.high { color: rgb(255, 87, 34, 60%); }
-.medium { color: rgb(255, 193, 7, 60%); }
-.low { color: rgb(40, 167, 69, 60%); }
-.none { color: rgb(108, 117, 125, 60%); }
+.urgent {
+    color: rgba(231, 19, 40, 60%);
+}
+
+.high {
+    color: rgb(255, 87, 34, 60%);
+}
+
+.medium {
+    color: rgb(255, 193, 7, 60%);
+}
+
+.low {
+    color: rgb(40, 167, 69, 60%);
+}
+
+.none {
+    color: rgb(108, 117, 125, 60%);
+}
 
 .task {
     background-color: var(--surfaceBright);
@@ -176,7 +174,7 @@
    Dialog(Modal)
 ------------------------------------------------- */
 .task-dialog,
-.task-detail-modal{
+.task-detail-modal {
     border: none;
     border-radius: var(--mediumRadius);
     display: flex;
@@ -192,7 +190,7 @@
     padding: var(--mediumGap);
 }
 
-.task-dialog[open], 
+.task-dialog[open],
 .task-detail-modal[open] {
     visibility: visible;
     opacity: 1;
@@ -203,8 +201,8 @@ dialog::backdrop {
     background-color: var(--surfaceDim);
 }
 
-.taskmodal-title ,
-.task-details h2{
+.taskmodal-title,
+.task-details h2 {
     width: 100%;
     padding: var(--smallGap);
 }
@@ -218,12 +216,12 @@ dialog::backdrop {
 }
 
 .taskmodal-btn,
-.task-detail-btn{
+.task-detail-btn {
     display: flex;
     flex-direction: row;
     gap: var(--smallGap);
 }
-    
+
 
 .input-modal {
     display: flex;
@@ -236,13 +234,32 @@ dialog::backdrop {
 /* -------------------------------------------------
     Buttons
 ------------------------------------------------- */
-#btn-search { background-color: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
-#btn-filter { background-color: var(--primaryContainer); color: var(--onPrimaryContainer); }
+#btn-search {
+    background-color: var(--tertiaryContainer);
+    color: var(--onTertiaryContainer);
+}
+
+#btn-filter {
+    background-color: var(--primaryContainer);
+    color: var(--onPrimaryContainer);
+}
+
 #btn-add-task,
-#btn-close { background-color: var(--secondaryContainer); color: var(--onSecondaryContainer); }
-#btn-sort { background-color: var(--primaryContainer); color: var(--onPrimaryContainer); }
+#btn-close {
+    background-color: var(--secondaryContainer);
+    color: var(--onSecondaryContainer);
+}
+
+#btn-sort {
+    background-color: var(--primaryContainer);
+    color: var(--onPrimaryContainer);
+}
+
 #btn-print,
-#btn-add { background-color: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+#btn-add {
+    background-color: var(--tertiaryContainer);
+    color: var(--onTertiaryContainer);
+}
 
 .task-search-panel button:hover,
 .task-management-panel button:hover {
@@ -257,7 +274,8 @@ dialog::backdrop {
 .task-search-panel button,
 .task-management-panel button,
 .taskmodal-btn button,
-.task-detail-modal button {
+.task-detail-modal button ,
+.button_div button{
     margin-top: var(--mediumGap);
     padding: var(--smallGap);
     border: none;
@@ -291,7 +309,7 @@ dialog::backdrop {
 .taskmodal-container textarea,
 .task-detail-modal input,
 .task-detail-modal textarea,
-.task-detail-modal select{
+.task-detail-modal select {
     width: 400px;
 }
 
@@ -304,26 +322,57 @@ dialog::backdrop {
 
 /*
 -------------------------------------------------
-TASK DETAILS MODAL
+Delete DETAILS MODAL
 -------------------------------------------------
 */
 
+.delete_dialog {
+    border: none;
+    border-radius: var(--mediumRadius);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap:var(--mediumGap);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: var(--mediumGap);
+    visibility: hidden;
+    opacity: 0;
+}
 
+
+.delete_dialog i {
+    text-align: right;
+    margin-bottom: var(--smallGap);
+    cursor: pointer;
+}
+
+.delete_dialog[open] {
+    visibility: visible;
+    opacity: 1;
+}
+
+.button_div {
+    display: flex;
+    gap: var(--smallGap);
+}
 
 
 
 @media (max-width: 768px) {
     .task-overview {
-        margin-top: 0 ;
+        margin-top: 0;
         flex-direction: column;
         gap: var(--smallGap);
     }
 
-     .task-search-panel{
+    .task-search-panel {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--smallGap);
-    } 
+    }
 
     .kanban-board {
         flex-direction: column;
@@ -335,7 +384,7 @@ TASK DETAILS MODAL
     }
 
     .task {
-        width: 100%; 
+        width: 100%;
         margin-bottom: var(--smallGap);
     }
 
