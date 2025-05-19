@@ -20,6 +20,8 @@ and padding sizes
     --onPrimaryContainer:#524600;
     --primary: #6c5e0f;
     --onPrimary: #ffffff;
+    --secondary: #665e40;
+    --onSecondary: #ffffff;
     --secondaryContainer: #ede2bc;
     --onSecondaryContainer: #4d472b; 
     --tertiary: #43664f;
@@ -91,21 +93,34 @@ CARD CONTANERS FOR THINGS
 PRIMARY COLORED BUTTON
 -------------------------------------------------
 */
+.tertiary-button{
+    background-color: var(--tertiary);
+    color: var(--onTertiary);
+}
+
 .primary-button{
     background-color: var(--primary);
     color: var(--onPrimary);
+}
+
+.secondary-button{
+    background-color: var(--secondary);
+    color: var(--onSecondary);
+}
+
+.primary-button, .tertiary-button, .secondary-button{
     font-weight: bold;
     padding: var(--smallGap);
     border-style: none;
-    border-radius: min(50vh, 50%);
+    border-radius: min(50vh);
     transition: all 0.3s;
 }
 
-.primary-button:hover{
+.primary-button:hover, .tertiary-button:hover, .secondary-button:hover{
     opacity: 0.7;
 }
 
-.primary-button:active{
+.primary-button:active, .tertiary-button:active, .secondary-button:active{
     opacity: 0.5;
 }
 
@@ -154,4 +169,8 @@ footer-end{
 .error{
     background-color: var(--error);
     color: var(--onError);
+}
+
+.error-message{
+    color: var(--error);
 }

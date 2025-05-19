@@ -1,14 +1,34 @@
+<!--This page is supposed to display member info depending on the projects. The page should be connected to the
+individual project pages and display the members that were assigned to the certain project. In case if the user wants
+to add another member, they can do it via the add button which gives the user a pop-up form where they can add the member
+manually. (deleting the members is also possible)-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Project Members</title>
     <link rel="stylesheet" href="styles/project_memb.css">
     <link rel="stylesheet" href="styles/main.css">
-
+    <link href="styles/sidebar.css" rel="stylesheet"/>
+    <link href="styles/navbar.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    
+    <!--NAVIGATION BAR CODE-->
+    <div class="navbar">
+        <!--javaScript-->
+    </div>
+
+    <!--SIDEBAR CODE-->
+    <div class="sidebar">
+        <!--javaScript-->
+    </div>
+
+    <!--top bar with Add Member Button -->
     <div class="top-bar">
         <button id="addMemberBtn">+ Add Member</button>
     </div>
@@ -18,10 +38,24 @@
         <input type="text" id="searchBox" placeholder="Search for members...">
     </header>
 
+    <!--container for Member Cards -->
     <div id="membersContainer" class="members-container">
-        <!-- member cards will be dynamically inserted here -->
+        <!-- Member cards will be dynamically inserted here -->
+    </div>
+
+    <!--popup form for Adding New Member -->
+    <div id="popupForm" class="popup-form">
+        <div class="form-content">
+            <h2>Add New Member</h2>
+            <label>Name: <input type="text" id="memberName"></label>
+            <label>Role: <input type="text" id="memberRole"></label>
+            <button id="submitMember">Add Member</button>
+            <button id="closeForm">Close</button>
+        </div>
     </div>
 
     <script src="scripts/project_memb.js"></script>
+    <script type="module" src="scripts/navigation.js"></script>
 </body>
+
 </html>

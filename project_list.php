@@ -1,3 +1,16 @@
+<?php
+// Enable PHP error reporting (development only)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include init.php for DB connection, BASE_URL, and session
+require_once(__DIR__ . '/Backend/init.php');
+
+//we get the user info
+$userId = $_SESSION['user_id'] ?? -1;
+$username = $_SESSION['login'] ?? '';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,12 +20,19 @@
         <link href="styles/main.css" rel="stylesheet"/>
         <link href="styles/sidebar.css" rel="stylesheet"/>
         <link href="styles/navbar.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="styles/Style-task.css">
+        <link rel="stylesheet" href="styles/kanban_board.css">
         <link href="styles/project_list.css" rel="stylesheet"/>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <script>
+            const BASE_URL = <?= json_encode(BASE_URL) ?>;
+            console.log(BASE_URL);
+            //the username and the user id are saved
+            const userId = <?= json_encode($userId) ?>;
+            const username = <?= json_encode($username)?>;
+        </script>
         <!--NAVIGATION BAR CODE-->
         <div class="navbar">
         <!--javaScript-->
@@ -70,7 +90,6 @@
                 <div class="task-management-panel">
                         <button id="btn-add-project">New project</button>
                         <button id="btn-sort" class="js-clear-filter">Clear filter</button>
-                        <button id="btn-print">Print</button>
                 </div>
             </div>
             <div class="projects-list-body">
@@ -91,5 +110,11 @@
         </div>
         <script type="module" src="scripts/navigation.js"></script>
         <script type="module" src="scripts/project_list.js"></script>
+        <script type="module">
+            import {setUpFun} from "./scripts/project_list.js";
+            console.log(`username: ${username}`);
+
+            setUpFun(userId, username);
+        </script>
     </body>
 </hrml>

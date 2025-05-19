@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>edit info</title>
+    <link rel="stylesheet" href="styles/editInfo.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <!-- Navbar will be dynamically inserted here -->
+    <div class="navbar"></div>
+    <div class="sidebar"></div>
+
+    <!-- profile banner at the top -->
+    <div class="profile-container">
+        <div class="image-container">
+            <img id="profile-avatar" src="media/avatar3.png" alt="current profile avatar">
+        </div>
+        <div class="name-container">
+            <h1>John tucker</h1>
+            <h2>john@gmail.com</h2>
+        </div>
+    </div>
+
+    <div class="center-container">
+
+        <!-- edit account info section -->
+        <div class="card card-info">
+            <details open>
+                <summary class="card-title">
+                    <img src="media/User.png" alt="edit icon" class="summary-icon">
+                    Edit account info
+                </summary>
+                <div class="card-content">
+                    <label>First name:</label>
+                    <input type="text" placeholder="first name">
+                    <label>Last name:</label>
+                    <input type="text" placeholder="last name">
+                    <label>Email address:</label>
+                    <input type="email" placeholder="email">
+                    <button class="user-button">Save changes</button>
+                </div>
+            </details>
+        </div>
+
+        <!-- update avatar section -->
+        <div class="card card-avatar">
+            <details>
+                <summary class="card-title">
+                    <img src="media/Screenshott.png" alt="avatar icon" class="summary-icon">
+                    Update avatar
+                </summary>
+                <div class="card-content avatar-grid">
+                    <label><input type="radio" name="avatar" value="1"><img src="media/avatar1.png"
+                            alt="avatar 1"></label>
+                    <label><input type="radio" name="avatar" value="2"><img src="media/avatar2.png"
+                            alt="avatar 2"></label>
+                    <label><input type="radio" name="avatar" value="3"><img src="media/avatar3.png"
+                            alt="avatar 3"></label>
+                    <label><input type="radio" name="avatar" value="4"><img src="media/avatar4.png"
+                            alt="avatar 4"></label>
+                    <label><input type="radio" name="avatar" value="5"><img src="media/avatar5.png"
+                            alt="avatar 5"></label>
+                    <label><input type="radio" name="avatar" value="6"><img src="media/avatar6.png"
+                            alt="avatar 6"></label>
+                    <label><input type="radio" name="avatar" value="7"><img src="media/avatar7.png"
+                            alt="avatar 7"></label>
+                    <label><input type="radio" name="avatar" value="8"><img src="media/avatar8.png"
+                            alt="avatar 8"></label>
+                    <label><input type="radio" name="avatar" value="9"><img src="media/avatar9.png"
+                            alt="avatar 9"></label>
+                    <label><input type="radio" name="avatar" value="10"><img src="media/avatar10.png"
+                            alt="avatar 10"></label>
+                </div>
+                <button class="user-button">Save changes</button>
+            </details>
+        </div>
+
+        <!-- change password section -->
+        <div class="card card-password">
+            <details>
+                <summary class="card-title">
+                    <img src="media/Password.png" alt="password icon" class="summary-icon">
+                    Change password
+                </summary>
+                <div class="card-content">
+                    <label>Old password:</label>
+                    <input type="password" placeholder="old password">
+                    <label>New password:</label>
+                    <input type="password" placeholder="new password">
+                    <label>Confirm password:</label>
+                    <input type="password" placeholder="confirm password">
+                    <button class="user-button">Save changes</button>
+                </div>
+            </details>
+        </div>
+
+    </div>
+
+<script type="module" src="scripts/navigation.js"></script>
+  
+
+</body>
+
+</html>
