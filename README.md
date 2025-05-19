@@ -1,5 +1,5 @@
 # SoftwareSuperProject_repo
-
+[repo](https://github.com/AnuraagDeshpande/SoftwareSuperProject_repo)
 This project was completed as part of the software engineering course at Constructor University Bremen.
 
 ## File structure:
@@ -21,7 +21,9 @@ The user can be referred to [[instructions]](./Backend/instructions.txt).
 
 ### Guide:
 
-After XAMPP is downloaded copy the contents of the repo into the htdocs folder. The exact location of this folder
+Firstly, to connect database, we need to alter db_connection.php file to according our local/other (the server that you are using) credentials.
+
+Next, after XAMPP is downloaded copy the contents of the repo into the htdocs folder. The exact location of this folder
 depends on the OS used. On linux it is /opt/lampp/htdocs/SE_REPO. If SE_REPO does not exist yet create it and copy the repo contents inside.
 
 In XAMPP config files set the port to be 3306 and the database to be MySQL with TCP/IP for connections. Other details can be also set.
