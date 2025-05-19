@@ -28,3 +28,5 @@ In XAMPP config files set the port to be 3306 and the database to be MySQL with 
 Go to PHPmyAdmin and import the PMS.sql file or run it in the terminal to create the database and all tables. 
 
 Once everything is set up and type in the address of the website on the system. Enjoy!
+
+In order to test the code go to [[test]](./tests/jasmine-standalone-5.6.0/SpecRunner.html) - SpecRunner.html and run with live server to verify the correctness of the code
