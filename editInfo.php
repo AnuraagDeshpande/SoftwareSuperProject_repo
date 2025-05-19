@@ -136,6 +136,7 @@ $stmt->close();
     </div>
 
 <script type="module" src="scripts/navigation.js"></script>
+<script type="module" src="scripts/editInfoValidation.js"></script>
 
 </body>
 </html>

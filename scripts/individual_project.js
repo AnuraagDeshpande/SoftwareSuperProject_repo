@@ -226,16 +226,6 @@ async function loadProjectDetails() {
       throw new Error(data.error || 'Failed to fetch project');
     }
 
-    const project = data.data;
-
-    if (!project.manager) {
-      console.error("Can't find project manager.")
-    }
-
-    if (!project.owner) {
-      console.error("Can't find project owner.")
-    }
-
     // Fetch charter data (name, desc, status)
     const charter = await ProjectCharter.create(projectId);
 
@@ -243,10 +233,8 @@ async function loadProjectDetails() {
     document.getElementById('project-name').textContent = charter.title || 'N/A';
     document.getElementById('project-desc').textContent = charter.desc || 'N/A';
     document.getElementById('project-status').textContent = charter.status || 'N/A';
-
-    // Update DOM with owner and manager info from GET response
-    document.getElementById('project-manager').textContent = (project.manager || []).join(', ') || 'N/A';
-    document.getElementById('project-owner').textContent = (project.owner || []).join(', ') || 'N/A';
+    document.getElementById('project-objective').textContent = (charter.objective || []).join(', ') || 'N/A';
+    document.getElementById('project-deadline').textContent = (charter.deadline || []).join(', ') || 'N/A';
 
   } catch (error) {
     console.error("Fetch error:", error);
