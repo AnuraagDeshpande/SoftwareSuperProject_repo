@@ -22,7 +22,7 @@ The user can be referred to [[instructions]](./Backend/instructions.txt).
 ### Guide:
 
 After XAMPP is downloaded copy the contents of the repo into the htdocs folder. The exact location of this folder
-depends on the OS used. On linux it is /opt/lampp
+depends on the OS used. On linux it is /opt/lampp/htdocs/SE_REPO. If SE_REPO does not exist yet create it and copy the repo contents inside.
 
 In XAMPP config files set the port to be 3306 and the database to be MySQL with TCP/IP for connections. Other details can be also set.
 Go to PHPmyAdmin and import the PMS.sql file or run it in the terminal to create the database and all tables. 
@@ -30,3 +30,4 @@ Go to PHPmyAdmin and import the PMS.sql file or run it in the terminal to create
 Once everything is set up and type in the address of the website on the system. Enjoy!
 
 In order to test the code go to [[test]](./tests/jasmine-standalone-5.6.0/SpecRunner.html) - SpecRunner.html and run with live server to verify the correctness of the code
+
