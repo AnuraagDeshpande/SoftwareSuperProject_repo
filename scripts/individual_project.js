@@ -245,8 +245,8 @@ async function loadProjectDetails() {
     document.getElementById('project-status').textContent = charter.status || 'N/A';
 
     // Update DOM with owner and manager info from GET response
-    document.getElementById('project-manager').textContent = (project.manager || []).join(', ') || 'N/A';
-    document.getElementById('project-owner').textContent = (project.owner || []).join(', ') || 'N/A';
+    document.getElementById('project-objective').textContent = (project.objective || []).join(', ') || 'N/A';
+    document.getElementById('project-deadline').textContent = (project.deadline || []).join(', ') || 'N/A';
 
   } catch (error) {
     console.error("Fetch error:", error);
