@@ -209,18 +209,9 @@ async function loadProjectDetails() {
     return;
   }
 
-  try {
-    // Fetch project data (owner, manager) via GET request
-    const response = await fetch(`http://localhost/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects/${projectId}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
-    const data = await response.json();
 
     if (!data.success) {
       throw new Error(data.error || 'Failed to fetch project');
@@ -239,7 +230,7 @@ async function loadProjectDetails() {
   } catch (error) {
     console.error("Fetch error:", error);
   }
-}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const projectId = new URLSearchParams(window.location.search).get('projectId');

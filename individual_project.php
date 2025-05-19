@@ -124,10 +124,10 @@ $username = $_SESSION['login'] ?? '';
           <strong>Description:</strong> <span id="project-desc">Loading...</span>
         </div>
         <div>
-          <strong>Manager(s):</strong> <span id="project-objective">Loading...</span>
+          <strong>Objectve:</strong> <span id="project-objective">Loading...</span>
         </div>
         <div>
-          <strong>Owner(s):</strong> <span id="project-deadline">Loading...</span>
+          <strong>Deadline:</strong> <span id="project-deadline">Loading...</span>
         </div>
         <div>
           <strong>Status:</strong> <span id="project-status">Loading...</span>
