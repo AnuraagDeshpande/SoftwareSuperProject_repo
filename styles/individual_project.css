@@ -1,0 +1,170 @@
+.top-buttons {
+  display: flex;
+  gap: var(--smallGap);
+  margin-bottom: var(--mediumGap);
+  justify-content: left;
+  flex-wrap: wrap;
+}
+
+.top-buttons .primary-button {
+  background-color: var(--primary);  
+  color: var(--onPrimary);
+  font-weight: bold;
+  padding: var(--smallGap) 20px;  
+  border-style: none;
+  border-radius: 50px;  
+  transition: all 0.3s;
+  height: 40px;  
+  min-width: 120px;  
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-buttons .primary-button:hover {
+  opacity: 0.8;
+}
+
+.top-buttons .primary-button:active {
+  opacity: 0.6;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--mediumGap);
+}
+
+.section h2 {
+  margin-bottom: var(--smallGap);
+}
+
+.placeholder {
+  background-color: var(--surfaceBright);
+  border: 2px dashed var(--surfaceDim);
+  border-radius: var(--smallRadius);
+  padding: var(--mediumGap);
+  text-align: center;
+  color: var(--onSurface);
+  font-style: italic;
+}
+
+.team-input {
+  display: flex;
+  gap: var(--smallGap);
+  margin-bottom: var(--smallGap);
+}
+
+input {
+  padding: var(--smallGap);
+  border-radius: var(--smallRadius);
+  border: 1px solid var(--surfaceDim);
+  flex: 1;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  background-color: var(--surfaceBright);
+  border: 1px solid var(--surfaceDim);
+  padding: var(--smallGap);
+  margin-bottom: var(--tinyGap);
+  border-radius: var(--smallRadius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-btn {
+  margin-left: 10px;
+  background-color: rgb(156, 111, 111);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+#calendar {
+  background-color: var(--surfaceBright);
+  padding: var(--mediumGap);
+  border-radius: var(--mediumRadius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}                                             
+.progress-container {
+  width: 100%;
+  background-color: var(--surfaceDim);
+  border-radius: var(--smallRadius);
+  overflow: hidden;
+  height: 25px;
+  margin-top: var(--smallGap);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  color: var(--onPrimary);
+  text-align: center;
+  line-height: 25px;
+  font-weight: bold;
+}
+
+.activity-table-container {
+  overflow-x: auto;
+  margin-top: var(--smallGap);
+}
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--surfaceBright);
+  color: var(--onSurface);
+  border-radius: var(--mediumRadius);
+  overflow: hidden;
+}
+
+.activity-table th,
+.activity-table td {
+  text-align: center;
+  padding: var(--smallGap);
+  border-bottom: 1px solid var(--surfaceDim);
+}
+
+.activity-table th {
+  background-color: var(--primaryContainer);
+  color: var(--onPrimaryContainer);
+  text-align: center;
+}
+
+.status {
+  font-weight: bold;
+  text-align: center;
+  /*border-radius: var(--smallRadius);*/
+  padding: 3px 8px;
+  display: inline-block;
+  width: 100%;                 /* Optional: stretch to full width if desired */
+  box-sizing: border-box;      /* Ensures padding doesn’t overflow */
+}
+
+.status.completed {
+  background-color: var(--tertiaryContainer);
+  color: var(--onTertiaryContainer);
+}
+
+.status.in-progress {
+  background-color: var(--secondaryContainer);
+  color: var(--onSecondaryContainer);
+}
+
+.status.not-started {
+  background-color:  rgba(231, 19, 40, 60%); 
+  color: var(--onSurface);
+}
+
+iframe{
+  border-radius: var(--smallRadius);
+}

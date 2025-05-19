@@ -9,44 +9,23 @@ export function generateSidebar(){
     const sidebar = document.querySelector(".sidebar");
     if(sidebar){
         sidebar.innerHTML = `
-        <h1>NAME</h1>
+        <h1>SuperProject</h1>
         <div class="sidebar-links">
-            <button class="dark-button sidebar-button">
-                <a href="project_list.php">
-                Projects
-                </a>
+            <button class="dark-button sidebar-button"  onclick="document.location='index.php'">
+                Main page
                 <div class="sidebar-status active">
-                    1
+                </div>
+            </button>
+            <button class="dark-button sidebar-button" onclick="document.location='project_list.php'" id="btn-project-list">
+                Projects
+                <div class="sidebar-status active">
                 </div>
             </button>        
-            <button class="dark-button sidebar-button">
-                <a>
-                    Team
-                </a>
-                <div class="sidebar-status error">
-                5
+            <button class="dark-button sidebar-button"  onclick="document.location='kanban_board.php'">
+                Tasks
+                <div class="sidebar-status active">
                 </div>
             </button>
-            <button class="dark-button sidebar-button">
-                <a>
-                    Tasks
-                </a>
-                <div class="sidebar-status">
-                </div>
-            </button>
-            <button class="dark-button sidebar-button">
-                <a>
-                    Schedule
-                </a>
-                <div class="sidebar-status">
-                </div>
-            </button>
-        </div>
-        <div class="sidebar-infocard">
-            There are some things that need to be done...
-            <div>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            </div>
         </div>
         `;
     } else {

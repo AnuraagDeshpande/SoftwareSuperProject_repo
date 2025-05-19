@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activities</title>
+  <link rel="stylesheet" href="styles/activities_page.css" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <!--fullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+
+</head>
+<body>
+  <div class="content-box">
+    <div class="top-buttons">
+      <button class="primary-button" onclick="addActivity()">Add Activity</button>
+      <button class="primary-button" onclick="manageSchedule()">Manage Scheduling</button>
+      <button class="primary-button" onclick="projectSettings()">Project Settings</button>
+    </div>
+
+    <div class="grid-layout">
+      <div class="secondary-card section">
+        <h2>Recent Activities</h2>
+        <ul id="activity-list"></ul>
+      </div>
+
+      <div class="primary-card section">
+        <h2>Gantt Chart</h2>
+        <div class="placeholder">[Calendar / Chart Here]</div>
+      </div>
+
+      <div class="tertiary-card section">
+        <h2>Manage Team</h2>
+        <div class="team-input">
+          <input type="text" id="member-name" placeholder="Enter member name" />
+          <button class="primary-button" onclick="addMember()">Add</button>
+        </div>
+        <ul id="team-list"></ul>
+      </div>
+
+      <div class="primary-card content-box" style="margin-top: var(--mediumGap);">
+        <h2>Project Timeline</h2>
+        <div id="calendar"></div>
+      </div>
+      
+
+      <div class="secondary-card section">
+        <h2>Project Progress</h2>
+        <div class="placeholder">
+          <div class="progress-container">
+          <div class="progress-bar" style="width: 60%;">60%</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/activities_page.js"></script>
+  <!--fullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+
+</body>
+</html>

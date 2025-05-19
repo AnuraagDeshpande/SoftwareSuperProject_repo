@@ -1,3 +1,65 @@
+/* these are copied from the kanban-board */
+
+.task-search-panel button:hover,
+.task-management-panel button:hover {
+    opacity: 0.8;
+}
+
+.task-search-panel button:active,
+.task-management-panel button:active {
+    opacity: 0.5;
+}
+
+#btn-sort { background-color: var(--primaryContainer); color: var(--onPrimaryContainer); }
+#btn-print,
+#btn-add { background-color: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+#btn-search { background-color: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+
+.task-search-panel button,
+.task-management-panel button,
+.taskmodal-btn button,
+.task-detail-modal button {
+    padding: var(--smallGap);
+    border: none;
+    border-radius: var(--mediumGap);
+    cursor: pointer;
+    width: 100px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.input-container input,
+.input-container select,
+.taskmodal-container input,
+.taskmodal-container select,
+.taskmodal-container textarea,
+.task-detail-modal input,
+.task-detail-modal textarea,
+.task-detail-modal select {
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
+}
+
+.task-overview {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid var(--surfaceDim);
+    padding: var(--tinyGap) var(--mediumGap);
+    justify-content: space-between;
+}
+
+.task-search-panel,
+.task-management-panel {
+    display: flex;
+    gap: var(--mediumGap);
+    padding: var(--smallGap) var(--mediumGap);
+    align-items: center;
+    margin-top: var(--smallGap);
+}
+
 /*
 =================================================
 Here the page that contains the list of all 
@@ -13,8 +75,13 @@ body{
 PROJECT CARD GRID
 =================================================
 */
-.projects-grid{
+
+.projects-list-body{
+    display: grid;
     padding: var(--largeGap);
+    row-gap: var(--mediumGap);
+}
+.projects-grid{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: var(--mediumGap);
@@ -48,14 +115,24 @@ PROJECT CARD
     min-height: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: var(--mediumGap);
     background-color: var(--surfaceBright);
     color: var(--onSurface);
     border-radius: var(--largeRadius);
     padding: var(--mediumGap);
-    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);/*need a standard one*/
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
 }
+
+.project-link{
+    transition: all 0.3s;
+}
+
+.projects-grid:has(.project-link:hover) .project-link:not(:hover) {
+    opacity: 0.9;
+    filter: blur(3px);
+  }
 
 .project-card:hover{
     scale: 1.05;
@@ -78,12 +155,36 @@ PROJECT CARD
     font-weight: normal;
 }
 
+.project-title-name{
+    display: grid;
+    grid-template-columns: 1fr var(--mediumGap);
+}
+
 .status{
-    position: absolute;
-    right: var(--mediumGap);
-    top: var(--mediumGap);
-    padding: var(--smallGap);
+    height: var(--smallGap);
+    width: var(--smallGap);
+    padding: var(--tinyGap);
     border-radius: 50%;
+}
+
+.status.active{
+    background-color: var(--tertiary);
+}
+
+.status.failed{
+    background-color: var(--error);
+}
+
+.status.finished{
+    background-color: #4281a4;
+}
+
+.card-bottom-row{
+    justify-self: flex-end;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /*
@@ -93,6 +194,8 @@ PARTICIPANTS
 */
 
 .participants{
+    /*justify-self: flex-end;
+    margin-top: auto;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -102,4 +205,95 @@ PARTICIPANTS
     border-radius: var(--mediumRadius);
     height: var(--largeRadius);
     margin-left: -10px;
+}
+
+/*
+-------------------------------------------------
+POP UP
+-------------------------------------------------
+*/
+
+.error-message{
+    color: var(--error);
+}
+#btn-add-project{
+    background-color: var(--secondaryContainer); color: var(--onSecondaryContainer);
+}
+.pop-up-screen{
+    visibility: hidden;
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pop-up-back{
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    background-color: var(--source);
+    opacity: 0.7;
+}
+
+input, textarea{
+    padding: var(--smallGap);
+    border: 1px solid var(--surfaceDim);
+    border-radius: var(--smallRadius);
+    background: white;
+}
+
+.pop-up-card{
+    /*visibility: collapse;*/
+    display: none;
+    /*display: flex;*/
+    position: relative;
+    flex-direction: column;
+    z-index: 5;
+    background-color: var(--surfaceBright);
+    border-radius: var(--largeRadius);
+    padding: var(--largeGap);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    row-gap: var(--mediumGap);
+    min-width: 50%;
+}
+
+/*.add-project-card, .delete-project-card{
+    visibility: collapse;
+}*/
+.pop-up-card input{
+    display: block;
+}
+
+.pop-up-card button{
+    display: inline;
+}
+
+.cool-button{
+    padding: var(--smallGap);
+    border: none;
+    border-radius: var(--mediumGap);
+    cursor: pointer;
+    width: 100px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+i.close-add-project{
+    position: absolute;
+    right: var(--mediumGap);
+    top: var(--mediumGap);
+    font-size: 3rem;
+}
+
+.shown{
+    visibility: visible;
+    display: flex;
+}
+
+.project-link {
+    text-decoration: none;
+    color: inherit;
 }

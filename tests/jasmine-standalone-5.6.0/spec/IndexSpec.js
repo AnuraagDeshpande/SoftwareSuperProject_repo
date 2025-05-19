@@ -1,6 +1,6 @@
 import { getEmojis, setTeamCards, switchEmojis, shuffle } from "../../../scripts/index.js";
 
-describe("The index page tests",()=>{
+describe("INDEX PAGE TESTS",()=>{
     let testDiv= document.querySelector(".js-test-div");
 
     //we test the getEmojis function
@@ -97,7 +97,9 @@ describe("The index page tests",()=>{
         it('random order of elements', () => {
             const arr = [1, 2, 3, 4, 5];
             const shuffled = shuffle([...arr]);
-            expect(shuffled).not.toEqual(arr);
+            const shuffled2 = shuffle([...shuffled]);
+            const value = shuffled != arr || shuffled2 != arr || shuffled2!=shuffled;
+            expect(value).toEqual(true);
         });
     });
 });

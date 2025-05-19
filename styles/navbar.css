@@ -49,3 +49,31 @@ HAMBURGER MENU
 #hamburger:active{
     background-color: var(--surfaceBright);
 }
+
+
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.username {
+    font-size: 14px;
+    color: white; 
+    background-color: #4281A4;
+    padding: var(--smallGap);
+    border-radius: 25px;
+    text-align: center;
+}
+
+.dark-button:hover {
+    background-color: #555;
+}
+
+.project-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    vertical-align: middle;
+}
