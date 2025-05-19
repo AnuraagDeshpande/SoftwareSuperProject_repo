@@ -209,36 +209,16 @@ async function loadProjectDetails() {
     return;
   }
 
-  try {
-    // Fetch project data (owner, manager) via GET request
-    const response = await fetch(`http://localhost/SE_REPO/SoftwareSuperProject_repo/Backend/api/projects/${projectId}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to fetch project');
-    }
-
     // Fetch charter data (name, desc, status)
     const charter = await ProjectCharter.create(projectId);
+    console.log(charter);
 
     // Update DOM with charter info
     document.getElementById('project-name').textContent = charter.title || 'N/A';
     document.getElementById('project-desc').textContent = charter.desc || 'N/A';
     document.getElementById('project-status').textContent = charter.status || 'N/A';
-    document.getElementById('project-objective').textContent = (charter.objective || []).join(', ') || 'N/A';
-    document.getElementById('project-deadline').textContent = (charter.deadline || []).join(', ') || 'N/A';
-
-  } catch (error) {
-    console.error("Fetch error:", error);
-  }
+    document.getElementById('project-objective').textContent = (charter.objective || 'N/A');
+    document.getElementById('project-deadline').textContent = (charter.deadline || 'N/A');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
